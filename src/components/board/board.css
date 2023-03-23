@@ -1,0 +1,46 @@
+:root {
+  --font: sans-serif;
+}
+
+.board-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+}
+
+.hud-container {
+  display: flex;
+  column-gap: 1rem;
+  justify-content: center;
+}
+
+.hud-text {
+  align-self: center;
+  font-family: var(--font);
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  font-size: 3rem;
+  width: 60px;
+  height: 60px;
+  margin: 0.2rem;
+  border-radius: 1rem;
+  user-select: none;
+}
+
+.tile:hover {
+  cursor: pointer;
+  background-color: azure;
+}

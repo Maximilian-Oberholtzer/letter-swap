@@ -1,0 +1,8 @@
+:root {
+  --font: sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-family: var(--font);
+}
