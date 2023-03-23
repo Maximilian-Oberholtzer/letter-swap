@@ -47,6 +47,7 @@ function Board() {
   const [nextLetter, setNextLetter] = useState(getRandomLetter);
   const [swapCount, setSwapCount] = useState(25);
   const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [canSelect, setCanSelect] = useState(true);
 
   //check for game over
   useEffect(() => {
@@ -199,9 +200,22 @@ function Board() {
     }
   };
 
+  const applyAnimation = (tile: HTMLElement | null) => {
+    tile?.classList.add("animate");
+    setCanSelect(false);
+
+    setTimeout(() => {
+      tile?.classList.remove("animate");
+      setCanSelect(true);
+    }, 300);
+  };
+
   const updateBoard = (rowIndex: number, colIndex: number, letter: string) => {
     const newBoard = [...board];
     newBoard[rowIndex][colIndex] = letter;
+
+    const tile = document.getElementById(`${rowIndex}-${colIndex}`);
+    applyAnimation(tile);
 
     setBoard(newBoard);
   };
@@ -209,6 +223,11 @@ function Board() {
   const handleBoard = (rowIndex: number, colIndex: number, letter: string) => {
     let prevLetter = board[rowIndex][colIndex];
     const newBoard = [...board];
+
+    const tile = document.getElementById(`${rowIndex}-${colIndex}`);
+    applyAnimation(tile);
+
+    // Replace letter with new selection
     newBoard[rowIndex][colIndex] = letter;
 
     // Check if words were formed after new letter placement
@@ -231,8 +250,11 @@ function Board() {
             {row.map((letter, colIndex) => (
               <div
                 className="tile"
+                id={`${rowIndex}-${colIndex}`}
                 key={`${rowIndex}-${colIndex}`}
-                onClick={() => handleBoard(rowIndex, colIndex, nextLetter)}
+                onClick={() =>
+                  canSelect && handleBoard(rowIndex, colIndex, nextLetter)
+                }
               >
                 {letter}
               </div>

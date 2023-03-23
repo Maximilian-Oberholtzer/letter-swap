@@ -44,3 +44,19 @@
   cursor: pointer;
   background-color: azure;
 }
+
+.animate {
+  animation: flip 0.3s ease;
+}
+
+@keyframes flip {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
