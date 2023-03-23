@@ -32,7 +32,7 @@ const getRandomLetter = (): string => {
   return randomLetter.toUpperCase();
 };
 
-function Board() {
+function Board2() {
   const [board, setBoard] = useState<string[][]>(() => {
     const newBoard = Array(5)
       .fill(null)
@@ -44,7 +44,15 @@ function Board() {
 
     return newBoard;
   });
-  const [nextLetter, setNextLetter] = useState(getRandomLetter);
+  const [nextLetter, setNextLetter] = useState(() => {
+    let letters = "";
+
+    for (let i = 0; i < 3; i++) {
+      letters += getRandomLetter();
+    }
+
+    return letters;
+  });
   const [swapCount, setSwapCount] = useState(25);
   const [foundWords, setFoundWords] = useState<string[]>([]);
   const [canSelect, setCanSelect] = useState(true);
@@ -65,139 +73,108 @@ function Board() {
     }
   }, [swapCount]);
 
-  const checkBoard = (board: string[][], prevLetter: string) => {
-    let currentWord = "";
+  type Direction = "horizontal" | "vertical" | "diagonalRight" | "diagonalLeft";
+
+  const findAndReplaceWord = (board: string[][]) => {
     let foundWord = false;
-    //check columns
-    for (let i = 0; i < 5; i++) {
-      currentWord = "";
-      for (let j = 0; j < 5; j++) {
-        currentWord += board[i][j];
-        if (words.includes(currentWord.toLowerCase())) {
-          setFoundWords([...foundWords, currentWord]);
-          foundWord = true;
-          for (let k = 0; k < 5; k++) {
-            updateBoard(i, k, " ");
+
+    const directions: Direction[] = [
+      "horizontal",
+      "vertical",
+      "diagonalRight",
+      "diagonalLeft",
+    ];
+
+    const getSequence = (
+      x: number,
+      y: number,
+      direction: Direction
+    ): string => {
+      let sequence = "";
+      for (let i = 0; i < 5; i++) {
+        switch (direction) {
+          case "horizontal":
+            sequence += board[x][y + i];
+            break;
+          case "vertical":
+            sequence += board[x + i][y];
+            break;
+          case "diagonalRight":
+            sequence += board[x + i][y + i];
+            break;
+          case "diagonalLeft":
+            sequence += board[x + i][y - i];
+            break;
+        }
+      }
+      return sequence;
+    };
+
+    const clearSequence = (
+      x: number,
+      y: number,
+      direction: Direction
+    ): void => {
+      let tile;
+      console.log(tile);
+      for (let i = 0; i < 5; i++) {
+        switch (direction) {
+          case "horizontal":
+            tile = document.getElementById(`${x}-${y + i}`);
+            applyAnimation(tile);
+            board[x][y + i] = "";
+            break;
+          case "vertical":
+            tile = document.getElementById(`${x + i}-${y}`);
+            applyAnimation(tile);
+            board[x + i][y] = "";
+            break;
+          case "diagonalRight":
+            tile = document.getElementById(`${x + i}-${y + i}`);
+            applyAnimation(tile);
+            board[x + i][y + i] = "";
+            break;
+          case "diagonalLeft":
+            tile = document.getElementById(`${x + i}-${y - i}`);
+            applyAnimation(tile);
+            board[x + i][y - i] = "";
+            break;
+        }
+      }
+    };
+
+    for (let x = 0; x <= board.length - 5; x++) {
+      for (let y = 0; y < board[x].length; y++) {
+        directions.forEach((direction) => {
+          if (
+            (direction === "horizontal" && y <= board[x].length - 5) ||
+            (direction === "vertical" && x <= board.length - 5) ||
+            (direction === "diagonalRight" &&
+              x <= board.length - 5 &&
+              y <= board[x].length - 5) ||
+            (direction === "diagonalLeft" && x <= board.length - 5 && y >= 4)
+          ) {
+            const sequence = getSequence(x, y, direction);
+            const reverseSequence = sequence.split("").reverse().join("");
+            if (words.includes(sequence.toLowerCase())) {
+              if (!foundWords.includes(sequence)) {
+                foundWord = true;
+                setFoundWords([...foundWords, sequence]);
+                clearSequence(x, y, direction);
+              }
+            } else if (words.includes(reverseSequence.toLowerCase())) {
+              if (!foundWords.includes(reverseSequence)) {
+                foundWord = true;
+                setFoundWords([...foundWords, reverseSequence]);
+                clearSequence(x, y, direction);
+              }
+            }
           }
-        }
-      }
-    }
-    //check columns reverse
-    for (let i = 0; i < 5; i++) {
-      currentWord = "";
-      for (let j = 4; j >= 0; j--) {
-        currentWord += board[i][j];
-        if (words.includes(currentWord.toLowerCase())) {
-          setFoundWords([...foundWords, currentWord]);
-          foundWord = true;
-          for (let k = 0; k < 5; k++) {
-            updateBoard(i, k, " ");
-          }
-        }
-      }
-    }
-    //check rows
-    for (let i = 0; i < 5; i++) {
-      currentWord = "";
-      for (let j = 0; j < 5; j++) {
-        currentWord += board[j][i];
-        if (words.includes(currentWord.toLowerCase())) {
-          setFoundWords([...foundWords, currentWord]);
-          foundWord = true;
-          for (let k = 0; k < 5; k++) {
-            updateBoard(k, i, " ");
-          }
-        }
-      }
-    }
-    //check rows reverse
-    for (let i = 0; i < 5; i++) {
-      currentWord = "";
-      for (let j = 4; j >= 0; j--) {
-        currentWord += board[j][i];
-        if (words.includes(currentWord.toLowerCase())) {
-          setFoundWords([...foundWords, currentWord]);
-          foundWord = true;
-          for (let k = 0; k < 5; k++) {
-            updateBoard(k, i, " ");
-          }
-        }
+        });
       }
     }
 
-    //check diagonal
-    currentWord = "";
-    for (let i = 0; i < 5; i++) {
-      currentWord += board[i][i];
-      if (words.includes(currentWord.toLowerCase())) {
-        setFoundWords([...foundWords, currentWord]);
-        foundWord = true;
-        for (let k = 0; k < 5; k++) {
-          updateBoard(k, k, " ");
-        }
-      }
-    }
-
-    //check diagonal cases
-    currentWord = "";
-    currentWord =
-      board[0][0] + board[1][1] + board[2][2] + board[3][3] + board[4][4];
-
-    if (words.includes(currentWord.toLowerCase())) {
-      setFoundWords([...foundWords, currentWord]);
-      foundWord = true;
-      updateBoard(0, 0, " ");
-      updateBoard(1, 1, " ");
-      updateBoard(2, 2, " ");
-      updateBoard(3, 3, " ");
-      updateBoard(4, 4, " ");
-    }
-
-    currentWord = "";
-    currentWord =
-      board[4][4] + board[3][3] + board[2][2] + board[1][1] + board[0][0];
-
-    if (words.includes(currentWord.toLowerCase())) {
-      setFoundWords([...foundWords, currentWord]);
-      foundWord = true;
-      updateBoard(0, 0, " ");
-      updateBoard(1, 1, " ");
-      updateBoard(2, 2, " ");
-      updateBoard(3, 3, " ");
-      updateBoard(4, 4, " ");
-    }
-
-    currentWord = "";
-    currentWord =
-      board[0][4] + board[1][3] + board[2][2] + board[3][1] + board[4][0];
-
-    if (words.includes(currentWord.toLowerCase())) {
-      setFoundWords([...foundWords, currentWord]);
-      foundWord = true;
-      updateBoard(0, 4, " ");
-      updateBoard(1, 3, " ");
-      updateBoard(2, 2, " ");
-      updateBoard(3, 1, " ");
-      updateBoard(4, 0, " ");
-    }
-
-    currentWord = "";
-    currentWord =
-      board[4][0] + board[3][1] + board[2][2] + board[1][3] + board[0][4];
-
-    if (words.includes(currentWord.toLowerCase())) {
-      setFoundWords([...foundWords, currentWord]);
-      foundWord = true;
-      updateBoard(0, 4, " ");
-      updateBoard(1, 3, " ");
-      updateBoard(2, 2, " ");
-      updateBoard(3, 1, " ");
-      updateBoard(4, 0, " ");
-    }
-
-    if (!foundWord && prevLetter !== " ") {
-      setSwapCount(swapCount - 1);
-    }
+    return foundWord;
   };
 
   const applyAnimation = (tile: HTMLElement | null) => {
@@ -210,16 +187,6 @@ function Board() {
     }, 300);
   };
 
-  const updateBoard = (rowIndex: number, colIndex: number, letter: string) => {
-    const newBoard = [...board];
-    newBoard[rowIndex][colIndex] = letter;
-
-    const tile = document.getElementById(`${rowIndex}-${colIndex}`);
-    applyAnimation(tile);
-
-    setBoard(newBoard);
-  };
-
   const handleBoard = (rowIndex: number, colIndex: number, letter: string) => {
     let prevLetter = board[rowIndex][colIndex];
     const newBoard = [...board];
@@ -230,17 +197,23 @@ function Board() {
     // Replace letter with new selection
     newBoard[rowIndex][colIndex] = letter;
 
-    // Check if words were formed after new letter placement
-    checkBoard(newBoard, prevLetter);
+    // Check if Word has been created & delete it if it was
+    const foundWord = findAndReplaceWord(newBoard);
+
+    if (prevLetter !== " " && !foundWord) {
+      setSwapCount(swapCount - 1);
+    }
 
     // Update next letter
-    setNextLetter(getRandomLetter);
+    setNextLetter(nextLetter.substring(1) + getRandomLetter());
   };
 
   return (
     <section className="board-container">
       <div className="hud-container">
-        <div className="tile">{nextLetter}</div>
+        <div className="tile">{nextLetter[0]}</div>
+        <div className="tile small">{nextLetter[1]}</div>
+        <div className="tile small">{nextLetter[2]}</div>
         <div className="hud-text">Swaps Remaining: {swapCount}</div>
       </div>
 
@@ -253,7 +226,7 @@ function Board() {
                 id={`${rowIndex}-${colIndex}`}
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() =>
-                  canSelect && handleBoard(rowIndex, colIndex, nextLetter)
+                  canSelect && handleBoard(rowIndex, colIndex, nextLetter[0])
                 }
               >
                 {letter}
@@ -272,4 +245,4 @@ function Board() {
   );
 }
 
-export default Board;
+export default Board2;

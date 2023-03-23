@@ -31,18 +31,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
+  border: 2px solid grey;
+  color: black;
   font-size: 3rem;
   width: 60px;
   height: 60px;
   margin: 0.2rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   user-select: none;
 }
 
 .tile:hover {
   cursor: pointer;
   background-color: azure;
+}
+
+.small {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 2rem;
 }
 
 .animate {
