@@ -4,6 +4,7 @@ import "./board.css";
 
 const BOARDSIZE = 5;
 const SWAPCOUNT = 25;
+const TIMELIMIT = 900; //15 min
 
 const getRandomLetter = (): string => {
   type Letter = string;
@@ -54,10 +55,11 @@ function Board() {
     }
     return letters;
   });
-  const [swapCount, setSwapCount] = useState(25);
+  const [swapCount, setSwapCount] = useState(SWAPCOUNT);
   const [foundWords, setFoundWords] = useState<string[]>([]);
-  const [canSelect, setCanSelect] = useState(true);
-  const [timer, setTimer] = useState(300);
+  const [animateFlip, setAnimateFlip] = useState(false);
+  const [animateFound, setAnimateFound] = useState(false);
+  const [timer, setTimer] = useState(TIMELIMIT);
   const [start, setStart] = useState(false);
 
   //constants for timer dislpay
@@ -74,7 +76,6 @@ function Board() {
   //update timer
   useEffect(() => {
     if (start) {
-      console.log("hi");
       const interval = setInterval(() => {
         setTimer((prevTime) => prevTime - 1);
       }, 1000);
@@ -94,7 +95,7 @@ function Board() {
     setBoard(newBoard);
     setSwapCount(SWAPCOUNT);
     setStart(false);
-    setTimer(300);
+    setTimer(TIMELIMIT);
     setFoundWords([]);
   };
 
@@ -102,7 +103,7 @@ function Board() {
 
   const checkForWords = (board: string[][]): boolean => {
     let foundWord = false;
-    let foundSequences = [""];
+    let foundSequences = [];
 
     //check columns
     for (let i = 0; i < BOARDSIZE; i++) {
@@ -238,8 +239,7 @@ function Board() {
     row: number,
     col: number
   ) => {
-    setCanSelect(false);
-
+    setAnimateFound(true);
     tile?.classList.add("found-word");
     setTimeout(() => {
       tile?.classList.remove("found-word");
@@ -252,18 +252,18 @@ function Board() {
 
       setTimeout(() => {
         tile?.classList.remove("animate");
-        setCanSelect(true);
+        setAnimateFound(false);
       }, 300);
     }, 800);
   };
 
   const applyAnimation = (tile: HTMLElement | null) => {
     tile?.classList.add("animate");
-    setCanSelect(false);
+    setAnimateFlip(true);
 
     setTimeout(() => {
       tile?.classList.remove("animate");
-      setCanSelect(true);
+      setAnimateFlip(false);
     }, 300);
   };
 
@@ -271,7 +271,6 @@ function Board() {
     if (!start) {
       setStart(true);
     }
-    console.log(start);
     let prevLetter = board[rowIndex][colIndex];
     const newBoard = [...board];
 
@@ -291,6 +290,8 @@ function Board() {
     // Update next letter
     setNextLetter(nextLetter.substring(1) + getRandomLetter());
   };
+
+  console.log(foundWords);
   return (
     <section className="board-section">
       <div className="next-letters-container">
@@ -327,7 +328,9 @@ function Board() {
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
-                    canSelect && handleBoard(rowIndex, colIndex, nextLetter[0])
+                    !animateFlip &&
+                    !animateFound &&
+                    handleBoard(rowIndex, colIndex, nextLetter[0])
                   }
                 >
                   {letter}
@@ -338,7 +341,7 @@ function Board() {
         </div>
       </div>
       <div className="found-words-container">
-        Found Words ({foundWords.length / 2})
+        Found Words ({foundWords.length})
         {foundWords.map((word, i) => (
           <div key={i}>{word}</div>
         ))}
