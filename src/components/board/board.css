@@ -2,13 +2,18 @@
   --font: sans-serif;
 }
 
-.board-container {
-  min-height: 80vh;
+.board-section {
   display: flex;
-  flex-direction: column;
-  row-gap: 2rem;
+  flex-direction: row;
+  column-gap: 4rem;
   justify-content: center;
-  align-items: center;
+  min-height: 70vh;
+}
+
+.board-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .board {
@@ -18,8 +23,35 @@
 
 .hud-container {
   display: flex;
-  column-gap: 1rem;
   justify-content: center;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.next-letters-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.found-words-container {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+}
+
+.swaps-container {
+  padding: 0.5rem;
+  border: 2px solid grey;
+  border-radius: 0.5rem;
+}
+
+.time-container {
+  padding: 0.5rem;
+  border: 2px solid grey;
+  border-radius: 0.5rem;
 }
 
 .hud-text {
