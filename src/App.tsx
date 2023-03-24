@@ -1,6 +1,6 @@
 import React from "react";
-import Board from "./components/board";
-import Main from "./components/main";
+import Board from "./components/board/Board";
+import Main from "./components/main/Main";
 
 function App() {
   return (

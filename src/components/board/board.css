@@ -38,7 +38,13 @@
   height: 60px;
   margin: 0.2rem;
   border-radius: 0.5rem;
+  background-color: white;
+  transition: background-color 200ms;
   user-select: none;
+}
+
+.found-word {
+  background-color: greenyellow !important;
 }
 
 .tile:hover {
