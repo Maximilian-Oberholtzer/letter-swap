@@ -1,8 +1,38 @@
 :root {
-  --font: sans-serif;
+  --font: "Lato", sans-serif;
+  user-select: none;
+}
+
+.title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font);
+  user-select: none;
+  font-size: 2rem;
+  font-weight: 100;
+  padding: 1rem;
 }
 
 .title {
   text-align: center;
   font-family: var(--font);
+  user-select: none;
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+.title-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid grey;
+  color: black;
+  font-size: 3rem !important;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin: 0.2rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  user-select: none;
 }

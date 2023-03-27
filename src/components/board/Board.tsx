@@ -3,6 +3,8 @@ import { words } from "../../words";
 import "./board.css";
 
 const BOARDSIZE = 5;
+const SWAPCOUNT = 25;
+const TIMELIMIT = 900; //15 min
 
 const getRandomLetter = (): string => {
   type Letter = string;
@@ -36,10 +38,10 @@ const getRandomLetter = (): string => {
 
 function Board() {
   const [board, setBoard] = useState<string[][]>(() => {
-    const newBoard = Array(5)
+    const newBoard = Array(BOARDSIZE)
       .fill(null)
       .map(() =>
-        Array(5)
+        Array(BOARDSIZE)
           .fill(null)
           .map(() => " ")
       );
@@ -53,30 +55,55 @@ function Board() {
     }
     return letters;
   });
-  const [swapCount, setSwapCount] = useState(25);
+  const [swapCount, setSwapCount] = useState(SWAPCOUNT);
   const [foundWords, setFoundWords] = useState<string[]>([]);
-  const [canSelect, setCanSelect] = useState(true);
+  const [animateFlip, setAnimateFlip] = useState(false);
+  const [animateFound, setAnimateFound] = useState(false);
+  const [timer, setTimer] = useState(TIMELIMIT);
+  const [start, setStart] = useState(false);
+
+  //constants for timer dislpay
+  const minutes = Math.floor(timer / 60);
+  const seconds = timer % 60;
 
   //check for game over
   useEffect(() => {
-    if (swapCount === 0) {
-      const newBoard = Array(5)
-        .fill(null)
-        .map(() =>
-          Array(5)
-            .fill(null)
-            .map(() => " ")
-        );
-      setBoard(newBoard);
-      setSwapCount(25);
-      setFoundWords([]);
+    if (swapCount === 0 || timer === 0) {
+      ResetGame();
     }
-  }, [swapCount]);
+  }, [swapCount, timer]);
+
+  //update timer
+  useEffect(() => {
+    if (start) {
+      const interval = setInterval(() => {
+        setTimer((prevTime) => prevTime - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [start]);
+
+  const ResetGame = () => {
+    const newBoard = Array(BOARDSIZE)
+      .fill(null)
+      .map(() =>
+        Array(BOARDSIZE)
+          .fill(null)
+          .map(() => " ")
+      );
+    setBoard(newBoard);
+    setSwapCount(SWAPCOUNT);
+    setStart(false);
+    setTimer(TIMELIMIT);
+    setFoundWords([]);
+  };
 
   type Direction = "row" | "column" | "diagonalRight" | "diagonalLeft";
 
   const checkForWords = (board: string[][]): boolean => {
     let foundWord = false;
+    let foundSequences = [];
 
     //check columns
     for (let i = 0; i < BOARDSIZE; i++) {
@@ -88,13 +115,13 @@ function Board() {
           if (words.includes(sequence.toLowerCase())) {
             if (!foundWords.includes(sequence)) {
               foundWord = true;
-              setFoundWords([...foundWords, sequence]);
+              foundSequences.push(sequence);
               replaceRow(board, "column", i);
             }
           } else if (words.includes(reverseSequence.toLowerCase())) {
             if (!foundWords.includes(reverseSequence)) {
               foundWord = true;
-              setFoundWords([...foundWords, reverseSequence]);
+              foundSequences.push(reverseSequence);
               replaceRow(board, "column", i);
             }
           }
@@ -112,13 +139,13 @@ function Board() {
           if (words.includes(sequence.toLowerCase())) {
             if (!foundWords.includes(sequence)) {
               foundWord = true;
-              setFoundWords([...foundWords, sequence]);
+              foundSequences.push(sequence);
               replaceRow(board, "row", i);
             }
           } else if (words.includes(reverseSequence.toLowerCase())) {
             if (!foundWords.includes(reverseSequence)) {
               foundWord = true;
-              setFoundWords([...foundWords, reverseSequence]);
+              foundSequences.push(reverseSequence);
               replaceRow(board, "row", i);
             }
           }
@@ -139,13 +166,13 @@ function Board() {
     if (words.includes(sequence.toLowerCase())) {
       if (!foundWords.includes(sequence)) {
         foundWord = true;
-        setFoundWords([...foundWords, sequence]);
+        foundSequences.push(sequence);
         replaceRow(board, "diagonalRight", i);
       }
     } else if (words.includes(reverseSequence.toLowerCase())) {
       if (!foundWords.includes(reverseSequence)) {
         foundWord = true;
-        setFoundWords([...foundWords, reverseSequence]);
+        foundSequences.push(reverseSequence);
         replaceRow(board, "diagonalRight", i);
       }
     }
@@ -158,19 +185,22 @@ function Board() {
       i++;
     }
     reverseSequence = sequence.split("").reverse().join("");
-    console.log(sequence, reverseSequence);
     if (words.includes(sequence.toLowerCase())) {
       if (!foundWords.includes(sequence)) {
         foundWord = true;
-        setFoundWords([...foundWords, sequence]);
+        foundSequences.push(sequence);
         replaceRow(board, "diagonalLeft", i);
       }
     } else if (words.includes(reverseSequence.toLowerCase())) {
       if (!foundWords.includes(reverseSequence)) {
         foundWord = true;
-        setFoundWords([...foundWords, reverseSequence]);
+        foundSequences.push(reverseSequence);
         replaceRow(board, "diagonalLeft", i);
       }
+    }
+
+    if (foundWord) {
+      setFoundWords([...foundWords, ...foundSequences]);
     }
 
     return foundWord;
@@ -209,8 +239,7 @@ function Board() {
     row: number,
     col: number
   ) => {
-    setCanSelect(false);
-
+    setAnimateFound(true);
     tile?.classList.add("found-word");
     setTimeout(() => {
       tile?.classList.remove("found-word");
@@ -223,22 +252,25 @@ function Board() {
 
       setTimeout(() => {
         tile?.classList.remove("animate");
-        setCanSelect(true);
+        setAnimateFound(false);
       }, 300);
     }, 800);
   };
 
   const applyAnimation = (tile: HTMLElement | null) => {
     tile?.classList.add("animate");
-    setCanSelect(false);
+    setAnimateFlip(true);
 
     setTimeout(() => {
       tile?.classList.remove("animate");
-      setCanSelect(true);
+      setAnimateFlip(false);
     }, 300);
   };
 
   const handleBoard = (rowIndex: number, colIndex: number, letter: string) => {
+    if (!start) {
+      setStart(true);
+    }
     let prevLetter = board[rowIndex][colIndex];
     const newBoard = [...board];
 
@@ -260,37 +292,57 @@ function Board() {
   };
 
   return (
-    <section className="board-container">
-      <div className="hud-container">
-        <div className="tile">{nextLetter[0]}</div>
-        <div className="tile small">{nextLetter[1]}</div>
-        <div className="tile small">{nextLetter[2]}</div>
-        <div className="hud-text">Swaps Remaining: {swapCount}</div>
-      </div>
-
-      <div className="board">
-        {board.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            {row.map((letter, colIndex) => (
-              <div
-                className="tile"
-                id={`${rowIndex}-${colIndex}`}
-                key={`${rowIndex}-${colIndex}`}
-                onClick={() =>
-                  canSelect && handleBoard(rowIndex, colIndex, nextLetter[0])
-                }
-              >
-                {letter}
-              </div>
-            ))}
+    <section className="board-section">
+      <div className="board-container">
+        <div className="hud-container">
+          <div className="hud-text">
+            <div className="swaps-container">
+              <b>Swaps: </b>
+              {swapCount}
+            </div>
           </div>
-        ))}
-      </div>
-      <div>
-        Found Words:{" "}
-        {foundWords.map((word, i) => (
-          <div key={i}>{word}</div>
-        ))}
+          <div className="hud-text">
+            <div className="time-container">
+              <b>Time: </b>
+              {`${minutes.toString().padStart(2, "0")}:${seconds
+                .toString()
+                .padStart(2, "0")}`}
+            </div>
+          </div>
+        </div>
+        <div className="next-letters-container">
+          <b>Next:</b>
+          <div className="tile small-tile">{nextLetter[0]}</div>
+          <div className="tile small-tile">{nextLetter[1]}</div>
+          <div className="tile small-tile">{nextLetter[2]}</div>
+        </div>
+
+        <div className="board">
+          {board.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              {row.map((letter, colIndex) => (
+                <div
+                  className="tile"
+                  id={`${rowIndex}-${colIndex}`}
+                  key={`${rowIndex}-${colIndex}`}
+                  onClick={() =>
+                    !animateFlip &&
+                    !animateFound &&
+                    handleBoard(rowIndex, colIndex, nextLetter[0])
+                  }
+                >
+                  {letter}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="found-words-container">
+          Found Words ({foundWords.length})
+          {foundWords.map((word, i) => (
+            <div key={i}>{word}</div>
+          ))}
+        </div>
       </div>
     </section>
   );
