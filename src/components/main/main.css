@@ -1,5 +1,5 @@
 :root {
-  --font: sans-serif;
+  --font: "Lato", sans-serif;
   user-select: none;
 }
 
@@ -11,7 +11,7 @@
   user-select: none;
   font-size: 2rem;
   font-weight: 100;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .title {
@@ -24,6 +24,7 @@
 
 .title-tile {
   display: inline-flex;
+  align-items: center;
   justify-content: center;
   border: 2px solid grey;
   color: black;

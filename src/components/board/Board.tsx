@@ -291,16 +291,8 @@ function Board() {
     setNextLetter(nextLetter.substring(1) + getRandomLetter());
   };
 
-  console.log(foundWords);
   return (
     <section className="board-section">
-      <div className="next-letters-container">
-        Next
-        <div className="tile">{nextLetter[0]}</div>
-        <div className="tile small">{nextLetter[1]}</div>
-        <div className="tile small">{nextLetter[2]}</div>
-      </div>
-
       <div className="board-container">
         <div className="hud-container">
           <div className="hud-text">
@@ -317,6 +309,12 @@ function Board() {
                 .padStart(2, "0")}`}
             </div>
           </div>
+        </div>
+        <div className="next-letters-container">
+          <b>Next:</b>
+          <div className="tile small-tile">{nextLetter[0]}</div>
+          <div className="tile small-tile">{nextLetter[1]}</div>
+          <div className="tile small-tile">{nextLetter[2]}</div>
         </div>
 
         <div className="board">
@@ -339,12 +337,12 @@ function Board() {
             </div>
           ))}
         </div>
-      </div>
-      <div className="found-words-container">
-        Found Words ({foundWords.length})
-        {foundWords.map((word, i) => (
-          <div key={i}>{word}</div>
-        ))}
+        <div className="found-words-container">
+          Found Words ({foundWords.length})
+          {foundWords.map((word, i) => (
+            <div key={i}>{word}</div>
+          ))}
+        </div>
       </div>
     </section>
   );
