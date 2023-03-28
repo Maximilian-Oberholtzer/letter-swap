@@ -26,7 +26,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid grey;
+  border: 0.2rem solid grey;
   color: black;
   font-size: 3rem !important;
   width: 3.2rem;

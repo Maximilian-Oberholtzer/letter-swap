@@ -5,10 +5,17 @@
 .board-section {
   display: flex;
   flex-direction: row;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   column-gap: 4rem;
+  align-items: flex-end;
   justify-content: center;
-  min-height: 70vh;
   font-family: var(--font);
+  margin-top: 1rem;
+  overflow: hidden;
+  max-height: calc(var(--vh, 1vh) * 70) !important;
 }
 
 .board-container {
@@ -41,8 +48,28 @@
 
 .found-words-container {
   display: flex;
-  align-self: center;
+  align-items: center;
+  position: relative;
   flex-direction: column;
+  padding: 0.5rem;
+}
+
+.found-words-box {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0.5rem;
+  border: 2px solid grey;
+  border-radius: 0.5rem;
+  width: 90%;
+  height: 1.25rem;
+  transition: height 0.5s ease-out;
+  overflow: hidden;
+  line-height: 1.5rem;
+}
+
+.found-expanded {
+  height: calc(var(--vh, 1vh) * 65);
 }
 
 .swaps-container {
@@ -99,6 +126,10 @@
 
 .animate {
   animation: flip 0.3s ease;
+}
+
+.hide {
+  display: none !important;
 }
 
 @keyframes flip {

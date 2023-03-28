@@ -62,6 +62,8 @@ function Board() {
   const [timer, setTimer] = useState(TIMELIMIT);
   const [start, setStart] = useState(false);
 
+  const [foundWordsExpand, setFoundWordsExpand] = useState(false);
+
   //constants for timer dislpay
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
@@ -291,6 +293,12 @@ function Board() {
     setNextLetter(nextLetter.substring(1) + getRandomLetter());
   };
 
+  const toggleFoundWordsBox = () => {
+    setFoundWordsExpand(!foundWordsExpand);
+  };
+
+  console.log(foundWordsExpand);
+
   return (
     <section className="board-section">
       <div className="board-container">
@@ -338,10 +346,19 @@ function Board() {
           ))}
         </div>
         <div className="found-words-container">
-          Found Words ({foundWords.length})
-          {foundWords.map((word, i) => (
-            <div key={i}>{word}</div>
-          ))}
+          <div
+            className={`found-words-box ${
+              foundWordsExpand && "found-expanded"
+            }`}
+            onClick={() => {
+              toggleFoundWordsBox();
+            }}
+          >
+            Found Words ({foundWords.length})
+            {foundWords.map((word, i) => (
+              <div key={i}>{word}</div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
