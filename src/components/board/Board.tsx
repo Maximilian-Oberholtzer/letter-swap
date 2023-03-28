@@ -298,66 +298,64 @@ function Board() {
   };
 
   return (
-    <div className="game">
-      <div className="board-section">
-        <div className="board-container">
-          <div className="hud-container">
-            <div className="hud-text">
-              <div className="swaps-container">
-                <b>Swaps: </b>
-                {swapCount}
-              </div>
-            </div>
-            <div className="hud-text">
-              <div className="time-container">
-                <b>Time: </b>
-                {`${minutes.toString().padStart(2, "0")}:${seconds
-                  .toString()
-                  .padStart(2, "0")}`}
-              </div>
+    <div className="board-section">
+      <div className="board-container">
+        <div className="hud-container">
+          <div className="hud-text">
+            <div className="swaps-container">
+              <b>Swaps: </b>
+              {swapCount}
             </div>
           </div>
-          <div className="next-letters-container">
-            <b>Next:</b>
-            <div className="tile small-tile">{nextLetter[0]}</div>
-            <div className="tile small-tile">{nextLetter[1]}</div>
-            <div className="tile small-tile">{nextLetter[2]}</div>
+          <div className="hud-text">
+            <div className="time-container">
+              <b>Time: </b>
+              {`${minutes.toString().padStart(2, "0")}:${seconds
+                .toString()
+                .padStart(2, "0")}`}
+            </div>
           </div>
+        </div>
+        <div className="next-letters-container">
+          <b>Next:</b>
+          <div className="tile small-tile">{nextLetter[0]}</div>
+          <div className="tile small-tile">{nextLetter[1]}</div>
+          <div className="tile small-tile">{nextLetter[2]}</div>
+        </div>
 
-          <div className="board">
-            {board.map((row, rowIndex) => (
-              <div key={rowIndex}>
-                {row.map((letter, colIndex) => (
-                  <div
-                    className="tile"
-                    id={`${rowIndex}-${colIndex}`}
-                    key={`${rowIndex}-${colIndex}`}
-                    onClick={() =>
-                      !animateFlip &&
-                      !animateFound &&
-                      handleBoard(rowIndex, colIndex, nextLetter[0])
-                    }
-                  >
-                    {letter}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="found-words-container">
-            <div
-              className={`found-words-box ${
-                foundWordsExpand && "found-expanded"
-              }`}
-              onClick={() => {
-                toggleFoundWordsBox();
-              }}
-            >
-              Found Words ({foundWords.length})
-              {foundWords.map((word, i) => (
-                <div key={i}>{word}</div>
+        <div className="board">
+          {board.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              {row.map((letter, colIndex) => (
+                <div
+                  className="tile"
+                  id={`${rowIndex}-${colIndex}`}
+                  key={`${rowIndex}-${colIndex}`}
+                  onClick={() =>
+                    !animateFlip &&
+                    !animateFound &&
+                    handleBoard(rowIndex, colIndex, nextLetter[0])
+                  }
+                >
+                  {letter}
+                </div>
               ))}
             </div>
+          ))}
+        </div>
+        <div className="found-words-container">
+          <div
+            className={`found-words-box ${
+              foundWordsExpand && "found-expanded"
+            }`}
+            onClick={() => {
+              toggleFoundWordsBox();
+            }}
+          >
+            Found Words ({foundWords.length})
+            {foundWords.map((word, i) => (
+              <div key={i}>{word}</div>
+            ))}
           </div>
         </div>
       </div>

@@ -4,10 +4,10 @@ import Main from "./components/main/Main";
 
 function App() {
   return (
-    <>
+    <div className="app-container">
       <Main />
       <Board />
-    </>
+    </div>
   );
 }
 
