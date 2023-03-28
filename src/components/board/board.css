@@ -2,15 +2,20 @@
   --font: "Lato", sans-serif;
 }
 
+.game {
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 .board-section {
   display: flex;
   flex-direction: row;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   column-gap: 4rem;
   align-items: flex-end;
+  align-self: center;
   justify-content: center;
   font-family: var(--font);
   margin-top: 1rem;
