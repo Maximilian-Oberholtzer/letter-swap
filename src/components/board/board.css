@@ -2,32 +2,21 @@
   --font: "Lato", sans-serif;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  position: fixed;
-  top: 58%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .board-section {
   display: flex;
   flex-direction: row;
-  column-gap: 4rem;
-  align-items: flex-end;
-  align-self: center;
-  justify-content: center;
   font-family: var(--font);
   overflow: hidden;
-  max-height: calc(var(--vh, 1vh) * 70) !important;
+  height: calc(90% - 87px) !important;
+  margin: 0 auto;
 }
 
 .board-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
 }
 
 .board {
@@ -54,10 +43,12 @@
 
 .found-words-container {
   display: flex;
+  position: absolute;
   align-items: center;
-  position: relative;
   flex-direction: column;
   padding: 0.5rem;
+  bottom: 1rem;
+  z-index: 100;
 }
 
 .found-words-box {
@@ -67,15 +58,16 @@
   padding: 0.5rem;
   border: 2px solid grey;
   border-radius: 0.5rem;
-  width: 90%;
   height: 1.25rem;
+  width: 20rem;
   transition: height 0.5s ease-out;
   overflow: hidden;
   line-height: 1.5rem;
+  background-color: white;
 }
 
 .found-expanded {
-  height: calc(var(--vh, 1vh) * 65);
+  height: calc(var(--vh, 1vh) * 75);
 }
 
 .swaps-container {
