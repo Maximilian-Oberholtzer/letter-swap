@@ -49,9 +49,11 @@
   padding: 0.5rem;
   bottom: 1rem;
   z-index: 100;
+  cursor: pointer;
 }
 
 .found-words-box {
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -66,9 +68,9 @@
   background-color: white;
 }
 
-.found-expanded {
-  height: calc(var(--vh, 1vh) * 75);
-}
+/* .found-expanded {
+  height: calc(var(--vh, 1vh) * 50);
+} */
 
 .swaps-container {
   padding: 0.5rem;

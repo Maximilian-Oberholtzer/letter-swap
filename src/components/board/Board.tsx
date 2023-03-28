@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { words } from "../../words";
 import "./board.css";
 
@@ -63,6 +63,8 @@ function Board() {
   const [start, setStart] = useState(false);
 
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
+  const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
+  const boardHeight = useRef<HTMLDivElement>(null);
 
   //constants for timer dislpay
   const minutes = Math.floor(timer / 60);
@@ -85,6 +87,14 @@ function Board() {
       return () => clearInterval(interval);
     }
   }, [start]);
+
+  //calculate height of board container
+  useEffect(() => {
+    if (boardHeight.current) {
+      const containerHeight = boardHeight.current.clientHeight;
+      setWordsExpandHeight(containerHeight);
+    }
+  }, [foundWordsExpand]);
 
   const ResetGame = () => {
     const newBoard = Array(BOARDSIZE)
@@ -299,7 +309,7 @@ function Board() {
 
   return (
     <div className="board-section">
-      <div className="board-container">
+      <div ref={boardHeight} className="board-container">
         <div className="hud-container">
           <div className="hud-text">
             <div className="swaps-container">
@@ -345,9 +355,11 @@ function Board() {
         </div>
         <div className="found-words-container">
           <div
-            className={`found-words-box ${
-              foundWordsExpand && "found-expanded"
-            }`}
+            className="found-words-box"
+            style={{
+              height: foundWordsExpand ? `${foundWordsExpandHeight}px` : "",
+              transition: "height 0.5s ease-out",
+            }}
             onClick={() => {
               toggleFoundWordsBox();
             }}
