@@ -7,7 +7,6 @@
   flex-direction: row;
   height: 80vh;
   justify-content: center;
-  margin-top: 1rem;
 }
 
 .board-section {
@@ -18,7 +17,6 @@
   align-self: center;
   justify-content: center;
   font-family: var(--font);
-  margin-top: 1rem;
   overflow: hidden;
   max-height: calc(var(--vh, 1vh) * 70) !important;
 }
