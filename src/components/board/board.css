@@ -5,7 +5,7 @@
 .game {
   display: flex;
   flex-direction: row;
-  height: 75vh;
+  height: calc(var(--vh, 1vh) * 75) !important;
   justify-content: center;
 }
 
