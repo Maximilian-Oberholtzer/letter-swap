@@ -7,7 +7,7 @@
   flex-direction: row;
   justify-content: center;
   position: fixed;
-  top: 54%;
+  top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
