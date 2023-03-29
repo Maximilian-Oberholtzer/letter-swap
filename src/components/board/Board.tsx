@@ -38,30 +38,53 @@ const getRandomLetter = (): string => {
 
 function Board() {
   const [board, setBoard] = useState<string[][]>(() => {
-    const newBoard = Array(BOARDSIZE)
-      .fill(null)
-      .map(() =>
-        Array(BOARDSIZE)
-          .fill(null)
-          .map(() => " ")
-      );
-
-    return newBoard;
+    const board = localStorage.getItem("board");
+    if (board !== null) {
+      return JSON.parse(board);
+    } else {
+      const newBoard = Array(BOARDSIZE)
+        .fill(null)
+        .map(() =>
+          Array(BOARDSIZE)
+            .fill(null)
+            .map(() => " ")
+        );
+      return newBoard;
+    }
   });
   const [nextLetter, setNextLetter] = useState(() => {
-    let letters = "";
-    for (let i = 0; i < 3; i++) {
-      let currentLetter = getRandomLetter();
-      //no duplicates inside next letters boxes
-      while (letters.includes(currentLetter)) {
-        currentLetter = getRandomLetter();
+    const nextLetters = localStorage.getItem("nextLetters");
+    if (nextLetters !== null) {
+      return JSON.parse(nextLetters);
+    } else {
+      let letters = "";
+      for (let i = 0; i < 3; i++) {
+        let currentLetter = getRandomLetter();
+        //no duplicates inside next letters boxes
+        while (letters.includes(currentLetter)) {
+          currentLetter = getRandomLetter();
+        }
+        letters += currentLetter;
       }
-      letters += currentLetter;
+      return letters;
     }
-    return letters;
   });
-  const [swapCount, setSwapCount] = useState(SWAPCOUNT);
-  const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [swapCount, setSwapCount] = useState(() => {
+    const swapCount = localStorage.getItem("swapCount");
+    if (swapCount !== null) {
+      return JSON.parse(swapCount);
+    } else {
+      return SWAPCOUNT;
+    }
+  });
+  const [foundWords, setFoundWords] = useState<string[]>(() => {
+    const foundWords = localStorage.getItem("foundWords");
+    if (foundWords !== null) {
+      return JSON.parse(foundWords);
+    } else {
+      return [];
+    }
+  });
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
   const [start, setStart] = useState(false);
@@ -73,10 +96,19 @@ function Board() {
 
   //check for game over
   useEffect(() => {
+    localStorage.setItem("swapCount", JSON.stringify(swapCount));
     if (swapCount === 0) {
       handleOpenModal();
+      setStart(false);
     }
   }, [swapCount]);
+
+  //Save session to local storage
+  useEffect(() => {
+    localStorage.setItem("nextLetters", JSON.stringify(nextLetter));
+    localStorage.setItem("board", JSON.stringify(board));
+    localStorage.setItem("foundWords", JSON.stringify(foundWords));
+  }, [nextLetter, board, foundWords]);
 
   //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {
@@ -308,6 +340,7 @@ function Board() {
   const toggleFoundWordsBox = () => {
     setFoundWordsExpand(!foundWordsExpand);
   };
+
   return (
     <div className="board-section">
       {showModal && (

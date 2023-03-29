@@ -63,6 +63,7 @@
   font-weight: 100;
   padding: 0.2rem;
   border-bottom: 1px solid grey;
+  z-index: 400;
 }
 
 .title {
