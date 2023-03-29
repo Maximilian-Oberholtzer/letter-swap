@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { words } from "../../words";
+import Modal from "../modal/Modal";
 import "./board.css";
 
 const BOARDSIZE = 5;
-const SWAPCOUNT = 25;
-const TIMELIMIT = 900; //15 min
+const SWAPCOUNT = 20;
 
 const getRandomLetter = (): string => {
   type Letter = string;
@@ -51,7 +51,12 @@ function Board() {
   const [nextLetter, setNextLetter] = useState(() => {
     let letters = "";
     for (let i = 0; i < 3; i++) {
-      letters += getRandomLetter();
+      let currentLetter = getRandomLetter();
+      //no duplicates inside next letters boxes
+      while (letters.includes(currentLetter)) {
+        currentLetter = getRandomLetter();
+      }
+      letters += currentLetter;
     }
     return letters;
   });
@@ -59,36 +64,21 @@ function Board() {
   const [foundWords, setFoundWords] = useState<string[]>([]);
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
-  const [timer, setTimer] = useState(TIMELIMIT);
   const [start, setStart] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
   const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
   const boardHeight = useRef<HTMLDivElement>(null);
 
-  //constants for timer dislpay
-  const minutes = Math.floor(timer / 60);
-  const seconds = timer % 60;
-
   //check for game over
   useEffect(() => {
-    if (swapCount === 0 || timer === 0) {
-      ResetGame();
+    if (swapCount === 0) {
+      handleOpenModal();
     }
-  }, [swapCount, timer]);
+  }, [swapCount]);
 
-  //update timer
-  useEffect(() => {
-    if (start) {
-      const interval = setInterval(() => {
-        setTimer((prevTime) => prevTime - 1);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [start]);
-
-  //calculate height of board container
+  //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {
     if (boardHeight.current) {
       const containerHeight = boardHeight.current.clientHeight;
@@ -104,11 +94,18 @@ function Board() {
           .fill(null)
           .map(() => " ")
       );
+
     setBoard(newBoard);
     setSwapCount(SWAPCOUNT);
     setStart(false);
-    setTimer(TIMELIMIT);
     setFoundWords([]);
+  };
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   type Direction = "row" | "column" | "diagonalRight" | "diagonalLeft";
@@ -300,37 +297,40 @@ function Board() {
     }
 
     // Update next letter
-    setNextLetter(nextLetter.substring(1) + getRandomLetter());
+    let currentLetter = getRandomLetter();
+    //no duplicates inside next letters boxes
+    while (nextLetter.includes(currentLetter)) {
+      currentLetter = getRandomLetter();
+    }
+    setNextLetter(nextLetter.substring(1) + currentLetter);
   };
 
   const toggleFoundWordsBox = () => {
     setFoundWordsExpand(!foundWordsExpand);
   };
-
   return (
     <div className="board-section">
+      {showModal && (
+        <Modal
+          content={`Score: ${foundWords.length} word(s)`}
+          onClose={handleCloseModal}
+          reset={ResetGame}
+        />
+      )}
       <div ref={boardHeight} className="board-container">
         <div className="hud-container">
           <div className="hud-text">
             <div className="swaps-container">
               <b>Swaps: </b>
-              {swapCount}
+              <div>{swapCount}</div>
             </div>
           </div>
-          <div className="hud-text">
-            <div className="time-container">
-              <b>Time: </b>
-              {`${minutes.toString().padStart(2, "0")}:${seconds
-                .toString()
-                .padStart(2, "0")}`}
-            </div>
+          <div className="next-letters-container">
+            <b className="next-letters-title">Next:</b>
+            <div className="tile medium-tile">{nextLetter[0]}</div>
+            <div className="tile small-tile">{nextLetter[1]}</div>
+            <div className="tile small-tile">{nextLetter[2]}</div>
           </div>
-        </div>
-        <div className="next-letters-container">
-          <b>Next:</b>
-          <div className="tile small-tile">{nextLetter[0]}</div>
-          <div className="tile small-tile">{nextLetter[1]}</div>
-          <div className="tile small-tile">{nextLetter[2]}</div>
         </div>
 
         <div className="board">
@@ -339,6 +339,10 @@ function Board() {
               {row.map((letter, colIndex) => (
                 <div
                   className="tile"
+                  style={{
+                    border:
+                      letter === " " ? "2px solid darkgrey" : "2px solid grey",
+                  }}
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
@@ -358,16 +362,24 @@ function Board() {
             className="found-words-box"
             style={{
               height: foundWordsExpand ? `${foundWordsExpandHeight}px` : "",
-              transition: "height 0.5s ease-out",
+              overflow: foundWordsExpand ? "auto" : "hidden",
+              transition: "height 0.5s ease-out, width 0.5s",
             }}
             onClick={() => {
               toggleFoundWordsBox();
             }}
           >
-            Found Words ({foundWords.length})
-            {foundWords.map((word, i) => (
-              <div key={i}>{word}</div>
-            ))}
+            <div className="found-word-title">
+              Found Words ({foundWords.length})
+            </div>
+            <div className="found-words-list">
+              {foundWordsExpand &&
+                foundWords.sort().map((word, i) => (
+                  <div className="found-word-text" key={i}>
+                    {word}
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </div>

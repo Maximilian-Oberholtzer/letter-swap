@@ -3,6 +3,27 @@
   user-select: none;
 }
 
+/* Define the scrollbar styles */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Define the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Define the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* Define the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
 .app-container {
   position: absolute;
   width: 100%;
@@ -11,13 +32,34 @@
   left: 0;
 }
 
+@media screen and (max-width: 1024px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .title-tile {
+    font-size: 2.5rem !important;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .title-tile {
+    font-size: 4rem !important;
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
 .title-container {
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: var(--font);
   user-select: none;
-  font-size: 2rem;
   font-weight: 100;
   padding: 0.2rem;
   border-bottom: 1px solid grey;
@@ -27,7 +69,6 @@
   text-align: center;
   font-family: var(--font);
   user-select: none;
-  font-size: 2rem;
   font-weight: 100;
 }
 
@@ -35,11 +76,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0.2rem solid grey;
+  border: 2px solid rgb(61, 61, 61);
   color: black;
-  font-size: 3rem !important;
-  width: 3.2rem;
-  height: 3.2rem;
   margin: 0.2rem;
   border-radius: 0.5rem;
   background-color: white;
