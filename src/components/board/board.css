@@ -29,13 +29,16 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0.5rem;
   align-items: center;
 }
 
-.next-letters-container {
+.next-letters-title {
   padding: 0.5rem;
+}
+
+.next-letters-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,9 +49,9 @@
   position: absolute;
   align-items: center;
   flex-direction: column;
-  padding: 0.5rem;
   bottom: 1rem;
   z-index: 100;
+  overflow: hidden;
   cursor: pointer;
 }
 
@@ -61,22 +64,24 @@
   border: 2px solid grey;
   border-radius: 0.5rem;
   height: 1.25rem;
-  width: 20rem;
-  transition: height 0.5s ease-out;
-  overflow: hidden;
-  line-height: 1.5rem;
   background-color: white;
+  overflow: auto;
 }
 
-/* .found-expanded {
-  height: calc(var(--vh, 1vh) * 50);
-} */
+.found-words-list {
+  padding: 1rem;
+}
+
+.found-word-text {
+  padding: 0.25rem;
+  font-size: 1.5rem;
+}
 
 .swaps-container {
   padding: 0.5rem;
   border: 2px solid grey;
   border-radius: 0.5rem;
-  width: 6.5rem;
+  width: 4rem;
   text-align: center;
 }
 
@@ -93,20 +98,77 @@
   font-family: var(--font);
 }
 
+@media screen and (max-width: 1024px) {
+  .tile {
+    font-size: 2.2rem;
+    width: 50px;
+    height: 50px;
+  }
+  .small-tile {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 1.5rem;
+  }
+  .medium-tile {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    font-size: 2rem;
+  }
+  .next-letters-container {
+    font-size: 1rem;
+  }
+  .found-words-box {
+    width: 18rem;
+  }
+  .swaps-container {
+    width: 4rem;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .tile {
+    font-size: 3rem;
+    width: 70px;
+    height: 70px;
+  }
+  .small-tile {
+    width: 3rem !important;
+    height: 3rem !important;
+    font-size: 2rem;
+  }
+  .medium-tile {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    font-size: 2.5rem;
+  }
+  .next-letters-container {
+    font-size: 1.5rem;
+  }
+  .found-words-box {
+    width: 25rem;
+  }
+  .swaps-container {
+    width: 5rem;
+    font-size: 1.5rem;
+  }
+}
+
 .tile {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid grey;
   color: black;
-  font-size: 2.5rem;
-  width: 50px;
-  height: 50px;
   margin: 0.2rem;
   border-radius: 0.5rem;
   background-color: white;
-  transition: background-color 200ms;
+  transition: background-color 200ms, width 0.5s, height 0.5s, font-size 0.5s;
   user-select: none;
+}
+
+.small-tile,
+.medium-tile {
+  border: 2px solid grey;
 }
 
 .found-word {
@@ -116,12 +178,6 @@
 .tile:hover {
   cursor: pointer;
   background-color: azure;
-}
-
-.small-tile {
-  width: 2rem !important;
-  height: 2rem !important;
-  font-size: 1.5rem;
 }
 
 .animate {
