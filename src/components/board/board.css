@@ -1,5 +1,6 @@
 :root {
   --font: "Lato", sans-serif;
+  --dark-gray: #505050;
 }
 
 .board-section {
@@ -61,7 +62,7 @@
   align-items: center;
   flex-direction: column;
   padding: 0.5rem;
-  border: 2px solid grey;
+  border: 2px solid var(--dark-gray);
   border-radius: 0.5rem;
   height: 1.25rem;
   background-color: white;
@@ -82,7 +83,7 @@
 
 .swaps-container {
   padding: 0.5rem;
-  border: 2px solid grey;
+  border: 2px solid var(--dark-gray);
   border-radius: 0.5rem;
   width: 4rem;
   text-align: center;
@@ -171,7 +172,7 @@
 
 .small-tile,
 .medium-tile {
-  border: 2px solid grey;
+  border: 2px solid var(--dark-gray);
 }
 
 .found-word {

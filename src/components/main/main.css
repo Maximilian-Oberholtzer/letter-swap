@@ -41,6 +41,14 @@
     width: 2.5rem;
     height: 2.5rem;
   }
+  .help-button-img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .title-container {
+    justify-content: flex-start !important;
+    margin-left: 1rem !important;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -52,22 +60,38 @@
     width: 3.5rem;
     height: 3.5rem;
   }
+  .help-button-img {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+.appbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid grey;
 }
 
 .title-container {
-  display: flex;
+  margin-left: 5rem;
   justify-content: center;
-  align-items: center;
+  display: flex;
+  flex-grow: 1;
   font-family: var(--font);
   user-select: none;
   font-weight: 100;
   padding: 0.2rem;
-  border-bottom: 1px solid grey;
   z-index: 400;
 }
 
 .title {
+  display: flex;
   text-align: center;
+  justify-content: center;
+  align-items: center;
   font-family: var(--font);
   user-select: none;
   font-weight: 600;
@@ -84,4 +108,15 @@
   background-color: white;
   user-select: none;
   font-weight: 100 !important;
+}
+
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.help-button {
+  all: unset;
+  margin: 1rem;
+  cursor: pointer !important;
 }

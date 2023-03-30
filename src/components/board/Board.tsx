@@ -360,7 +360,8 @@ function Board() {
     <div className="board-section">
       {showModal && (
         <Modal
-          content={`Score: ${foundWords.length} word(s)`}
+          type={"game-over"}
+          score={foundWords.length}
           onClose={handleCloseModal}
           reset={ResetGame}
         />
@@ -389,7 +390,9 @@ function Board() {
                   className="tile"
                   style={{
                     border:
-                      letter === " " ? "2px solid darkgrey" : "2px solid grey",
+                      letter === " "
+                        ? "2px solid #c3c0c0"
+                        : "2px solid #505050",
                   }}
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
