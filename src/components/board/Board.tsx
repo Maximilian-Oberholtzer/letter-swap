@@ -96,6 +96,14 @@ function Board() {
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
   const [start, setStart] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(() => {
+    const hasPlayed = localStorage.getItem("hasPlayed");
+    if (hasPlayed !== null) {
+      return JSON.parse(hasPlayed);
+    } else {
+      return false;
+    }
+  });
   const [showModal, setShowModal] = useState(false);
 
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
@@ -117,7 +125,8 @@ function Board() {
     localStorage.setItem("board", JSON.stringify(board));
     localStorage.setItem("foundWords", JSON.stringify(foundWords));
     localStorage.setItem("recentFoundWords", JSON.stringify(recentFoundWords));
-  }, [nextLetter, board, foundWords, recentFoundWords]);
+    localStorage.setItem("hasPlayed", JSON.stringify(hasPlayed));
+  }, [nextLetter, board, foundWords, recentFoundWords, hasPlayed]);
 
   //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {
@@ -146,6 +155,7 @@ function Board() {
     setShowModal(true);
   };
   const handleCloseModal = () => {
+    setHasPlayed(true);
     setShowModal(false);
   };
 
@@ -361,6 +371,14 @@ function Board() {
       {showModal && (
         <Modal
           type={"game-over"}
+          score={foundWords.length}
+          onClose={handleCloseModal}
+          reset={ResetGame}
+        />
+      )}
+      {!hasPlayed && (
+        <Modal
+          type={"how-to-play"}
           score={foundWords.length}
           onClose={handleCloseModal}
           reset={ResetGame}
