@@ -16,7 +16,7 @@
 }
 
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -25,8 +25,9 @@
 }
 
 .modal-content {
+  position: relative;
   background-color: white;
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   z-index: 201;
@@ -36,6 +37,19 @@
 
 .closed {
   animation: fadeOut 400ms;
+}
+
+.close-button {
+  all: unset;
+  cursor: pointer !important;
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+}
+
+.close-button-img {
+  height: 1.75rem;
+  width: 1.75rem;
 }
 
 @keyframes fadeIn {
@@ -63,6 +77,7 @@
 /* How to play modal styles */
 
 .how-to-play-title {
+  margin-top: 2rem;
   font-size: 2rem;
   line-height: 0.2;
   font-weight: 600;

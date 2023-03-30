@@ -1,4 +1,5 @@
 import React from "react";
+import closeSvg from "../../assets/close.svg";
 import "./modal.css";
 
 interface ModalProps {
@@ -33,8 +34,6 @@ const howToPlay = (
         The game is over when you run out of swaps.
       </li>
     </ul>
-
-    <p className="how-to-play-subtitle">Examples</p>
   </>
 );
 
@@ -42,19 +41,33 @@ const gameOver = (score: number) => <p>You found {score} word(s)</p>;
 
 const Modal: React.FC<ModalProps> = ({ type, score, onClose, reset }) => {
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      const modal = document.querySelector(".modal-content");
-      modal?.classList.add("closed");
-      setTimeout(() => {
-        onClose();
-      }, 300);
-    }
-    reset();
+    closeModal();
   };
+
+  const closeModal = () => {
+    const modal = document.querySelector(".modal-content");
+    modal?.classList.add("closed");
+    setTimeout(() => {
+      onClose();
+    }, 300);
+    //temporary - reset when user completes game
+    if (type === "game-over") {
+      reset();
+    }
+  };
+
   return (
     <div className="modal-container">
       <div className="modal-overlay" onClick={handleOverlayClick}></div>
       <div className="modal-content">
+        <button
+          className="close-button"
+          onClick={() => {
+            closeModal();
+          }}
+        >
+          <img alt="" src={closeSvg} className="close-button-img" />
+        </button>
         {type === "game-over" && gameOver(score)}
         {type === "how-to-play" && howToPlay}
       </div>
