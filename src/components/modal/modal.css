@@ -47,11 +47,6 @@
   right: 1rem !important;
 }
 
-.close-button-img {
-  height: 1.75rem;
-  width: 1.75rem;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
