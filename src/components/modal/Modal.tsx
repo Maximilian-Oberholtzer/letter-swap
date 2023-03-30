@@ -11,14 +11,12 @@ const Modal: React.FC<ModalProps> = ({ content, onClose, reset }) => {
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       const modal = document.querySelector(".modal-content");
-      if (modal) {
-        modal.classList.add("closed");
-        setTimeout(() => {
-          onClose();
-        }, 300);
-      }
-      reset();
+      modal?.classList.add("closed");
+      setTimeout(() => {
+        onClose();
+      }, 300);
     }
+    reset();
   };
   return (
     <div className="modal-container">

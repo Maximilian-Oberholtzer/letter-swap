@@ -4,7 +4,7 @@ import Modal from "../modal/Modal";
 import "./board.css";
 
 const BOARDSIZE = 5;
-const SWAPCOUNT = 20;
+const SWAPCOUNT = 15;
 
 const getRandomLetter = (): string => {
   type Letter = string;
@@ -85,6 +85,14 @@ function Board() {
       return [];
     }
   });
+  const [recentFoundWords, setRecentFoundWords] = useState<string[]>(() => {
+    const recentFoundWords = localStorage.getItem("recentFoundWords");
+    if (recentFoundWords !== null) {
+      return JSON.parse(recentFoundWords);
+    } else {
+      return [];
+    }
+  });
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
   const [start, setStart] = useState(false);
@@ -108,7 +116,8 @@ function Board() {
     localStorage.setItem("nextLetters", JSON.stringify(nextLetter));
     localStorage.setItem("board", JSON.stringify(board));
     localStorage.setItem("foundWords", JSON.stringify(foundWords));
-  }, [nextLetter, board, foundWords]);
+    localStorage.setItem("recentFoundWords", JSON.stringify(recentFoundWords));
+  }, [nextLetter, board, foundWords, recentFoundWords]);
 
   //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {
@@ -242,6 +251,7 @@ function Board() {
 
     if (foundWord) {
       setFoundWords([...foundWords, ...foundSequences]);
+      setRecentFoundWords(foundSequences);
     }
 
     return foundWord;
@@ -324,8 +334,13 @@ function Board() {
     // Check if Word has been created & delete it if it was
     const foundWord = checkForWords(newBoard);
 
+    const swapCounter = document.querySelector(".swaps-container");
     if (prevLetter !== " " && !foundWord) {
       setSwapCount(swapCount - 1);
+      swapCounter?.classList.add("animate");
+      setTimeout(() => {
+        swapCounter?.classList.remove("animate");
+      }, 300);
     }
 
     // Update next letter
@@ -409,7 +424,11 @@ function Board() {
               {foundWordsExpand &&
                 foundWords.sort().map((word, i) => (
                   <div className="found-word-text" key={i}>
-                    {word}
+                    {recentFoundWords.includes(word) ? (
+                      <b className="found-word">{word}</b>
+                    ) : (
+                      <>{word}</>
+                    )}
                   </div>
                 ))}
             </div>
