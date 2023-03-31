@@ -104,11 +104,19 @@ function Board() {
       return false;
     }
   });
+  //wait for 1 second before showing modal on load
+  const [showComponent, setShowComponent] = useState<any>(false);
   const [showModal, setShowModal] = useState(false);
 
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
   const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
   const boardHeight = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowComponent(true);
+    }, 1000);
+  }, []);
 
   //check for game over
   useEffect(() => {
@@ -302,8 +310,15 @@ function Board() {
   ) => {
     setAnimateFound(true);
     tile?.classList.add("found-word");
+    //Animate title for a fun effect when a word is found
+    const titleTile = document.querySelector(".title-tile");
+    const titleTile2 = document.querySelector(".title-tile-2");
+    titleTile?.classList.add("animate");
+    titleTile2?.classList.add("animate-delay-medium");
     setTimeout(() => {
       tile?.classList.remove("found-word");
+      titleTile?.classList.remove("animate");
+      titleTile2?.classList.remove("animate-delay-medium");
       tile?.classList.add("animate");
       board[row][col] = " ";
 
@@ -376,7 +391,7 @@ function Board() {
           reset={ResetGame}
         />
       )}
-      {!hasPlayed && (
+      {!hasPlayed && showComponent && (
         <Modal
           type={"how-to-play"}
           score={foundWords.length}
