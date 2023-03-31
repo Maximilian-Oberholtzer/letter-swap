@@ -36,14 +36,15 @@
   .title {
     font-size: 1.5rem;
   }
-  .title-tile {
+  .title-tile,
+  .title-tile-2 {
     font-size: 2.5rem !important;
     width: 2.5rem;
     height: 2.5rem;
   }
-  .help-button-img {
-    width: 2.5rem;
-    height: 2.5rem;
+  .help-button-svg {
+    height: 2.75rem;
+    width: 2.75rem;
   }
   .title-container {
     justify-content: flex-start !important;
@@ -55,12 +56,13 @@
   .title {
     font-size: 2rem;
   }
-  .title-tile {
+  .title-tile,
+  .title-tile-2 {
     font-size: 3rem !important;
     width: 3.5rem;
     height: 3.5rem;
   }
-  .help-button-img {
+  .help-button-svg {
     width: 3rem;
     height: 3rem;
   }
@@ -97,7 +99,8 @@
   font-weight: 600;
 }
 
-.title-tile {
+.title-tile,
+.title-tile-2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -113,10 +116,25 @@
 .menu-right {
   display: flex;
   justify-content: flex-end;
+  margin-right: 1rem;
 }
 
 .help-button {
   all: unset;
-  margin: 1rem;
   cursor: pointer !important;
+}
+
+.animate-delay-short {
+  animation: flip 0.3s ease;
+  animation-delay: 0.3s;
+}
+
+.animate-delay-medium {
+  animation: flip 0.3s ease;
+  animation-delay: 0.5s;
+}
+
+.animate-delay-long {
+  animation: flip 0.3s ease;
+  animation-delay: 0.8s;
 }
