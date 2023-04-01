@@ -134,11 +134,16 @@ function Board() {
   const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
   const boardHeight = useRef<HTMLDivElement>(null);
 
+  //If user loads into a game with 0 swaps left
+  const startGameSwapCount = swapCount;
   useEffect(() => {
+    if (startGameSwapCount <= 0) {
+      handleOpenModal();
+    }
     setTimeout(() => {
       setShowComponent(true);
     }, 1000);
-  }, []);
+  }, [startGameSwapCount]);
 
   //check for game over and resets game if new day has elapsed
   useEffect(() => {
