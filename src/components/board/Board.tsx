@@ -117,7 +117,7 @@ function Board() {
     if (lastPlayedDate !== null) {
       return JSON.parse(lastPlayedDate);
     } else {
-      return false;
+      return day;
     }
   });
   const [weeklyScores, setWeeklyScores] = useState<(number | null)[]>(() => {
