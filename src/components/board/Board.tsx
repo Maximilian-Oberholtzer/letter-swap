@@ -449,7 +449,7 @@ function Board() {
           <div className="hud-text">
             <div className="swaps-container">
               <b>Swaps: </b>
-              <div>{swapCount}</div>
+              <div>{swapCount >= 0 ? swapCount : 0}</div>
             </div>
           </div>
           <div className="next-letters-container">
