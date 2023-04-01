@@ -71,17 +71,47 @@
 
 /* How to play modal styles */
 
-.how-to-play-title {
+.modal-title {
   margin-top: 2rem;
   font-size: 2rem;
   line-height: 0.2;
   font-weight: 600;
 }
-.how-to-play-subtitle {
+.modal-subtitle {
   font-size: 1.1rem;
   font-weight: 600;
 }
 
 .how-to-play-instructions {
   line-height: 1.5;
+}
+
+.weekly-score-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.weekly-score-text {
+  line-height: 0;
+}
+
+.modal-bottom-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.share-button-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.share-button {
+  all: unset;
+  padding: 0.3rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid black;
+  /* background-color: greenyellow; */
+  cursor: pointer;
 }

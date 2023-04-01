@@ -6,6 +6,8 @@ import "./board.css";
 const BOARDSIZE = 5;
 const SWAPCOUNT = 15;
 
+const day = new Date().getDay();
+
 const getRandomLetter = (): string => {
   type Letter = string;
   const alphabet: Letter[] = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -96,6 +98,7 @@ function Board() {
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
   const [start, setStart] = useState(false);
+  //check if user is new
   const [hasPlayed, setHasPlayed] = useState(() => {
     const hasPlayed = localStorage.getItem("hasPlayed");
     if (hasPlayed !== null) {
@@ -108,6 +111,25 @@ function Board() {
   const [showComponent, setShowComponent] = useState<any>(false);
   const [showModal, setShowModal] = useState(false);
 
+  //data for statistics modal
+  const [lastPlayedDate, setLastPlayedDate] = useState(() => {
+    const lastPlayedDate = localStorage.getItem("lastPlayedDate");
+    if (lastPlayedDate !== null) {
+      return JSON.parse(lastPlayedDate);
+    } else {
+      return false;
+    }
+  });
+  const [weeklyScores, setWeeklyScores] = useState<(number | null)[]>(() => {
+    const weeklyScores = localStorage.getItem("weeklyScores");
+    if (weeklyScores !== null) {
+      return JSON.parse(weeklyScores);
+    } else {
+      return Array.from({ length: 6 }, () => null);
+    }
+  });
+
+  //for calculating hieght for found words container
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
   const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
   const boardHeight = useRef<HTMLDivElement>(null);
@@ -118,14 +140,25 @@ function Board() {
     }, 1000);
   }, []);
 
-  //check for game over
+  //check for game over and resets game if new day has elapsed
   useEffect(() => {
+    if (lastPlayedDate !== day) {
+      ResetGame();
+    }
     localStorage.setItem("swapCount", JSON.stringify(swapCount));
     if (swapCount === 0) {
       handleOpenModal();
+      const weeklyScoreArr = [...weeklyScores];
+      // temporary, remove when users can only play once a day
+      if (foundWords.length >= (weeklyScoreArr[day] ?? 0)) {
+        weeklyScoreArr[day] = foundWords.length;
+        setWeeklyScores(weeklyScoreArr);
+      }
+      setLastPlayedDate(day);
+      setSwapCount(-1);
       setStart(false);
     }
-  }, [swapCount]);
+  }, [swapCount, lastPlayedDate, foundWords.length, weeklyScores]);
 
   //Save session to local storage
   useEffect(() => {
@@ -134,7 +167,17 @@ function Board() {
     localStorage.setItem("foundWords", JSON.stringify(foundWords));
     localStorage.setItem("recentFoundWords", JSON.stringify(recentFoundWords));
     localStorage.setItem("hasPlayed", JSON.stringify(hasPlayed));
-  }, [nextLetter, board, foundWords, recentFoundWords, hasPlayed]);
+    localStorage.setItem("lastPlayedDate", JSON.stringify(lastPlayedDate));
+    localStorage.setItem("weeklyScores", JSON.stringify(weeklyScores));
+  }, [
+    nextLetter,
+    board,
+    foundWords,
+    recentFoundWords,
+    hasPlayed,
+    lastPlayedDate,
+    weeklyScores,
+  ]);
 
   //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {
@@ -387,6 +430,7 @@ function Board() {
         <Modal
           type={"game-over"}
           score={foundWords.length}
+          weeklyScores={weeklyScores}
           onClose={handleCloseModal}
           reset={ResetGame}
         />
@@ -395,6 +439,7 @@ function Board() {
         <Modal
           type={"how-to-play"}
           score={foundWords.length}
+          weeklyScores={[]}
           onClose={handleCloseModal}
           reset={ResetGame}
         />
