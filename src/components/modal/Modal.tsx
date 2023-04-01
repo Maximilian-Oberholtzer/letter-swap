@@ -10,8 +10,8 @@ interface ModalProps {
 
 const howToPlay = (
   <>
-    <h1 className="how-to-play-title">How To Play</h1>
-    <p className="how-to-play-subtitle">
+    <h1 className="modal-title">How To Play</h1>
+    <p className="modal-subtitle">
       Create as many 5-letter words as possible
     </p>
     <ul style={{ paddingInlineStart: "20px" }}>
@@ -77,9 +77,9 @@ const Modal: React.FC<ModalProps> = ({ type, score, onClose, reset }) => {
                 id="Vector"
                 d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18"
                 stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </g>
           </svg>

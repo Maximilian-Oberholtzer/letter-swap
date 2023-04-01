@@ -71,13 +71,13 @@
 
 /* How to play modal styles */
 
-.how-to-play-title {
+.modal-title {
   margin-top: 2rem;
   font-size: 2rem;
   line-height: 0.2;
   font-weight: 600;
 }
-.how-to-play-subtitle {
+.modal-subtitle {
   font-size: 1.1rem;
   font-weight: 600;
 }
