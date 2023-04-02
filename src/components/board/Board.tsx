@@ -201,6 +201,7 @@ function Board() {
           .map(() => " ")
       );
 
+    setLastPlayedDate(day);
     setBoard(newBoard);
     setSwapCount(SWAPCOUNT);
     setStart(false);
