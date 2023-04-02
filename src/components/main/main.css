@@ -1,5 +1,5 @@
 :root {
-  --font: "Lato", sans-serif;
+  --font: "Cabin", sans-serif;
   user-select: none;
 }
 
@@ -34,13 +34,13 @@
 
 @media screen and (max-width: 1024px) {
   .title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   .title-tile,
   .title-tile-2 {
-    font-size: 2.5rem !important;
-    width: 2.5rem;
-    height: 2.5rem;
+    font-size: 2rem !important;
+    width: 2rem;
+    height: 2rem;
   }
   .help-button-svg {
     height: 2.75rem;
@@ -54,13 +54,13 @@
 
 @media screen and (min-width: 1024px) {
   .title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   .title-tile,
   .title-tile-2 {
-    font-size: 3rem !important;
-    width: 3.5rem;
-    height: 3.5rem;
+    font-size: 2.5rem !important;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   .help-button-svg {
     width: 3rem;
@@ -78,6 +78,7 @@
 }
 
 .title-container {
+  background-color: white;
   margin-left: 5rem;
   justify-content: center;
   display: flex;
@@ -96,7 +97,7 @@
   align-items: center;
   font-family: var(--font);
   user-select: none;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .title-tile,
@@ -110,13 +111,14 @@
   border-radius: 0.5rem;
   background-color: white;
   user-select: none;
-  font-weight: 100 !important;
+  font-weight: 500 !important;
 }
 
 .menu-right {
   display: flex;
   justify-content: flex-end;
   margin-right: 1rem;
+  margin-top: 0.5rem;
 }
 
 .help-button {
