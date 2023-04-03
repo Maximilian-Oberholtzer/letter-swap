@@ -152,7 +152,15 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="modal-container">
-      <div className="modal-overlay" onClick={handleOverlayClick}></div>
+      <div
+        className="modal-overlay"
+        style={{
+          backgroundColor: isDark
+            ? "rgb(0, 0, 0, 0.6)"
+            : "rgb(255, 255, 255, 0.6)",
+        }}
+        onClick={handleOverlayClick}
+      ></div>
       <div
         className="modal-content"
         style={{
