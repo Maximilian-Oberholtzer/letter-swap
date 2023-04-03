@@ -8,12 +8,20 @@ function Main() {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
   const [showModal, setShowModal] = useState(false);
+  const [showStats, setShowStats] = useState(false);
 
   const handleOpenModal = () => {
     setShowModal(true);
   };
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const handleOpenStatsModal = () => {
+    setShowStats(true);
+  };
+  const handleCloseStatsModal = () => {
+    setShowStats(false);
   };
 
   //Remove animations from title so they can re-animate later
@@ -121,7 +129,7 @@ function Main() {
                   transition: "300ms stroke",
                 }}
                 d="M12 7a5 5 0 0 0-3.573 8.497c.343.351.626.77.722 1.251l.53 2.644A2 2 0 0 0 11.638 21h.722a2 2 0 0 0 1.96-1.608l.53-2.644c.096-.482.379-.9.722-1.25A5 5 0 0 0 12 7z"
-                stroke-width="2"
+                strokeWidth="2"
               />
               <path
                 style={{
@@ -129,11 +137,26 @@ function Main() {
                   transition: "300ms stroke",
                 }}
                 d="M12 4V3M18 6l1-1M20 12h1M4 12H3M5 5l1 1M10 17h4"
-                stroke="#000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
+            </svg>
+          </button>
+          <button
+            className="stats-button"
+            onClick={() => handleOpenStatsModal()}
+          >
+            <svg
+              style={{
+                fill: isDark ? "var(--dark-text)" : "var(--light-text)",
+                transition: "300ms fill",
+              }}
+              className="stats-button-svg"
+              viewBox="4 4 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M20.6666 14.8333V5.5H11.3333V12.5H4.33325V26.5H27.6666V14.8333H20.6666ZM13.6666 7.83333H18.3333V24.1667H13.6666V7.83333ZM6.66659 14.8333H11.3333V24.1667H6.66659V14.8333ZM25.3333 24.1667H20.6666V17.1667H25.3333V24.1667Z" />
             </svg>
           </button>
           <button className="help-button" onClick={() => handleOpenModal()}>
@@ -151,7 +174,10 @@ function Main() {
           </button>
         </div>
       </div>
-      <Board />
+      <Board
+        showStats={showStats}
+        handleCloseStatsModal={handleCloseStatsModal}
+      />
     </div>
   );
 }

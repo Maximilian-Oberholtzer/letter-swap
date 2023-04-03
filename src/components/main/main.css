@@ -52,6 +52,10 @@
     height: 2rem;
     width: 2rem;
   }
+  .stats-button-svg {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
   .theme-button-svg {
     height: 2rem;
     width: 2rem;
@@ -59,6 +63,9 @@
   .title-container {
     justify-content: flex-start !important;
     margin-left: 1rem !important;
+  }
+  .menu-right {
+    gap: 0.2rem;
   }
 }
 
@@ -76,9 +83,16 @@
     width: 3rem;
     height: 3rem;
   }
+  .stats-button-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
   .theme-button-svg {
     width: 2.9rem;
     height: 2.9rem;
+  }
+  .menu-right {
+    gap: 0.5rem;
   }
 }
 
@@ -94,7 +108,7 @@
 
 .title-container {
   background-color: white;
-  margin-left: 5rem;
+  margin-left: 11rem;
   justify-content: center;
   display: flex;
   flex-grow: 1;
@@ -137,10 +151,14 @@
   justify-content: flex-end;
   margin-right: 1rem;
   margin-top: 0.5rem;
-  gap: 0.5rem;
 }
 
 .help-button {
+  all: unset;
+  cursor: pointer !important;
+}
+
+.stats-button {
   all: unset;
   cursor: pointer !important;
 }
