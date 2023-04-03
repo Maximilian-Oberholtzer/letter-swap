@@ -484,7 +484,7 @@ function Board(props: BoardProps) {
       {props.showStats && (
         <Modal
           type={"statistics"}
-          score={foundWords.length}
+          score={weeklyScores[day] ?? -1}
           weeklyScores={weeklyScores}
           onClose={props.handleCloseStatsModal}
           reset={() => {}}

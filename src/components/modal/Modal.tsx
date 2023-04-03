@@ -63,10 +63,14 @@ const statistics = (
   <>
     <h1 className="modal-title">Statistics</h1>
     <p className="modal-subtitle">
-      {score !== 1 ? (
-        <>Your score today: {score} words.</>
+      {score >= 0 ? (
+        score === 1 ? (
+          <>Your score today: {score} word.</>
+        ) : (
+          <>Your score today: {score} words.</>
+        )
       ) : (
-        <>Your score today: {score} word.</>
+        <>Complete a game to record your score.</>
       )}
     </p>
     <div className="weekly-score-container">
@@ -75,11 +79,11 @@ const statistics = (
           <p key={i} className="weekly-score-text">
             {i === currentDay ? (
               <b>
-                {day}: {weeklyScores[i] !== null ? weeklyScores[i] : "---"}
+                {day}: {weeklyScores[i] ? weeklyScores[i] : "---"}
               </b>
             ) : (
               <>
-                {day}: {weeklyScores[i] !== null ? weeklyScores[i] : "---"}
+                {day}: {weeklyScores[i] ? weeklyScores[i] : "---"}
               </>
             )}
           </p>
