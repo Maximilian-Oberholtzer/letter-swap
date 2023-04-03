@@ -1,6 +1,11 @@
 :root {
   --font: "Cabin", sans-serif;
   --dark-gray: #505050;
+
+  --light-background: #ffffff;
+  --light-text: #000000;
+  --dark-background: #333333;
+  --dark-text: #f1f1f1;
 }
 
 .modal-container {
