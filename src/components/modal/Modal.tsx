@@ -139,7 +139,7 @@ const Modal: React.FC<ModalProps> = ({
     modal?.classList.add("closed");
     setTimeout(() => {
       onClose();
-      if (type === "game-over") {
+      if (type === "statistics") {
         reset();
       }
     }, 300);
@@ -186,7 +186,7 @@ const Modal: React.FC<ModalProps> = ({
           </svg>
           {/* <img alt="" src={closeSvg} className="close-button-img" /> */}
         </button>
-        {type === "game-over" && statistics(score, weeklyScores, isDark)}
+        {type === "statistics" && statistics(score, weeklyScores, isDark)}
         {type === "how-to-play" && howToPlay}
       </div>
     </div>

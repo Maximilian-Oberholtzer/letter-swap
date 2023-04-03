@@ -39,7 +39,12 @@ const getRandomLetter = (): string => {
   return randomLetter.toUpperCase();
 };
 
-function Board() {
+interface BoardProps {
+  showStats: boolean;
+  handleCloseStatsModal: () => void;
+}
+
+function Board(props: BoardProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -113,7 +118,7 @@ function Board() {
   });
   //wait for 1 second before showing modal on load
   const [showComponent, setShowComponent] = useState<any>(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showStatsModal, setShowStatsModal] = useState(false);
 
   //data for statistics modal
   const [lastPlayedDate, setLastPlayedDate] = useState(() => {
@@ -213,11 +218,11 @@ function Board() {
   };
 
   const handleOpenModal = () => {
-    setShowModal(true);
+    setShowStatsModal(true);
   };
   const handleCloseModal = () => {
     setHasPlayed(true);
-    setShowModal(false);
+    setShowStatsModal(false);
   };
 
   type Direction = "row" | "column" | "diagonalRight" | "diagonalLeft";
@@ -467,13 +472,22 @@ function Board() {
 
   return (
     <div className="board-section">
-      {showModal && (
+      {showStatsModal && (
         <Modal
-          type={"game-over"}
+          type={"statistics"}
           score={foundWords.length}
           weeklyScores={weeklyScores}
           onClose={handleCloseModal}
           reset={ResetGame}
+        />
+      )}
+      {props.showStats && (
+        <Modal
+          type={"statistics"}
+          score={foundWords.length}
+          weeklyScores={weeklyScores}
+          onClose={props.handleCloseStatsModal}
+          reset={() => {}}
         />
       )}
       {!hasPlayed && showComponent && (
@@ -482,7 +496,7 @@ function Board() {
           score={foundWords.length}
           weeklyScores={[]}
           onClose={handleCloseModal}
-          reset={ResetGame}
+          reset={() => {}}
         />
       )}
       <div ref={boardHeight} className="board-container">
