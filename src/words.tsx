@@ -1,4 +1,5 @@
 export const words = [
+  "smush",
   "which",
   "there",
   "their",
