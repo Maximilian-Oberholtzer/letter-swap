@@ -1,14 +1,13 @@
 import React from "react";
-import Board from "./components/board/Board";
 import Main from "./components/main/Main";
+import { ThemeProvider } from "./components/Theme";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="app-container">
+    <ThemeProvider>
       <Main />
-      <Board />
-    </div>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;

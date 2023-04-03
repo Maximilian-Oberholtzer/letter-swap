@@ -1,6 +1,11 @@
 :root {
   --font: "Cabin", sans-serif;
   user-select: none;
+  --light-background: #ffffff;
+  --light-text: #000000;
+  --dark-background: #333333;
+  --dark-text: #f1f1f1;
+  --theme-transition: 300ms background-color, 300ms color, 300ms border;
 }
 
 /* Define the scrollbar styles */
@@ -30,6 +35,7 @@
   height: 100%;
   top: 0;
   left: 0;
+  transition: var(--theme-transition);
 }
 
 @media screen and (max-width: 1024px) {
@@ -43,8 +49,12 @@
     height: 2rem;
   }
   .help-button-svg {
-    height: 2.75rem;
-    width: 2.75rem;
+    height: 2rem;
+    width: 2rem;
+  }
+  .theme-button-svg {
+    height: 2rem;
+    width: 2rem;
   }
   .title-container {
     justify-content: flex-start !important;
@@ -66,6 +76,10 @@
     width: 3rem;
     height: 3rem;
   }
+  .theme-button-svg {
+    width: 2.9rem;
+    height: 2.9rem;
+  }
 }
 
 .appbar {
@@ -75,6 +89,7 @@
   justify-content: flex-start;
   flex-wrap: nowrap;
   border-bottom: 1px solid grey;
+  transition: var(--theme-transition);
 }
 
 .title-container {
@@ -88,6 +103,7 @@
   font-weight: 100;
   padding: 0.2rem;
   z-index: 400;
+  transition: var(--theme-transition);
 }
 
 .title {
@@ -98,6 +114,7 @@
   font-family: var(--font);
   user-select: none;
   font-weight: 700;
+  transition: var(--theme-transition);
 }
 
 .title-tile,
@@ -112,6 +129,7 @@
   background-color: white;
   user-select: none;
   font-weight: 500 !important;
+  transition: var(--theme-transition);
 }
 
 .menu-right {
@@ -119,11 +137,18 @@
   justify-content: flex-end;
   margin-right: 1rem;
   margin-top: 0.5rem;
+  gap: 0.5rem;
 }
 
 .help-button {
   all: unset;
   cursor: pointer !important;
+}
+
+.theme-button {
+  all: unset;
+  cursor: pointer !important;
+  margin-bottom: 0.3rem;
 }
 
 .animate-delay-short {

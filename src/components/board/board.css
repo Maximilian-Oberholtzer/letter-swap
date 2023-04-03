@@ -1,6 +1,18 @@
 :root {
   --font: "Cabin", sans-serif;
   --dark-gray: #505050;
+
+  --light-found-color: #a1ff14;
+  --dark-found-color: #72953d;
+  --light-background: #ffffff;
+  --light-text: #000000;
+  --dark-background: #333333;
+  --dark-text: #f1f1f1;
+  --light-border-empty: #c3c0c0;
+  --light-border-full: #505050;
+  --dark-border-empty: #868686;
+  --dark-border-full: #cfcfcf;
+  --theme-transition: 300ms background-color, 300ms color, 300ms border;
 }
 
 .board-section {
@@ -10,6 +22,7 @@
   overflow: hidden;
   height: calc(90% - 87px) !important;
   margin: 0 auto;
+  transition: var(--theme-transition);
 }
 
 .board-container {
@@ -43,6 +56,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: var(--theme-transition);
 }
 
 .found-words-container {
@@ -65,7 +79,6 @@
   border: 2px solid var(--dark-gray);
   border-radius: 0.5rem;
   height: 1.25rem;
-  background-color: white;
   overflow: auto;
 }
 
@@ -87,6 +100,7 @@
   border-radius: 0.5rem;
   width: 4rem;
   text-align: center;
+  transition: var(--theme-transition);
 }
 
 .time-container {
@@ -166,17 +180,23 @@
   margin: 0.2rem;
   border-radius: 0.5rem;
   background-color: white;
-  transition: background-color 200ms, width 0.5s, height 0.5s, font-size 0.5s;
+  transition: background-color 300ms, width 0.5s, height 0.5s, font-size 0.5s,
+    color 300ms, border 300ms;
   user-select: none;
 }
 
 .small-tile,
 .medium-tile {
   border: 2px solid var(--dark-gray);
+  transition: var(--theme-transition);
 }
 
-.found-word {
-  background-color: greenyellow !important;
+.found-word-light {
+  background-color: var(--light-found-color) !important;
+}
+
+.found-word-dark {
+  background-color: var(--dark-found-color) !important;
 }
 
 .tile:hover {

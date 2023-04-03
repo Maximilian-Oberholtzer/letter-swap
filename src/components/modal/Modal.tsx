@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "../Theme";
 import "./modal.css";
 
 interface ModalProps {
@@ -26,7 +27,7 @@ const handleShare = async (score: number) => {
 };
 
 const howToPlay = (
-  <>
+  <div style={{}}>
     <h1 className="modal-title">How To Play</h1>
     <p className="modal-subtitle">Create as many 5-letter words as possible</p>
     <ul style={{ paddingInlineStart: "20px" }}>
@@ -48,13 +49,17 @@ const howToPlay = (
         The game is over when you run out of swaps.
       </li>
     </ul>
-  </>
+  </div>
 );
 
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const currentDay = new Date().getDay();
 
-const statistics = (score: number, weeklyScores: (number | null)[]) => (
+const statistics = (
+  score: number,
+  weeklyScores: (number | null)[],
+  isDark: boolean
+) => (
   <>
     <h1 className="modal-title">Statistics</h1>
     <p className="modal-subtitle">
@@ -83,6 +88,11 @@ const statistics = (score: number, weeklyScores: (number | null)[]) => (
     </div>
     <div className="modal-bottom-container">
       <button
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
+        }}
         onClick={() => {
           handleShare(score);
         }}
@@ -99,7 +109,9 @@ const statistics = (score: number, weeklyScores: (number | null)[]) => (
           >
             <path
               d="M9.61109 12.4L10.8183 18.5355C11.0462 19.6939 12.6026 19.9244 13.1565 18.8818L19.0211 7.84263C19.248 7.41555 19.2006 6.94354 18.9737 6.58417M9.61109 12.4L5.22642 8.15534C4.41653 7.37131 4.97155 6 6.09877 6H17.9135C18.3758 6 18.7568 6.24061 18.9737 6.58417M9.61109 12.4L18.9737 6.58417M19.0555 6.53333L18.9737 6.58417"
-              stroke="#000000"
+              style={{
+                stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
+              }}
               strokeWidth="1.5"
             />
           </svg>
@@ -116,6 +128,8 @@ const Modal: React.FC<ModalProps> = ({
   reset,
   weeklyScores,
 }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
   };
@@ -135,7 +149,15 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div className="modal-container">
       <div className="modal-overlay" onClick={handleOverlayClick}></div>
-      <div className="modal-content">
+      <div
+        className="modal-content"
+        style={{
+          backgroundColor: isDark
+            ? "var(--dark-background)"
+            : "var(--light-background)",
+          color: isDark ? "var(--dark-text)" : "var(--light-text)",
+        }}
+      >
         <button
           className="close-button"
           onClick={() => {
@@ -151,9 +173,11 @@ const Modal: React.FC<ModalProps> = ({
           >
             <g id="Menu / Close_MD">
               <path
+                style={{
+                  stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
+                }}
                 id="Vector"
                 d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18"
-                stroke="#000000"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -162,7 +186,7 @@ const Modal: React.FC<ModalProps> = ({
           </svg>
           {/* <img alt="" src={closeSvg} className="close-button-img" /> */}
         </button>
-        {type === "game-over" && statistics(score, weeklyScores)}
+        {type === "game-over" && statistics(score, weeklyScores, isDark)}
         {type === "how-to-play" && howToPlay}
       </div>
     </div>

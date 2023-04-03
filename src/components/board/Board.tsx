@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { words } from "../../words";
 import Modal from "../modal/Modal";
+import { useTheme } from "../Theme";
 import "./board.css";
 
 const BOARDSIZE = 5;
@@ -39,6 +40,9 @@ const getRandomLetter = (): string => {
 };
 
 function Board() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   const [board, setBoard] = useState<string[][]>(() => {
     const board = localStorage.getItem("board");
     if (board !== null) {
@@ -358,14 +362,17 @@ function Board() {
     col: number
   ) => {
     setAnimateFound(true);
-    tile?.classList.add("found-word");
+    isDark
+      ? tile?.classList.add("found-word-dark")
+      : tile?.classList.add("found-word-light");
     //Animate title for a fun effect when a word is found
     const titleTile = document.querySelector(".title-tile");
     const titleTile2 = document.querySelector(".title-tile-2");
     titleTile?.classList.add("animate");
     titleTile2?.classList.add("animate-delay-medium");
     setTimeout(() => {
-      tile?.classList.remove("found-word");
+      tile?.classList.remove("found-word-light");
+      tile?.classList.remove("found-word-dark");
       titleTile?.classList.remove("animate");
       titleTile2?.classList.remove("animate-delay-medium");
       tile?.classList.add("animate");
@@ -430,6 +437,34 @@ function Board() {
     setFoundWordsExpand(!foundWordsExpand);
   };
 
+  //for using multiple styles at once
+  const mergeStyles = (
+    ...styles: React.CSSProperties[]
+  ): React.CSSProperties => {
+    return styles.reduce(
+      (mergedStyles, style) => ({ ...mergedStyles, ...style }),
+      {}
+    );
+  };
+  const backgroundStyle = {
+    backgroundColor: isDark
+      ? "var(--dark-background)"
+      : "var(--light-background)",
+  };
+  const colorStyle = {
+    color: isDark ? "var(--dark-text)" : "var(--light-text)",
+  };
+  const borderStyle = {
+    border: isDark
+      ? "2px solid var(--dark-border-full)"
+      : "2px solid var(--light-border-full)",
+  };
+  const emptyBorderStyle = {
+    border: isDark
+      ? "2px solid var(--dark-border-empty)"
+      : "2px solid var(--light-border-empty)",
+  };
+
   return (
     <div className="board-section">
       {showModal && (
@@ -453,16 +488,39 @@ function Board() {
       <div ref={boardHeight} className="board-container">
         <div className="hud-container">
           <div className="hud-text">
-            <div className="swaps-container">
+            <div
+              className="swaps-container"
+              style={mergeStyles(colorStyle, borderStyle)}
+            >
               <b>Swaps: </b>
               <div>{swapCount >= 0 ? swapCount : 0}</div>
             </div>
           </div>
-          <div className="next-letters-container">
+          <div
+            className="next-letters-container"
+            style={{
+              color: isDark ? "var(--dark-text)" : "var(--light-text)",
+            }}
+          >
             <b className="next-letters-title">Next:</b>
-            <div className="tile medium-tile">{nextLetter[0]}</div>
-            <div className="tile small-tile">{nextLetter[1]}</div>
-            <div className="tile small-tile">{nextLetter[2]}</div>
+            <div
+              className="tile medium-tile"
+              style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
+            >
+              {nextLetter[0]}
+            </div>
+            <div
+              className="tile small-tile"
+              style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
+            >
+              {nextLetter[1]}
+            </div>
+            <div
+              className="tile small-tile"
+              style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
+            >
+              {nextLetter[2]}
+            </div>
           </div>
         </div>
 
@@ -472,12 +530,11 @@ function Board() {
               {row.map((letter, colIndex) => (
                 <div
                   className="tile"
-                  style={{
-                    border:
-                      letter === " "
-                        ? "2px solid #c3c0c0"
-                        : "2px solid #505050",
-                  }}
+                  style={mergeStyles(
+                    colorStyle,
+                    letter === " " ? emptyBorderStyle : borderStyle,
+                    backgroundStyle
+                  )}
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
@@ -495,11 +552,12 @@ function Board() {
         <div className="found-words-container">
           <div
             className="found-words-box"
-            style={{
+            style={mergeStyles(colorStyle, borderStyle, backgroundStyle, {
               height: foundWordsExpand ? `${foundWordsExpandHeight}px` : "",
               overflow: foundWordsExpand ? "auto" : "hidden",
-              transition: "height 0.5s ease-out, width 0.5s",
-            }}
+              transition:
+                "height 0.5s ease-out, width 0.5s, 300ms background-color, 300ms color, 300ms border",
+            })}
             onClick={() => {
               toggleFoundWordsBox();
             }}
@@ -512,7 +570,13 @@ function Board() {
                 foundWords.sort().map((word, i) => (
                   <div className="found-word-text" key={i}>
                     {recentFoundWords.includes(word) ? (
-                      <b className="found-word">{word}</b>
+                      <b
+                        className={
+                          isDark ? "found-word-dark" : "found-word-light"
+                        }
+                      >
+                        {word}
+                      </b>
                     ) : (
                       <>{word}</>
                     )}
