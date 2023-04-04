@@ -216,8 +216,10 @@ const Modal: React.FC<ModalProps> = ({
     rank = "Epic ⭐⭐⭐⭐";
   } else if (points >= 240 && points < 300) {
     rank = "Legend ⭐⭐⭐⭐⭐";
-  } else if (points >= 300) {
+  } else if (points >= 300 && points < 500) {
     rank = "Unreal 🌟🌟🌟🌟🌟";
+  } else if (points >= 500) {
+    rank = "Extraterrestrial 🛸🚀💫";
   }
 
   return (
