@@ -17,7 +17,9 @@ const handleShare = async (score: number, points: number, rank: string) => {
     try {
       await navigator.share({
         title: "LetterSwap",
-        text: `I got ${rank} today. \n (${score} word(s) for ${points} points.)`,
+        text: `I got ${rank} today!\n( ${score} ${
+          score === 1 ? " word" : " words"
+        } for ${points} points )`,
         url: window.location.href,
       });
     } catch (error) {
