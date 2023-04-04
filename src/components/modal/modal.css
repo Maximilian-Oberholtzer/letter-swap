@@ -110,7 +110,7 @@
 
 .modal-sub-text,
 .modal-sub-text-small {
-  line-height: 1;
+  line-height: 2.75;
 }
 
 .modal-sub-text-small {
@@ -124,6 +124,7 @@
 .weekly-score-container {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
 }
 
 .weekly-score-text {
