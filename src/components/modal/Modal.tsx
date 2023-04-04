@@ -67,7 +67,7 @@ const howToPlay = (
       <li>Expert: 120 points</li>
       <li>Epic: 180 points</li>
       <li>Legend: 240 points</li>
-      <li>Beyond: 300+ points</li>
+      <li>Unreal: 300+ points</li>
     </ul>
   </div>
 );
@@ -203,13 +203,6 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   //define ranks and pass into statistics
-  // <li>Beginner: 0 points</li>
-  //     <li>Rookie: 30 points</li>
-  //     <li>Veteran: 70 points</li>
-  //     <li>Expert: 120 points</li>
-  //     <li>Epic: 180 points</li>
-  //     <li>Legend: 240 points</li>
-  //     <li>Beyond: 300+ points</li>
   let rank = "";
   if (points < 35) {
     rank = "Beginner 🔰";
@@ -224,7 +217,7 @@ const Modal: React.FC<ModalProps> = ({
   } else if (points >= 240 && points < 300) {
     rank = "Legend ⭐⭐⭐⭐⭐";
   } else if (points >= 300) {
-    rank = "Beyond 🌟🌟🌟🌟🌟";
+    rank = "Unreal 🌟🌟🌟🌟🌟";
   }
 
   return (
