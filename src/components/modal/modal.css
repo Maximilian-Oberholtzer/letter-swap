@@ -37,6 +37,7 @@
   z-index: 201;
   animation: fadeIn 400ms;
   font-family: var(--font);
+  overflow-y: auto;
 }
 
 .closed {
@@ -78,12 +79,29 @@
 .modal-title {
   margin-top: 2rem;
   font-size: 2rem;
-  line-height: 0.2;
+  line-height: 0;
   font-weight: 600;
 }
 .modal-subtitle {
   font-size: 1.1rem;
   font-weight: 600;
+}
+.modal-rank {
+  font-size: 1.25rem;
+  line-height: 0.3;
+  margin-top: 2rem;
+}
+.modal-sub-text {
+  font-size: 1rem;
+}
+
+.modal-sub-text,
+.modal-sub-text-small {
+  line-height: 0.3;
+}
+
+.modal-sub-text-small {
+  font-size: 1rem;
 }
 
 .how-to-play-instructions {

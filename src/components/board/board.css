@@ -94,6 +94,18 @@
   font-size: 1.5rem;
 }
 
+.found-word-title {
+  display: flex;
+  width: 90%;
+  justify-content: space-around;
+}
+.found-word-left-column,
+.found-word-right-column,
+.middle-divider {
+  display: flex;
+  gap: 0.3rem;
+}
+
 .swaps-container {
   padding: 0.5rem;
   border: 2px solid var(--dark-gray);

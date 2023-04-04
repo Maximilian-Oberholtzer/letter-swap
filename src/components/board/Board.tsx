@@ -9,6 +9,35 @@ const SWAPCOUNT = 15;
 
 const day = new Date().getDay();
 
+const pointMap: { [key: string]: number } = {
+  A: 1,
+  B: 2,
+  C: 2,
+  D: 1,
+  E: 1,
+  F: 2,
+  G: 2,
+  H: 1,
+  I: 1,
+  J: 3,
+  K: 3,
+  L: 1,
+  M: 2,
+  N: 1,
+  O: 1,
+  P: 2,
+  Q: 3,
+  R: 1,
+  S: 1,
+  T: 1,
+  U: 2,
+  V: 3,
+  W: 2,
+  X: 3,
+  Y: 2,
+  Z: 3,
+};
+
 const getRandomLetter = (): string => {
   type Letter = string;
   const alphabet: Letter[] = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -96,6 +125,16 @@ function Board(props: BoardProps) {
       return [];
     }
   });
+  //Current daily points based on pointmap
+  const [points, setPoints] = useState<number>(() => {
+    const points = localStorage.getItem("points");
+    if (points !== null) {
+      return JSON.parse(points);
+    } else {
+      return 0;
+    }
+  });
+  //For highlighting words in word list
   const [recentFoundWords, setRecentFoundWords] = useState<string[]>(() => {
     const recentFoundWords = localStorage.getItem("recentFoundWords");
     if (recentFoundWords !== null) {
@@ -104,6 +143,7 @@ function Board(props: BoardProps) {
       return [];
     }
   });
+  //For pausing the game to allow animations
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
   const [start, setStart] = useState(false);
@@ -129,10 +169,20 @@ function Board(props: BoardProps) {
       return day;
     }
   });
+  //Holds amount of words found for each day of the week
   const [weeklyScores, setWeeklyScores] = useState<(number | null)[]>(() => {
     const weeklyScores = localStorage.getItem("weeklyScores");
     if (weeklyScores !== null) {
       return JSON.parse(weeklyScores);
+    } else {
+      return Array.from({ length: 6 }, () => null);
+    }
+  });
+  //Holds amount of words found for each day of the week
+  const [weeklyPoints, setWeeklyPoints] = useState<(number | null)[]>(() => {
+    const weeklyPoints = localStorage.getItem("weeklyPoints");
+    if (weeklyPoints !== null) {
+      return JSON.parse(weeklyPoints);
     } else {
       return Array.from({ length: 6 }, () => null);
     }
@@ -163,34 +213,51 @@ function Board(props: BoardProps) {
     if (swapCount === 0) {
       handleOpenModal();
       const weeklyScoreArr = [...weeklyScores];
+      const weeklyPointsArr = [...weeklyPoints];
       // temporary, remove when users can only play once a day
       if (foundWords.length >= (weeklyScoreArr[day] ?? 0)) {
         weeklyScoreArr[day] = foundWords.length;
         setWeeklyScores(weeklyScoreArr);
       }
+      if (points >= (weeklyPointsArr[day] ?? 0)) {
+        weeklyPointsArr[day] = points;
+        setWeeklyPoints(weeklyPointsArr);
+      }
+
       setLastPlayedDate(day);
       setSwapCount(-1);
       setStart(false);
     }
-  }, [swapCount, lastPlayedDate, foundWords.length, weeklyScores]);
+  }, [
+    swapCount,
+    lastPlayedDate,
+    foundWords.length,
+    weeklyScores,
+    points,
+    weeklyPoints,
+  ]);
 
   //Save session to local storage
   useEffect(() => {
     localStorage.setItem("nextLetters", JSON.stringify(nextLetter));
     localStorage.setItem("board", JSON.stringify(board));
     localStorage.setItem("foundWords", JSON.stringify(foundWords));
+    localStorage.setItem("points", JSON.stringify(points));
     localStorage.setItem("recentFoundWords", JSON.stringify(recentFoundWords));
     localStorage.setItem("hasPlayed", JSON.stringify(hasPlayed));
     localStorage.setItem("lastPlayedDate", JSON.stringify(lastPlayedDate));
     localStorage.setItem("weeklyScores", JSON.stringify(weeklyScores));
+    localStorage.setItem("weeklyPoints", JSON.stringify(weeklyPoints));
   }, [
     nextLetter,
     board,
     foundWords,
+    points,
     recentFoundWords,
     hasPlayed,
     lastPlayedDate,
     weeklyScores,
+    weeklyPoints,
   ]);
 
   //calculate height of board container (for found words drawer dynamic height)
@@ -214,6 +281,7 @@ function Board(props: BoardProps) {
     setBoard(newBoard);
     setSwapCount(SWAPCOUNT);
     setStart(false);
+    setPoints(0);
     setFoundWords([]);
   };
 
@@ -328,6 +396,17 @@ function Board(props: BoardProps) {
     if (foundWord) {
       setFoundWords([...foundWords, ...foundSequences]);
       setRecentFoundWords(foundSequences);
+      //calculate score based on found words
+      let currentPoints = 0;
+      for (let i = 0; i < foundSequences.length; i++) {
+        const currentWord = foundSequences[i];
+        for (let j = 0; j < currentWord.length; j++) {
+          const currentLetter = currentWord[j];
+          currentPoints += pointMap[currentLetter];
+        }
+      }
+      setPoints(points + currentPoints);
+      console.log(currentPoints);
     }
 
     return foundWord;
@@ -476,7 +555,9 @@ function Board(props: BoardProps) {
         <Modal
           type={"statistics"}
           score={foundWords.length}
+          points={points}
           weeklyScores={weeklyScores}
+          weeklyPoints={weeklyPoints}
           onClose={handleCloseModal}
           reset={ResetGame}
         />
@@ -485,7 +566,9 @@ function Board(props: BoardProps) {
         <Modal
           type={"statistics"}
           score={weeklyScores[day] ?? -1}
+          points={weeklyPoints[day] ?? -1}
           weeklyScores={weeklyScores}
+          weeklyPoints={weeklyPoints}
           onClose={props.handleCloseStatsModal}
           reset={() => {}}
         />
@@ -494,7 +577,9 @@ function Board(props: BoardProps) {
         <Modal
           type={"how-to-play"}
           score={foundWords.length}
+          points={points}
           weeklyScores={[]}
+          weeklyPoints={[]}
           onClose={handleCloseModal}
           reset={() => {}}
         />
@@ -577,7 +662,13 @@ function Board(props: BoardProps) {
             }}
           >
             <div className="found-word-title">
-              Found Words ({foundWords.length})
+              <div className="found-word-left-column">
+                Points: <b>{points}</b>
+              </div>
+              <div className="middle-divider">|</div>
+              <div className="found-word-right-column">
+                Words: <b>{foundWords.length}</b>
+              </div>
             </div>
             <div className="found-words-list">
               {foundWordsExpand &&

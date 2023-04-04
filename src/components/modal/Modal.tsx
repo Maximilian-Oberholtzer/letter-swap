@@ -5,17 +5,19 @@ import "./modal.css";
 interface ModalProps {
   type: string;
   score: number;
+  points: number;
   onClose: () => void;
   reset: () => void;
   weeklyScores: (number | null)[];
+  weeklyPoints: (number | null)[];
 }
 
-const handleShare = async (score: number) => {
+const handleShare = async (score: number, points: number, rank: string) => {
   if (navigator.share) {
     try {
       await navigator.share({
         title: "LetterSwap",
-        text: `I found ${score} word(s) today in LetterSwap.`,
+        text: `I got ${rank} today. \n (${score} word(s) for ${points} points.)`,
         url: window.location.href,
       });
     } catch (error) {
@@ -43,11 +45,26 @@ const howToPlay = (
         .
       </li>
       <li className="how-to-play-instructions">
-        Your words can be found in the <b>"Found Words"</b> box.
+        Tap the points/words box to view your words.
       </li>
       <li className="how-to-play-instructions">
         The game is over when you run out of swaps.
       </li>
+    </ul>
+    <p className="modal-subtitle">Points</p>
+    <ul style={{ paddingInlineStart: "20px" }}>
+      <li>1 point - A, D, E, H, I, L, N, O, R, S, T </li>
+      <li>2 points - B, C, F, G, M, P, U, W, Y </li>
+      <li>3 points - J, K, Q, V, X, Z </li>
+    </ul>
+    <p className="modal-subtitle">Points</p>
+    <ul style={{ paddingInlineStart: "20px" }}>
+      <li>Rookie: 30 points</li>
+      <li>Veteran: 75 points</li>
+      <li>Expert: 175 points</li>
+      <li>Epic: 200 points</li>
+      <li>Legend: 350 points</li>
+      <li>Beyond: 500+ points</li>
     </ul>
   </div>
 );
@@ -57,7 +74,10 @@ const currentDay = new Date().getDay();
 
 const statistics = (
   score: number,
+  points: number,
   weeklyScores: (number | null)[],
+  weeklyPoints: (number | null)[],
+  rank: string,
   isDark: boolean
 ) => (
   <>
@@ -65,12 +85,22 @@ const statistics = (
     <p className="modal-subtitle">
       {score >= 0 ? (
         score === 1 ? (
-          <>Your score today: {score} word.</>
+          <>
+            <p className="modal-rank">Today's Rank: {rank}</p>
+            <p className="modal-sub-text">
+              You found {score} word for a total of {points} points.
+            </p>
+          </>
         ) : (
-          <>Your score today: {score} words.</>
+          <>
+            <p className="modal-rank">Today's Rank: {rank}</p>
+            <p className="modal-sub-text">
+              You found {score} words for a total of {points} points.
+            </p>
+          </>
         )
       ) : (
-        <>Complete a game to record your score.</>
+        <p>Complete a game to record your score.</p>
       )}
     </p>
     <div className="weekly-score-container">
@@ -79,11 +109,29 @@ const statistics = (
           <p key={i} className="weekly-score-text">
             {i === currentDay ? (
               <b>
-                {day}: {weeklyScores[i] ? weeklyScores[i] : "---"}
+                {day}:{" "}
+                {weeklyScores[i]
+                  ? weeklyScores[i] === 1
+                    ? `${weeklyScores[i]} word | ${
+                        weeklyPoints[i] ?? "?"
+                      } points`
+                    : `${weeklyScores[i]} words | ${
+                        weeklyPoints[i] ?? "?"
+                      } points`
+                  : "---"}
               </b>
             ) : (
               <>
-                {day}: {weeklyScores[i] ? weeklyScores[i] : "---"}
+                {day}:{" "}
+                {weeklyScores[i]
+                  ? weeklyScores[i] === 1
+                    ? `${weeklyScores[i]} word | ${
+                        weeklyPoints[i] ?? "?"
+                      } points`
+                    : `${weeklyScores[i]} words | ${
+                        weeklyPoints[i] ?? "?"
+                      } points`
+                  : "---"}
               </>
             )}
           </p>
@@ -98,7 +146,7 @@ const statistics = (
             : "2px solid var(--light-text)",
         }}
         onClick={() => {
-          handleShare(score);
+          handleShare(score, points, rank);
         }}
         className="share-button"
       >
@@ -128,9 +176,11 @@ const statistics = (
 const Modal: React.FC<ModalProps> = ({
   type,
   score,
+  points,
   onClose,
   reset,
   weeklyScores,
+  weeklyPoints,
 }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -149,6 +199,22 @@ const Modal: React.FC<ModalProps> = ({
     }, 300);
     // //temporary - reset when user completes game
   };
+
+  //define ranks and pass into statistics
+  let rank = "";
+  if (points <= 30) {
+    rank = "Rookie ⭐";
+  } else if (points <= 75) {
+    rank = "Veteran ⭐⭐";
+  } else if (points <= 175) {
+    rank = "Expert ⭐⭐⭐";
+  } else if (points <= 200) {
+    rank = "Epic ⭐⭐⭐⭐";
+  } else if (points <= 350) {
+    rank = "Legend ⭐⭐⭐⭐⭐";
+  } else if (points >= 500) {
+    rank = "Beyond 🌟🌟🌟🌟🌟";
+  }
 
   return (
     <div className="modal-container">
@@ -196,9 +262,9 @@ const Modal: React.FC<ModalProps> = ({
               />
             </g>
           </svg>
-          {/* <img alt="" src={closeSvg} className="close-button-img" /> */}
         </button>
-        {type === "statistics" && statistics(score, weeklyScores, isDark)}
+        {type === "statistics" &&
+          statistics(score, points, weeklyScores, weeklyPoints, rank, isDark)}
         {type === "how-to-play" && howToPlay}
       </div>
     </div>
