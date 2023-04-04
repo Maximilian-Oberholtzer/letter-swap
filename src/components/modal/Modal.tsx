@@ -51,13 +51,13 @@ const howToPlay = (
         The game is over when you run out of swaps.
       </li>
     </ul>
-    <p className="modal-subtitle">Points</p>
+    <p className="modal-subtitle-small">Points</p>
     <ul style={{ paddingInlineStart: "20px" }}>
       <li>1 point - A, D, E, H, I, L, N, O, R, S, T </li>
       <li>2 points - B, C, F, G, M, P, U, W, Y </li>
       <li>3 points - J, K, Q, V, X, Z </li>
     </ul>
-    <p className="modal-subtitle">Points</p>
+    <p className="modal-subtitle-small">Ranks</p>
     <ul style={{ paddingInlineStart: "20px" }}>
       <li>Rookie: 30 points</li>
       <li>Veteran: 75 points</li>
