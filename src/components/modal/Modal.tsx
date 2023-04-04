@@ -82,27 +82,26 @@ const statistics = (
 ) => (
   <>
     <h1 className="modal-title">Statistics</h1>
-    <p className="modal-subtitle">
-      {score >= 0 ? (
-        score === 1 ? (
-          <>
-            <p className="modal-rank">Today's Rank: {rank}</p>
-            <p className="modal-sub-text">
-              You found {score} word for a total of {points} points.
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="modal-rank">Today's Rank: {rank}</p>
-            <p className="modal-sub-text">
-              You found {score} words for a total of {points} points.
-            </p>
-          </>
-        )
+    <p className="modal-subtitle" />
+    {score >= 0 ? (
+      score === 1 ? (
+        <>
+          <div className="modal-rank">Today's Rank: {rank}</div>
+          <div className="modal-sub-text">
+            You found {score} word for a total of {points} points.
+          </div>
+        </>
       ) : (
-        <p>Complete a game to record your score.</p>
-      )}
-    </p>
+        <>
+          <div className="modal-rank">Today's Rank: {rank}</div>
+          <div className="modal-sub-text">
+            You found {score} words for a total of {points} points.
+          </div>
+        </>
+      )
+    ) : (
+      <div>Complete a game to record your score.</div>
+    )}
     <div className="weekly-score-container">
       {days.map((day, i) => {
         return (
@@ -110,7 +109,7 @@ const statistics = (
             {i === currentDay ? (
               <b>
                 {day}:{" "}
-                {weeklyScores[i]
+                {weeklyScores[i] !== null
                   ? weeklyScores[i] === 1
                     ? `${weeklyScores[i]} word | ${
                         weeklyPoints[i] ?? "?"
@@ -123,12 +122,12 @@ const statistics = (
             ) : (
               <>
                 {day}:{" "}
-                {weeklyScores[i]
+                {weeklyScores[i] !== null
                   ? weeklyScores[i] === 1
-                    ? `${weeklyScores[i]} word | ${
+                    ? `${weeklyScores[i] ?? "?"} word | ${
                         weeklyPoints[i] ?? "?"
                       } points`
-                    : `${weeklyScores[i]} words | ${
+                    : `${weeklyScores[i] ?? "?"} words | ${
                         weeklyPoints[i] ?? "?"
                       } points`
                   : "---"}
@@ -153,8 +152,8 @@ const statistics = (
         <div className="share-button-container">
           <b>Share</b>{" "}
           <svg
-            width="2rem"
-            height="2rem"
+            width="25px"
+            height="25px"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -243,8 +242,8 @@ const Modal: React.FC<ModalProps> = ({
           }}
         >
           <svg
-            width="1.25rem"
-            height="1.25rem"
+            width="20px"
+            height="20px"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
