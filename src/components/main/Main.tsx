@@ -56,7 +56,9 @@ function Main() {
           <Modal
             type={"how-to-play"}
             score={0}
+            points={0}
             weeklyScores={[]}
+            weeklyPoints={[]}
             onClose={handleCloseModal}
             reset={() => {}}
           />
