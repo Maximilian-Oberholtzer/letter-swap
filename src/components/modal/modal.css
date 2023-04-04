@@ -9,7 +9,7 @@
 }
 
 .modal-container {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -17,8 +17,8 @@
   justify-content: center;
   align-items: center;
   z-index: 500;
-  height: calc(100% - 20px);
-  padding-top: 30px;
+  height: calc(100% - 60px);
+  padding-top: 60px;
 }
 
 @media screen and (max-width: 500px) {
@@ -45,6 +45,7 @@
   animation: fadeIn 400ms;
   font-family: var(--font);
   overflow-y: auto;
+  max-height: 92%;
 }
 
 .closed {
