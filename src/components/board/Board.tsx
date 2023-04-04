@@ -662,12 +662,12 @@ function Board(props: BoardProps) {
             }}
           >
             <div className="found-word-title">
-              <div className="found-word-left-column">
-                Points: <b>{points}</b>
-              </div>
-              <div className="middle-divider">|</div>
               <div className="found-word-right-column">
                 Words: <b>{foundWords.length}</b>
+              </div>
+              <div className="middle-divider">|</div>
+              <div className="found-word-left-column">
+                Points: <b>{points}</b>
               </div>
             </div>
             <div className="found-words-list">
