@@ -61,10 +61,11 @@ const howToPlay = (
     </ul>
     <p className="modal-subtitle-small">Ranks</p>
     <ul style={{ paddingInlineStart: "20px" }}>
-      <li>Rookie: 30 points</li>
+      <li>Beginner: 0 points</li>
+      <li>Rookie: 35 points</li>
       <li>Veteran: 75 points</li>
       <li>Expert: 175 points</li>
-      <li>Epic: 200 points</li>
+      <li>Epic: 250 points</li>
       <li>Legend: 350 points</li>
       <li>Beyond: 500+ points</li>
     </ul>
@@ -203,15 +204,17 @@ const Modal: React.FC<ModalProps> = ({
 
   //define ranks and pass into statistics
   let rank = "";
-  if (points <= 30) {
+  if (points < 35) {
+    rank = "Beginner 🔰";
+  } else if (points >= 35 && points < 75) {
     rank = "Rookie ⭐";
-  } else if (points <= 75) {
+  } else if (points >= 75 && points < 175) {
     rank = "Veteran ⭐⭐";
-  } else if (points <= 175) {
+  } else if (points >= 175 && points < 250) {
     rank = "Expert ⭐⭐⭐";
-  } else if (points <= 200) {
+  } else if (points >= 250 && points < 350) {
     rank = "Epic ⭐⭐⭐⭐";
-  } else if (points <= 350) {
+  } else if (points >= 350 && points < 500) {
     rank = "Legend ⭐⭐⭐⭐⭐";
   } else if (points >= 500) {
     rank = "Beyond 🌟🌟🌟🌟🌟";
