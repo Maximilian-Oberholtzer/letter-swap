@@ -471,17 +471,14 @@ function Board(props: BoardProps) {
       board[row][col] = " ";
 
       setTimeout(() => {
-        animatedPoints?.classList.remove("show-animated-points");
-      }, 600);
-
-      setTimeout(() => {
         setBoard(board);
       }, 100);
 
       setTimeout(() => {
         tile?.classList.remove("animate");
+        animatedPoints?.classList.remove("show-animated-points");
         setAnimateFound(false);
-      }, 300);
+      }, 400);
     }, 800);
   };
 
