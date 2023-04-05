@@ -103,7 +103,12 @@ const statistics = (
         </>
       )
     ) : (
-      <div>Complete a game to record your score.</div>
+      <div
+        className="modal-sub-text"
+        style={{ lineHeight: "1.5", marginBottom: "0.75rem" }}
+      >
+        Complete a game to record your score.
+      </div>
     )}
     <div className="weekly-score-container">
       {days.map((day, i) => {

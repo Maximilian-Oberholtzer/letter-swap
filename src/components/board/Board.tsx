@@ -175,7 +175,7 @@ function Board(props: BoardProps) {
     if (weeklyScores !== null) {
       return JSON.parse(weeklyScores);
     } else {
-      return Array.from({ length: 6 }, () => null);
+      return Array.from({ length: 7 }, () => null);
     }
   });
   //Holds amount of words found for each day of the week
@@ -184,7 +184,7 @@ function Board(props: BoardProps) {
     if (weeklyPoints !== null) {
       return JSON.parse(weeklyPoints);
     } else {
-      return Array.from({ length: 6 }, () => null);
+      return Array.from({ length: 7 }, () => null);
     }
   });
 
@@ -548,7 +548,6 @@ function Board(props: BoardProps) {
       ? "2px solid var(--dark-border-empty)"
       : "2px solid var(--light-border-empty)",
   };
-
   return (
     <div className="board-section">
       {showStatsModal && (
