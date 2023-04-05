@@ -1,6 +1,5 @@
 <h2 align="center">
-  <a href="https://letterswap.io">LetterSwap.io</a>
-  
+  <a href="https://letterswap.io">LetterSwap.io</a> 
 </h2>
 
 <p align="center">
