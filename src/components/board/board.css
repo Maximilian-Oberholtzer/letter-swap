@@ -106,6 +106,32 @@
   gap: 0.3rem;
 }
 
+.animated-points {
+  position: fixed;
+  bottom: 4rem;
+  font-weight: 700;
+  opacity: 0;
+}
+
+@keyframes animatePoints {
+  0% {
+    opacity: 0.1;
+    bottom: 4rem;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+    bottom: 6rem;
+  }
+}
+
+.show-animated-points {
+  opacity: 1;
+  animation: animatePoints 1.5s;
+}
+
 .swaps-container {
   padding: 0.5rem;
   border: 2px solid var(--dark-gray);
@@ -154,6 +180,9 @@
     width: 4rem;
     font-size: 1rem;
   }
+  .animated-points {
+    font-size: 2.5rem;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -181,6 +210,9 @@
   .swaps-container {
     width: 5rem;
     font-size: 1.5rem;
+  }
+  .animated-points {
+    font-size: 3.5rem;
   }
 }
 
