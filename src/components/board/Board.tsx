@@ -656,7 +656,9 @@ function Board(props: BoardProps) {
           ))}
         </div>
         <div className="found-words-container">
-          <div className="animated-points">+{animatedPoints}</div>
+          <div className="animated-points" style={colorStyle}>
+            +{animatedPoints}
+          </div>
           <div
             className="found-words-box"
             style={mergeStyles(colorStyle, borderStyle, backgroundStyle, {
