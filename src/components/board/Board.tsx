@@ -134,6 +134,8 @@ function Board(props: BoardProps) {
       return 0;
     }
   });
+  //Animated current points effect
+  const [animatedPoints, setAnimatedPoints] = useState(0);
   //For highlighting words in word list
   const [recentFoundWords, setRecentFoundWords] = useState<string[]>(() => {
     const recentFoundWords = localStorage.getItem("recentFoundWords");
@@ -405,8 +407,8 @@ function Board(props: BoardProps) {
           currentPoints += pointMap[currentLetter];
         }
       }
+      setAnimatedPoints(currentPoints);
       setPoints(points + currentPoints);
-      console.log(currentPoints);
     }
 
     return foundWord;
@@ -452,8 +454,10 @@ function Board(props: BoardProps) {
     //Animate title for a fun effect when a word is found
     const titleTile = document.querySelector(".title-tile");
     const titleTile2 = document.querySelector(".title-tile-2");
+    const animatedPoints = document.querySelector(".animated-points");
     titleTile?.classList.add("animate");
     titleTile2?.classList.add("animate-delay-medium");
+    animatedPoints?.classList.add("show-animated-points");
     setTimeout(() => {
       tile?.classList.remove("found-word-light");
       tile?.classList.remove("found-word-dark");
@@ -461,6 +465,10 @@ function Board(props: BoardProps) {
       titleTile2?.classList.remove("animate-delay-medium");
       tile?.classList.add("animate");
       board[row][col] = " ";
+
+      setTimeout(() => {
+        animatedPoints?.classList.remove("show-animated-points");
+      }, 600);
 
       setTimeout(() => {
         setBoard(board);
@@ -648,6 +656,9 @@ function Board(props: BoardProps) {
           ))}
         </div>
         <div className="found-words-container">
+          <div className="animated-points" style={colorStyle}>
+            +{animatedPoints}
+          </div>
           <div
             className="found-words-box"
             style={mergeStyles(colorStyle, borderStyle, backgroundStyle, {
