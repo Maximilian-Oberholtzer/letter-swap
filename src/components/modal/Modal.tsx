@@ -58,8 +58,9 @@ const howToPlay = (
       <li>1 point - A, D, E, H, I, L, N, O, R, S, T </li>
       <li>2 points - B, C, F, G, M, P, U, W, Y </li>
       <li>3 points - J, K, Q, V, X, Z </li>
+      <li>5 points for each additional word found in one turn</li>
     </ul>
-    <p className="modal-subtitle-small">Ranks</p>
+    {/* <p className="modal-subtitle-small">Ranks</p>
     <ul style={{ paddingInlineStart: "20px" }}>
       <li>Beginner: 0 points</li>
       <li>Rookie: 30 points</li>
@@ -68,7 +69,7 @@ const howToPlay = (
       <li>Epic: 180 points</li>
       <li>Legend: 240 points</li>
       <li>Unreal: 300+ points</li>
-    </ul>
+    </ul> */}
   </div>
 );
 

@@ -400,6 +400,10 @@ function Board(props: BoardProps) {
       setRecentFoundWords(foundSequences);
       //calculate score based on found words
       let currentPoints = 0;
+      //bonus points for additional words
+      if (foundSequences.length > 1) {
+        currentPoints += 5 * (foundSequences.length - 1);
+      }
       for (let i = 0; i < foundSequences.length; i++) {
         const currentWord = foundSequences[i];
         for (let j = 0; j < currentWord.length; j++) {
