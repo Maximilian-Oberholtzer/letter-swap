@@ -2,9 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "../Theme";
 import Modal from "../modal/Modal";
 import Board from "../board/Board";
+import { trackPageView } from "../../analytics";
+import { useLocation } from "react-router-dom";
 import "./main.css";
 
 function Main() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPageView(location.pathname + location.search);
+  }, [location]);
+
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
   const [showModal, setShowModal] = useState(false);
