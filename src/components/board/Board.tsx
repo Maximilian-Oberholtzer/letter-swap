@@ -209,14 +209,20 @@ function Board(props: BoardProps) {
   //check for game over and resets game if new day has elapsed
   useEffect(() => {
     if (lastPlayedDate !== day) {
-      ResetGame();
+      // ResetGame();
+      const weeklyScoreArr = [...weeklyScores];
+      const weeklyPointsArr = [...weeklyPoints];
+      weeklyScoreArr[day] = null;
+      weeklyPointsArr[day] = null;
+      setWeeklyScores(weeklyScoreArr);
+      setWeeklyPoints(weeklyPointsArr);
     }
     localStorage.setItem("swapCount", JSON.stringify(swapCount));
     if (swapCount === 0) {
       handleOpenModal();
       const weeklyScoreArr = [...weeklyScores];
       const weeklyPointsArr = [...weeklyPoints];
-      // temporary, remove when users can only play once a day
+      //only overwrite score if it beats current daily score
       if (foundWords.length >= (weeklyScoreArr[day] ?? 0)) {
         weeklyScoreArr[day] = foundWords.length;
         setWeeklyScores(weeklyScoreArr);
