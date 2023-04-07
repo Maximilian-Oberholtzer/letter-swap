@@ -12,23 +12,20 @@ function Main() {
     trackPageView(location.pathname + location.search);
   }, [location]);
 
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === "dark";
-  const [showModal, setShowModal] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
-  const handleOpenModal = () => {
-    setShowModal(true);
+  const handleInstructionsModal = () => {
+    setShowInstructions(!showInstructions);
   };
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleStatsModal = () => {
+    setShowStats(!showStats);
   };
-
-  const handleOpenStatsModal = () => {
-    setShowStats(true);
-  };
-  const handleCloseStatsModal = () => {
-    setShowStats(false);
+  const handleSettingsModal = () => {
+    setShowSettings(!showSettings);
   };
 
   //Remove animations from title so they can re-animate later
@@ -59,14 +56,25 @@ function Main() {
             : "var(--light-background)",
         }}
       >
-        {showModal && (
+        {showInstructions && (
           <Modal
             type={"how-to-play"}
             score={0}
             points={0}
             weeklyScores={[]}
             weeklyPoints={[]}
-            onClose={handleCloseModal}
+            onClose={handleInstructionsModal}
+            reset={() => {}}
+          />
+        )}
+        {showSettings && (
+          <Modal
+            type={"settings"}
+            score={0}
+            points={0}
+            weeklyScores={[]}
+            weeklyPoints={[]}
+            onClose={handleSettingsModal}
             reset={() => {}}
           />
         )}
@@ -125,37 +133,7 @@ function Main() {
           </span>
         </div>
         <div className="menu-right">
-          <button className="theme-button" onClick={toggleTheme}>
-            <svg
-              className="theme-button-svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                style={{
-                  stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
-                  transition: "300ms stroke",
-                }}
-                d="M12 7a5 5 0 0 0-3.573 8.497c.343.351.626.77.722 1.251l.53 2.644A2 2 0 0 0 11.638 21h.722a2 2 0 0 0 1.96-1.608l.53-2.644c.096-.482.379-.9.722-1.25A5 5 0 0 0 12 7z"
-                strokeWidth="2"
-              />
-              <path
-                style={{
-                  stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
-                  transition: "300ms stroke",
-                }}
-                d="M12 4V3M18 6l1-1M20 12h1M4 12H3M5 5l1 1M10 17h4"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <button
-            className="stats-button"
-            onClick={() => handleOpenStatsModal()}
-          >
+          <button className="stats-button" onClick={() => handleStatsModal()}>
             <svg
               style={{
                 fill: isDark ? "var(--dark-text)" : "var(--light-text)",
@@ -168,7 +146,10 @@ function Main() {
               <path d="M20.6666 14.8333V5.5H11.3333V12.5H4.33325V26.5H27.6666V14.8333H20.6666ZM13.6666 7.83333H18.3333V24.1667H13.6666V7.83333ZM6.66659 14.8333H11.3333V24.1667H6.66659V14.8333ZM25.3333 24.1667H20.6666V17.1667H25.3333V24.1667Z" />
             </svg>
           </button>
-          <button className="help-button" onClick={() => handleOpenModal()}>
+          <button
+            className="help-button"
+            onClick={() => handleInstructionsModal()}
+          >
             <svg
               style={{
                 fill: isDark ? "var(--dark-text)" : "var(--light-text)",
@@ -181,12 +162,26 @@ function Main() {
               <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
             </svg>
           </button>
+          <button
+            className="settings-button"
+            onClick={() => handleSettingsModal()}
+          >
+            <svg
+              style={{
+                fill: isDark ? "var(--dark-text)" : "var(--light-text)",
+                transition: "300ms fill",
+              }}
+              className="settings-button-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M4,13.743l-1,.579a1,1,0,0,0-.366,1.366l1.488,2.578a1,1,0,0,0,1.366.366L6.5,18.05a1.987,1.987,0,0,1,1.986,0l.02.011a1.989,1.989,0,0,1,1,1.724V21a1,1,0,0,0,1,1h3a1,1,0,0,0,1-1V19.782a1.985,1.985,0,0,1,.995-1.721l.021-.012a1.987,1.987,0,0,1,1.986,0l1.008.582a1,1,0,0,0,1.366-.366l1.488-2.578A1,1,0,0,0,21,14.322l-1-.579a1.994,1.994,0,0,1-1-1.733v-.021a1.991,1.991,0,0,1,1-1.732l1-.579a1,1,0,0,0,.366-1.366L19.876,5.734a1,1,0,0,0-1.366-.366L17.5,5.95a1.987,1.987,0,0,1-1.986,0L15.5,5.94a1.989,1.989,0,0,1-1-1.724V3a1,1,0,0,0-1-1h-3a1,1,0,0,0-1,1V4.294A1.856,1.856,0,0,1,8.57,5.9l-.153.088a1.855,1.855,0,0,1-1.853,0L5.49,5.368a1,1,0,0,0-1.366.366L2.636,8.312A1,1,0,0,0,3,9.678l1,.579A1.994,1.994,0,0,1,5,11.99v.021A1.991,1.991,0,0,1,4,13.743ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z" />
+            </svg>
+          </button>
         </div>
       </div>
-      <Board
-        showStats={showStats}
-        handleCloseStatsModal={handleCloseStatsModal}
-      />
+      <Board showStats={showStats} handleCloseStatsModal={handleStatsModal} />
     </div>
   );
 }

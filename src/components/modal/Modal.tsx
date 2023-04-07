@@ -31,7 +31,7 @@ const handleShare = async (score: number, points: number, rank: string) => {
 };
 
 const howToPlay = (
-  <div style={{}}>
+  <div>
     <h1 className="modal-title">How To Play</h1>
     <p className="modal-subtitle">Create as many 5-letter words as possible</p>
     <ul style={{ paddingInlineStart: "20px" }}>
@@ -60,7 +60,43 @@ const howToPlay = (
       <li>3 points - J, K, Q, V, X, Z </li>
       <li>5 points for each additional word found in one turn</li>
     </ul>
-    {/* <p className="modal-subtitle-small">Ranks</p>
+  </div>
+);
+
+const settings = (toggleTheme: () => void, isDark: boolean) => (
+  <div>
+    <h1 className="modal-title">Options</h1>
+    <div className="theme-container">
+      <div>Light / Dark mode:</div>
+      <button className="theme-button" onClick={toggleTheme}>
+        <svg
+          className="theme-button-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            style={{
+              stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
+              transition: "300ms stroke",
+            }}
+            d="M12 7a5 5 0 0 0-3.573 8.497c.343.351.626.77.722 1.251l.53 2.644A2 2 0 0 0 11.638 21h.722a2 2 0 0 0 1.96-1.608l.53-2.644c.096-.482.379-.9.722-1.25A5 5 0 0 0 12 7z"
+            strokeWidth="2"
+          />
+          <path
+            style={{
+              stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
+              transition: "300ms stroke",
+            }}
+            d="M12 4V3M18 6l1-1M20 12h1M4 12H3M5 5l1 1M10 17h4"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+    <p className="modal-subtitle-small">Ranks</p>
     <ul style={{ paddingInlineStart: "20px" }}>
       <li>Beginner: 0 points</li>
       <li>Rookie: 30 points</li>
@@ -68,8 +104,23 @@ const howToPlay = (
       <li>Expert: 120 points</li>
       <li>Epic: 180 points</li>
       <li>Legend: 240 points</li>
-      <li>Unreal: 300+ points</li>
-    </ul> */}
+      <li>Unreal: 300 points</li>
+      <li>Grandmaster: 500+ points</li>
+    </ul>
+
+    <div className="modal-bottom-container">
+      <a
+        href="https://www.buymeacoffee.com/maxoberholtzer"
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
+        }}
+        className="share-button"
+      >
+        <b>Buy me a Beer!</b>{" "}
+      </a>
+    </div>
   </div>
 );
 
@@ -192,7 +243,7 @@ const Modal: React.FC<ModalProps> = ({
   weeklyScores,
   weeklyPoints,
 }) => {
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
@@ -227,7 +278,7 @@ const Modal: React.FC<ModalProps> = ({
   } else if (points >= 300 && points < 500) {
     rank = "Unreal 🌟🌟🌟🌟🌟";
   } else if (points >= 500) {
-    rank = "G.O.A.T. 🐐";
+    rank = "Grandmaster 🧙🏼‍♂️";
   }
 
   return (
@@ -280,6 +331,7 @@ const Modal: React.FC<ModalProps> = ({
         {type === "statistics" &&
           statistics(score, points, weeklyScores, weeklyPoints, rank, isDark)}
         {type === "how-to-play" && howToPlay}
+        {type === "settings" && settings(toggleTheme, isDark)}
       </div>
     </div>
   );
