@@ -206,11 +206,8 @@ function Board(props: BoardProps) {
     }, 1000);
   }, [startGameSwapCount]);
 
-  //check for game over and resets game if new day has elapsed
+  //check for game over
   useEffect(() => {
-    if (lastPlayedDate !== day) {
-      ResetGame();
-    }
     localStorage.setItem("swapCount", JSON.stringify(swapCount));
     if (swapCount === 0) {
       handleOpenModal();
