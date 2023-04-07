@@ -210,7 +210,6 @@ function Board(props: BoardProps) {
   useEffect(() => {
     if (lastPlayedDate !== day) {
       // ResetGame();
-      weeklyPoints[day];
       const weeklyScoreArr = [...weeklyScores];
       const weeklyPointsArr = [...weeklyPoints];
       weeklyScoreArr[day] = null;
