@@ -174,5 +174,10 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.copyright-text {
+  margin: 1rem 3rem;
 }
