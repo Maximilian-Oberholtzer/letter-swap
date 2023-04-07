@@ -10,6 +10,7 @@ interface ModalProps {
   reset: () => void;
   weeklyScores: (number | null)[];
   weeklyPoints: (number | null)[];
+  swapCount: number;
 }
 
 const handleShare = async (score: number, points: number, rank: string) => {
@@ -111,14 +112,16 @@ const settings = (toggleTheme: () => void, isDark: boolean) => (
     <div className="modal-bottom-container">
       <a
         href="https://www.buymeacoffee.com/maxoberholtzer"
+        rel="noreferrer"
+        target="_blank"
         style={{
           border: isDark
             ? "2px solid var(--dark-text)"
             : "2px solid var(--light-text)",
         }}
-        className="share-button"
+        className="donate-link"
       >
-        <b>Buy me a Beer!</b>{" "}
+        <b>Buy me a Beer! 🍺</b>
       </a>
     </div>
   </div>
@@ -132,8 +135,11 @@ const statistics = (
   points: number,
   weeklyScores: (number | null)[],
   weeklyPoints: (number | null)[],
+  swapCount: number,
   rank: string,
-  isDark: boolean
+  isDark: boolean,
+  reset: () => void,
+  closeModal: () => void
 ) => (
   <>
     <h1 className="modal-title">Statistics</h1>
@@ -229,6 +235,26 @@ const statistics = (
             </svg>
           </div>
         </button>
+        {swapCount <= 0 && (
+          <div className="play-again-container">
+            <button
+              style={{
+                border: isDark
+                  ? "2px solid var(--dark-text)"
+                  : "2px solid var(--light-text)",
+              }}
+              onClick={() => {
+                closeModal();
+                setTimeout(() => {
+                  reset();
+                }, 300);
+              }}
+              className="play-again-button"
+            >
+              <b>Play Again</b>
+            </button>
+          </div>
+        )}
       </div>
     )}
   </>
@@ -242,6 +268,7 @@ const Modal: React.FC<ModalProps> = ({
   reset,
   weeklyScores,
   weeklyPoints,
+  swapCount,
 }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
@@ -254,11 +281,7 @@ const Modal: React.FC<ModalProps> = ({
     modal?.classList.add("closed");
     setTimeout(() => {
       onClose();
-      if (type === "statistics") {
-        reset();
-      }
     }, 300);
-    // //temporary - reset when user completes game
   };
 
   //define ranks and pass into statistics
@@ -329,7 +352,17 @@ const Modal: React.FC<ModalProps> = ({
           </svg>
         </button>
         {type === "statistics" &&
-          statistics(score, points, weeklyScores, weeklyPoints, rank, isDark)}
+          statistics(
+            score,
+            points,
+            weeklyScores,
+            weeklyPoints,
+            swapCount,
+            rank,
+            isDark,
+            reset,
+            closeModal
+          )}
         {type === "how-to-play" && howToPlay}
         {type === "settings" && settings(toggleTheme, isDark)}
       </div>
