@@ -56,10 +56,6 @@
     height: 1.75rem;
     width: 1.75rem;
   }
-  .theme-button-svg {
-    height: 2rem;
-    width: 2rem;
-  }
   .settings-button-svg {
     height: 2rem;
     width: 2rem;
@@ -90,10 +86,6 @@
   .stats-button-svg {
     width: 2.5rem;
     height: 2.5rem;
-  }
-  .theme-button-svg {
-    width: 2.9rem;
-    height: 2.9rem;
   }
   .settings-button-svg {
     width: 2.8rem;
@@ -175,6 +167,11 @@
 .theme-button {
   all: unset;
   cursor: pointer !important;
+}
+
+.theme-button-svg {
+  height: 2rem;
+  width: 2rem;
 }
 
 .settings-button {

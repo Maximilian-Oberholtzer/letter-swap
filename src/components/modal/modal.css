@@ -132,8 +132,12 @@
 
 .modal-bottom-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-top: 2rem;
+}
+
+.play-again-container {
+  align-self: center;
 }
 
 .share-button-container {
@@ -145,6 +149,22 @@
 .share-button {
   all: unset;
   padding: 0.3rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.play-again-button {
+  all: unset;
+  padding: 0.5rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.donate-link {
+  all: unset;
+  padding: 0.3rem 1.25rem 0.42rem 1.25rem;
   border-radius: 1rem;
   border: 2px solid black;
   cursor: pointer;

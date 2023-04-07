@@ -63,6 +63,7 @@ function Main() {
             points={0}
             weeklyScores={[]}
             weeklyPoints={[]}
+            swapCount={0}
             onClose={handleInstructionsModal}
             reset={() => {}}
           />
@@ -74,6 +75,7 @@ function Main() {
             points={0}
             weeklyScores={[]}
             weeklyPoints={[]}
+            swapCount={0}
             onClose={handleSettingsModal}
             reset={() => {}}
           />

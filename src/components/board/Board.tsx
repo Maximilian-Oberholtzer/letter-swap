@@ -566,6 +566,7 @@ function Board(props: BoardProps) {
           points={points}
           weeklyScores={weeklyScores}
           weeklyPoints={weeklyPoints}
+          swapCount={swapCount}
           onClose={handleCloseModal}
           reset={ResetGame}
         />
@@ -577,8 +578,9 @@ function Board(props: BoardProps) {
           points={weeklyPoints[day] ?? -1}
           weeklyScores={weeklyScores}
           weeklyPoints={weeklyPoints}
+          swapCount={swapCount}
           onClose={props.handleCloseStatsModal}
-          reset={() => {}}
+          reset={ResetGame}
         />
       )}
       {!hasPlayed && showComponent && (
@@ -588,6 +590,7 @@ function Board(props: BoardProps) {
           points={points}
           weeklyScores={[]}
           weeklyPoints={[]}
+          swapCount={swapCount}
           onClose={handleCloseModal}
           reset={() => {}}
         />
@@ -645,9 +648,11 @@ function Board(props: BoardProps) {
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
-                    !animateFlip &&
-                    !animateFound &&
-                    handleBoard(rowIndex, colIndex, nextLetter[0])
+                    swapCount <= 0
+                      ? handleOpenModal()
+                      : !animateFlip &&
+                        !animateFound &&
+                        handleBoard(rowIndex, colIndex, nextLetter[0])
                   }
                 >
                   {letter}
