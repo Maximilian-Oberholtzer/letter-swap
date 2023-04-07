@@ -64,6 +64,7 @@ const howToPlay = (
   </div>
 );
 
+const currentYear = new Date().getFullYear();
 const settings = (toggleTheme: () => void, isDark: boolean) => (
   <div>
     <h1 className="modal-title">Options</h1>
@@ -123,6 +124,9 @@ const settings = (toggleTheme: () => void, isDark: boolean) => (
       >
         <b>Buy me a Beer! 🍺</b>
       </a>
+    </div>
+    <div className="copyright-text">
+      &copy; {currentYear} Maximilian Oberholtzer
     </div>
   </div>
 );
