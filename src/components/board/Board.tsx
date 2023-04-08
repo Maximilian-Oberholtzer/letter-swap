@@ -293,6 +293,18 @@ function Board(props: BoardProps) {
     setStart(false);
     setPoints(0);
     setFoundWords([]);
+
+    //3 new letters for next
+    let letters = "";
+    for (let i = 0; i < 3; i++) {
+      let currentLetter = getRandomLetter();
+      //no duplicates inside next letters boxes
+      while (letters.includes(currentLetter)) {
+        currentLetter = getRandomLetter();
+      }
+      letters += currentLetter;
+    }
+    setNextLetter(letters);
   };
 
   const handleOpenModal = () => {
