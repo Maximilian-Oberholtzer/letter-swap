@@ -207,7 +207,7 @@ const statistics = (
         );
       })}
     </div>
-    {weeklyScores[currentDay] !== null && (
+    {weeklyScores[currentDay] !== null ? (
       <div className="modal-bottom-container">
         <button
           style={{
@@ -239,7 +239,7 @@ const statistics = (
             </svg>
           </div>
         </button>
-        {swapCount <= 0 && (
+        {swapCount <= 0 ? (
           <div className="play-again-container">
             <button
               style={{
@@ -258,7 +258,47 @@ const statistics = (
               <b>Play Again</b>
             </button>
           </div>
+        ) : (
+          <div className="play-again-container">
+            <button
+              style={{
+                border: isDark
+                  ? "2px solid var(--dark-text)"
+                  : "2px solid var(--light-text)",
+              }}
+              onClick={() => {
+                closeModal();
+                setTimeout(() => {
+                  reset();
+                }, 300);
+              }}
+              className="play-again-button"
+            >
+              <b>Reset Game</b>
+            </button>
+          </div>
         )}
+      </div>
+    ) : (
+      <div className="modal-bottom-container">
+        <div className="play-again-container">
+          <button
+            style={{
+              border: isDark
+                ? "2px solid var(--dark-text)"
+                : "2px solid var(--light-text)",
+            }}
+            onClick={() => {
+              closeModal();
+              setTimeout(() => {
+                reset();
+              }, 300);
+            }}
+            className="play-again-button"
+          >
+            <b>Reset Game</b>
+          </button>
+        </div>
       </div>
     )}
   </>
