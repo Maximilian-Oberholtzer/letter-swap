@@ -209,7 +209,9 @@ function Board(props: BoardProps) {
   //check for game over and resets game if new day has elapsed
   useEffect(() => {
     if (lastPlayedDate !== day) {
-      // ResetGame();
+      if (swapCount <= 0) {
+        ResetGame();
+      }
       const weeklyScoreArr = [...weeklyScores];
       const weeklyPointsArr = [...weeklyPoints];
       weeklyScoreArr[day] = null;
