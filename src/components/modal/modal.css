@@ -178,6 +178,11 @@
   justify-content: flex-start;
 }
 
+.theme-button {
+  all: unset;
+  cursor: pointer !important;
+}
+
 .copyright-text {
   margin: 1rem 2rem;
 }
