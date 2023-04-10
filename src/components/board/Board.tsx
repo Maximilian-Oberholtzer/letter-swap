@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useCallback,
+} from "react";
 import Modal from "../modal/Modal";
 import { useTheme } from "../Theme";
 import {
@@ -8,118 +15,108 @@ import {
   applyAnimation,
   fillNewNextLetters,
 } from "./BoardFunctions";
+import { UserState } from "../main/Main";
 import "./board.css";
 
-const BOARDSIZE = 5;
 const SWAPCOUNT = 15;
-
-const day = new Date().getDay();
+const DAY = new Date().getDay();
 
 interface BoardProps {
   showStats: boolean;
   handleCloseStatsModal: () => void;
+  userState: UserState;
+  setUserState: Dispatch<SetStateAction<UserState>>;
 }
 
 function Board(props: BoardProps) {
+  const { userState, setUserState } = props;
+
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const [board, setBoard] = useState<string[][]>(() => {
-    const board = localStorage.getItem("board");
-    if (board !== null) {
-      return JSON.parse(board);
-    } else {
-      return fillEmptyBoard();
-    }
-  });
-  const [nextLetter, setNextLetter] = useState(() => {
-    const nextLetters = localStorage.getItem("nextLetters");
-    if (nextLetters !== null) {
-      return JSON.parse(nextLetters);
-    } else {
-      fillNewNextLetters();
-    }
-  });
-  const [swapCount, setSwapCount] = useState(() => {
-    const swapCount = localStorage.getItem("swapCount");
-    if (swapCount !== null) {
-      return JSON.parse(swapCount);
-    } else {
-      return SWAPCOUNT;
-    }
-  });
-  const [foundWords, setFoundWords] = useState<string[]>(() => {
-    const foundWords = localStorage.getItem("foundWords");
-    if (foundWords !== null) {
-      return JSON.parse(foundWords);
-    } else {
-      return [];
-    }
-  });
-  //Current daily points based on pointmap
-  const [points, setPoints] = useState<number>(() => {
-    const points = localStorage.getItem("points");
-    if (points !== null) {
-      return JSON.parse(points);
-    } else {
-      return 0;
-    }
-  });
+  //update global user state functions
+  const setBoard = useCallback(
+    (newBoard: string[][]) => {
+      setUserState((prevState) => ({ ...prevState, board: newBoard }));
+    },
+    [setUserState]
+  );
+  const setNextLetters = useCallback(
+    (nextLetters: string) => {
+      setUserState((prevState) => ({ ...prevState, nextLetters: nextLetters }));
+    },
+    [setUserState]
+  );
+  const setSwapCount = useCallback(
+    (swapCount: number) => {
+      setUserState((prevState) => ({ ...prevState, swapCount: swapCount }));
+    },
+    [setUserState]
+  );
+  const setFoundWords = useCallback(
+    (foundWords: string[]) => {
+      setUserState((prevState) => ({ ...prevState, foundWords: foundWords }));
+    },
+    [setUserState]
+  );
+  const setRecentFoundWords = useCallback(
+    (recentFoundWords: string[]) => {
+      setUserState((prevState) => ({
+        ...prevState,
+        recentFoundWords: recentFoundWords,
+      }));
+    },
+    [setUserState]
+  );
+  const setPoints = useCallback(
+    (points: number) => {
+      setUserState((prevState) => ({ ...prevState, points: points }));
+    },
+    [setUserState]
+  );
+  const setHasPlayed = useCallback(
+    (hasPlayed: boolean) => {
+      setUserState((prevState) => ({ ...prevState, hasPlayed: hasPlayed }));
+    },
+    [setUserState]
+  );
+  const setLastPlayedDate = useCallback(
+    (lastPlayedDate: number) => {
+      setUserState((prevState) => ({
+        ...prevState,
+        lastPlayedDate: lastPlayedDate,
+      }));
+    },
+    [setUserState]
+  );
+  const setWeeklyScores = useCallback(
+    (weeklyScores: (number | null)[]) => {
+      setUserState((prevState) => ({
+        ...prevState,
+        weeklyScores: weeklyScores,
+      }));
+    },
+    [setUserState]
+  );
+  const setWeeklyPoints = useCallback(
+    (weeklyPoints: (number | null)[]) => {
+      setUserState((prevState) => ({
+        ...prevState,
+        weeklyPoints: weeklyPoints,
+      }));
+    },
+    [setUserState]
+  );
+
   //Animated current points effect
   const [animatedPoints, setAnimatedPoints] = useState(0);
-  //For highlighting words in word list
-  const [recentFoundWords, setRecentFoundWords] = useState<string[]>(() => {
-    const recentFoundWords = localStorage.getItem("recentFoundWords");
-    if (recentFoundWords !== null) {
-      return JSON.parse(recentFoundWords);
-    } else {
-      return [];
-    }
-  });
   //For pausing the game to allow animations
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
   const [start, setStart] = useState(false);
-  //check if user is new
-  const [hasPlayed, setHasPlayed] = useState(() => {
-    const hasPlayed = localStorage.getItem("hasPlayed");
-    if (hasPlayed !== null) {
-      return JSON.parse(hasPlayed);
-    } else {
-      return false;
-    }
-  });
   //wait for 1 second before showing modal on load
   const [showComponent, setShowComponent] = useState<any>(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
-
-  //data for statistics modal
-  const [lastPlayedDate, setLastPlayedDate] = useState(() => {
-    const lastPlayedDate = localStorage.getItem("lastPlayedDate");
-    if (lastPlayedDate !== null) {
-      return JSON.parse(lastPlayedDate);
-    } else {
-      return day;
-    }
-  });
-  //Holds amount of words found for each day of the week
-  const [weeklyScores, setWeeklyScores] = useState<(number | null)[]>(() => {
-    const weeklyScores = localStorage.getItem("weeklyScores");
-    if (weeklyScores !== null) {
-      return JSON.parse(weeklyScores);
-    } else {
-      return Array.from({ length: 7 }, () => null);
-    }
-  });
-  //Holds amount of words found for each day of the week
-  const [weeklyPoints, setWeeklyPoints] = useState<(number | null)[]>(() => {
-    const weeklyPoints = localStorage.getItem("weeklyPoints");
-    if (weeklyPoints !== null) {
-      return JSON.parse(weeklyPoints);
-    } else {
-      return Array.from({ length: 7 }, () => null);
-    }
-  });
 
   //for calculating hieght for found words container
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
@@ -127,78 +124,79 @@ function Board(props: BoardProps) {
   const boardHeight = useRef<HTMLDivElement>(null);
 
   //If user loads into a game with 0 swaps left
-  const startGameSwapCount = swapCount;
+  const startGameSwapCount = userState.swapCount;
   useEffect(() => {
     if (startGameSwapCount <= 0) {
       handleOpenModal();
     }
-    setTimeout(() => {
-      setShowComponent(true);
-    }, 1000);
-  }, [startGameSwapCount]);
+    if (!userState.hasPlayed) {
+      setTimeout(() => {
+        setShowComponent(true);
+      }, 1000);
+    }
+  }, [startGameSwapCount, userState.hasPlayed]);
 
-  //check for game over and resets game if new day has elapsed
+  const ResetGame = useCallback(() => {
+    setLastPlayedDate(DAY);
+    setBoard(fillEmptyBoard());
+    setSwapCount(SWAPCOUNT);
+    setStart(false);
+    setPoints(0);
+    setFoundWords([]);
+    setNextLetters(fillNewNextLetters());
+  }, [
+    setLastPlayedDate,
+    setBoard,
+    setSwapCount,
+    setStart,
+    setPoints,
+    setFoundWords,
+    setNextLetters,
+  ]);
+
+  //GAME OVER - Check
   useEffect(() => {
-    if (lastPlayedDate !== day) {
-      if (swapCount <= 0) {
+    if (userState.lastPlayedDate !== DAY) {
+      if (userState.swapCount <= 0) {
         ResetGame();
       }
-      const weeklyScoreArr = [...weeklyScores];
-      const weeklyPointsArr = [...weeklyPoints];
-      weeklyScoreArr[day] = null;
-      weeklyPointsArr[day] = null;
+      const weeklyScoreArr = [...userState.weeklyScores];
+      const weeklyPointsArr = [...userState.weeklyPoints];
+      weeklyScoreArr[DAY] = null;
+      weeklyPointsArr[DAY] = null;
       setWeeklyScores(weeklyScoreArr);
       setWeeklyPoints(weeklyPointsArr);
     }
-    localStorage.setItem("swapCount", JSON.stringify(swapCount));
-    if (swapCount === 0) {
+    if (userState.swapCount === 0) {
       handleOpenModal();
-      const weeklyScoreArr = [...weeklyScores];
-      const weeklyPointsArr = [...weeklyPoints];
+      const weeklyScoreArr = [...userState.weeklyScores];
+      const weeklyPointsArr = [...userState.weeklyPoints];
       //only overwrite score if it beats current daily score
-      if (foundWords.length >= (weeklyScoreArr[day] ?? 0)) {
-        weeklyScoreArr[day] = foundWords.length;
+      if (userState.foundWords.length >= (weeklyScoreArr[DAY] ?? 0)) {
+        weeklyScoreArr[DAY] = userState.foundWords.length;
         setWeeklyScores(weeklyScoreArr);
       }
-      if (points >= (weeklyPointsArr[day] ?? 0)) {
-        weeklyPointsArr[day] = points;
+      if (userState.points >= (weeklyPointsArr[DAY] ?? 0)) {
+        weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
       }
 
-      setLastPlayedDate(day);
+      setLastPlayedDate(DAY);
       setSwapCount(-1);
       setStart(false);
     }
   }, [
-    swapCount,
-    lastPlayedDate,
-    foundWords.length,
-    weeklyScores,
-    points,
-    weeklyPoints,
-  ]);
-
-  //Save session to local storage
-  useEffect(() => {
-    localStorage.setItem("nextLetters", JSON.stringify(nextLetter));
-    localStorage.setItem("board", JSON.stringify(board));
-    localStorage.setItem("foundWords", JSON.stringify(foundWords));
-    localStorage.setItem("points", JSON.stringify(points));
-    localStorage.setItem("recentFoundWords", JSON.stringify(recentFoundWords));
-    localStorage.setItem("hasPlayed", JSON.stringify(hasPlayed));
-    localStorage.setItem("lastPlayedDate", JSON.stringify(lastPlayedDate));
-    localStorage.setItem("weeklyScores", JSON.stringify(weeklyScores));
-    localStorage.setItem("weeklyPoints", JSON.stringify(weeklyPoints));
-  }, [
-    nextLetter,
-    board,
-    foundWords,
-    points,
-    recentFoundWords,
-    hasPlayed,
-    lastPlayedDate,
-    weeklyScores,
-    weeklyPoints,
+    userState.swapCount,
+    userState.lastPlayedDate,
+    userState.foundWords.length,
+    userState.weeklyScores,
+    userState.points,
+    userState.weeklyPoints,
+    ResetGame,
+    setLastPlayedDate,
+    setSwapCount,
+    setWeeklyPoints,
+    setWeeklyScores,
   ]);
 
   //calculate height of board container (for found words drawer dynamic height)
@@ -208,35 +206,6 @@ function Board(props: BoardProps) {
       setWordsExpandHeight(containerHeight);
     }
   }, [foundWordsExpand]);
-
-  const ResetGame = () => {
-    const newBoard = Array(BOARDSIZE)
-      .fill(null)
-      .map(() =>
-        Array(BOARDSIZE)
-          .fill(null)
-          .map(() => " ")
-      );
-
-    setLastPlayedDate(day);
-    setBoard(newBoard);
-    setSwapCount(SWAPCOUNT);
-    setStart(false);
-    setPoints(0);
-    setFoundWords([]);
-
-    //3 new letters for next
-    let letters = "";
-    for (let i = 0; i < 3; i++) {
-      let currentLetter = getRandomLetter();
-      //no duplicates inside next letters boxes
-      while (letters.includes(currentLetter)) {
-        currentLetter = getRandomLetter();
-      }
-      letters += currentLetter;
-    }
-    setNextLetter(letters);
-  };
 
   const handleOpenModal = () => {
     setShowStatsModal(true);
@@ -250,24 +219,25 @@ function Board(props: BoardProps) {
     if (!start) {
       setStart(true);
     }
-    let prevLetter = board[rowIndex][colIndex];
-    const newBoard = [...board];
+    let prevLetter = userState.board[rowIndex][colIndex];
+    const newBoard = [...userState.board];
 
     const tile = document.getElementById(`${rowIndex}-${colIndex}`);
     applyAnimation(tile, setAnimateFlip);
 
     // Replace letter with new selection
     newBoard[rowIndex][colIndex] = letter;
+    setBoard(newBoard);
 
     // Check if Word has been created & delete it if it was
     const foundWord = checkForWords(
       newBoard,
-      foundWords,
+      userState.foundWords,
       setFoundWords,
       setRecentFoundWords,
       setAnimatedPoints,
       setAnimateFound,
-      points,
+      userState.points,
       setPoints,
       isDark,
       setBoard
@@ -275,7 +245,7 @@ function Board(props: BoardProps) {
 
     const swapCounter = document.querySelector(".swaps-container");
     if (prevLetter !== " " && !foundWord) {
-      setSwapCount(swapCount - 1);
+      setSwapCount(userState.swapCount - 1);
       swapCounter?.classList.add("animate");
       setTimeout(() => {
         swapCounter?.classList.remove("animate");
@@ -285,10 +255,10 @@ function Board(props: BoardProps) {
     // Update next letter
     let currentLetter = getRandomLetter();
     //no duplicates inside next letters boxes
-    while (nextLetter.includes(currentLetter)) {
+    while (userState.nextLetters.includes(currentLetter)) {
       currentLetter = getRandomLetter();
     }
-    setNextLetter(nextLetter.substring(1) + currentLetter);
+    setNextLetters(userState.nextLetters.substring(1) + currentLetter);
   };
 
   const toggleFoundWordsBox = () => {
@@ -327,11 +297,11 @@ function Board(props: BoardProps) {
       {showStatsModal && (
         <Modal
           type={"statistics"}
-          score={foundWords.length}
-          points={points}
-          weeklyScores={weeklyScores}
-          weeklyPoints={weeklyPoints}
-          swapCount={swapCount}
+          score={userState.foundWords.length}
+          points={userState.points}
+          weeklyScores={userState.weeklyScores}
+          weeklyPoints={userState.weeklyPoints}
+          swapCount={userState.swapCount}
           onClose={handleCloseModal}
           reset={ResetGame}
         />
@@ -339,23 +309,23 @@ function Board(props: BoardProps) {
       {props.showStats && (
         <Modal
           type={"statistics"}
-          score={weeklyScores[day] ?? -1}
-          points={weeklyPoints[day] ?? -1}
-          weeklyScores={weeklyScores}
-          weeklyPoints={weeklyPoints}
-          swapCount={swapCount}
+          score={userState.weeklyScores[DAY] ?? -1}
+          points={userState.weeklyPoints[DAY] ?? -1}
+          weeklyScores={userState.weeklyScores}
+          weeklyPoints={userState.weeklyPoints}
+          swapCount={userState.swapCount}
           onClose={props.handleCloseStatsModal}
           reset={ResetGame}
         />
       )}
-      {!hasPlayed && showComponent && (
+      {!userState.hasPlayed && showComponent && (
         <Modal
           type={"how-to-play"}
-          score={foundWords.length}
-          points={points}
+          score={userState.foundWords.length}
+          points={userState.points}
           weeklyScores={[]}
           weeklyPoints={[]}
-          swapCount={swapCount}
+          swapCount={userState.swapCount}
           onClose={handleCloseModal}
           reset={() => {}}
         />
@@ -368,7 +338,7 @@ function Board(props: BoardProps) {
               style={mergeStyles(colorStyle, borderStyle)}
             >
               <b>Swaps: </b>
-              <div>{swapCount >= 0 ? swapCount : 0}</div>
+              <div>{userState.swapCount >= 0 ? userState.swapCount : 0}</div>
             </div>
           </div>
           <div
@@ -382,25 +352,25 @@ function Board(props: BoardProps) {
               className="tile medium-tile"
               style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
             >
-              {nextLetter[0]}
+              {userState.nextLetters[0]}
             </div>
             <div
               className="tile small-tile"
               style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
             >
-              {nextLetter[1]}
+              {userState.nextLetters[1]}
             </div>
             <div
               className="tile small-tile"
               style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
             >
-              {nextLetter[2]}
+              {userState.nextLetters[2]}
             </div>
           </div>
         </div>
 
         <div className="board">
-          {board.map((row, rowIndex) => (
+          {userState.board.map((row, rowIndex) => (
             <div key={rowIndex}>
               {row.map((letter, colIndex) => (
                 <div
@@ -413,11 +383,15 @@ function Board(props: BoardProps) {
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
-                    swapCount <= 0
+                    userState.swapCount <= 0
                       ? handleOpenModal()
                       : !animateFlip &&
                         !animateFound &&
-                        handleBoard(rowIndex, colIndex, nextLetter[0])
+                        handleBoard(
+                          rowIndex,
+                          colIndex,
+                          userState.nextLetters[0]
+                        )
                   }
                 >
                   {letter}
@@ -444,18 +418,18 @@ function Board(props: BoardProps) {
           >
             <div className="found-word-title">
               <div className="found-word-right-column">
-                Words: <b>{foundWords.length}</b>
+                Words: <b>{userState.foundWords.length}</b>
               </div>
               <div className="middle-divider">|</div>
               <div className="found-word-left-column">
-                Points: <b>{points}</b>
+                Points: <b>{userState.points}</b>
               </div>
             </div>
             <div className="found-words-list">
               {foundWordsExpand &&
-                foundWords.sort().map((word, i) => (
+                userState.foundWords.sort().map((word, i) => (
                   <div className="found-word-text" key={i}>
-                    {recentFoundWords.includes(word) ? (
+                    {userState.recentFoundWords.includes(word) ? (
                       <b
                         className={
                           isDark ? "found-word-dark" : "found-word-light"

@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { words } from "../../words";
 
+const BOARDSIZE = 5;
+
 const pointMap: { [key: string]: number } = {
   A: 1,
   B: 2,
@@ -86,19 +88,18 @@ export const getRandomLetter = (): string => {
 
 //Board Checking and animation Handling
 type Direction = "row" | "column" | "diagonalRight" | "diagonalLeft";
-const BOARDSIZE = 5;
 
 export const checkForWords = (
   board: string[][],
   foundWords: string[],
-  setFoundWords: Dispatch<SetStateAction<string[]>>,
-  setRecentFoundWords: Dispatch<SetStateAction<string[]>>,
+  setFoundWords: (foundWords: string[]) => void,
+  setRecentFoundWords: (recentFoundWords: string[]) => void,
   setAnimatedPoints: Dispatch<SetStateAction<number>>,
   setAnimateFound: Dispatch<SetStateAction<boolean>>,
   points: number,
-  setPoints: Dispatch<SetStateAction<number>>,
+  setPoints: (points: number) => void,
   isDark: boolean,
-  setBoard: Dispatch<SetStateAction<string[][]>>
+  setBoard: (newBoard: string[][]) => void
 ): boolean => {
   let foundWord = false;
   let foundSequences = [];
@@ -227,7 +228,7 @@ const replaceRow = (
   row: number,
   setAnimateFound: Dispatch<SetStateAction<boolean>>,
   isDark: boolean,
-  setBoard: Dispatch<SetStateAction<string[][]>>
+  setBoard: (newBoard: string[][]) => void
 ) => {
   let j = BOARDSIZE - 1; //for diagonal right
   for (let i = 0; i < BOARDSIZE; i++) {
@@ -293,7 +294,7 @@ const applyFoundAnimation = (
   col: number,
   setAnimateFound: Dispatch<SetStateAction<boolean>>,
   isDark: boolean,
-  setBoard: Dispatch<SetStateAction<string[][]>>
+  setBoard: (newBoard: string[][]) => void
 ) => {
   setAnimateFound(true);
   isDark
