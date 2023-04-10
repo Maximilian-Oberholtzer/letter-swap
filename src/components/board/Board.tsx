@@ -15,8 +15,10 @@ import {
 } from "./BoardFunctions";
 import { UserState } from "../main/Main";
 import "./board.css";
+import { bonusLetters } from "../../bonusLetters";
 import HowToPlayModal from "../modal/HowToPlayModal";
 import StatisticsModal from "../modal/StatisticsModal";
+import BonusLetterModal from "../modal/BonusLetterModal";
 
 const DAY = new Date().getDay();
 
@@ -106,6 +108,8 @@ function Board(props: BoardProps) {
     [setUserState]
   );
 
+  //Daily bonus letter
+  const [bonusLetter, setBonusLetter] = useState("");
   //Animated current points effect
   const [animatedPoints, setAnimatedPoints] = useState(0);
   //For pausing the game to allow animations
@@ -113,6 +117,11 @@ function Board(props: BoardProps) {
   const [animateFound, setAnimateFound] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
+
+  const handleBonusLetterModal = useCallback(() => {
+    setShowBonusLetterModal(!showBonusLetterModal);
+  }, [setShowBonusLetterModal, showBonusLetterModal]);
 
   //for calculating hieght for found words container
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
@@ -124,7 +133,7 @@ function Board(props: BoardProps) {
   useEffect(() => {
     //wait for 1.5 seconds before showing modal on load
     if (startGameSwapCount <= 0) {
-      handleOpenModal();
+      openStatsModal();
     }
     if (!userState.hasPlayed) {
       setTimeout(() => {
@@ -136,9 +145,9 @@ function Board(props: BoardProps) {
   //GAME OVER - Check
   useEffect(() => {
     if (userState.lastPlayedDate !== DAY) {
-      if (userState.swapCount <= 0) {
-        resetGame();
-      }
+      setLastPlayedDate(DAY);
+      handleBonusLetterModal();
+      resetGame();
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
       weeklyScoreArr[DAY] = null;
@@ -147,7 +156,7 @@ function Board(props: BoardProps) {
       setWeeklyPoints(weeklyPointsArr);
     }
     if (userState.swapCount === 0) {
-      handleOpenModal();
+      openStatsModal();
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
       //only overwrite score if it beats current daily score
@@ -159,8 +168,6 @@ function Board(props: BoardProps) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
       }
-
-      setLastPlayedDate(DAY);
       setSwapCount(-1);
     }
   }, [
@@ -175,7 +182,18 @@ function Board(props: BoardProps) {
     setWeeklyPoints,
     setWeeklyScores,
     resetGame,
+    handleBonusLetterModal,
   ]);
+
+  //set daily bonus letter based on current day
+  useEffect(() => {
+    const today = new Date();
+    const startDate = new Date("2023-04-10");
+    const differenceInDays = Math.floor(
+      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    setBonusLetter(bonusLetters[differenceInDays]);
+  }, []);
 
   //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {
@@ -185,11 +203,16 @@ function Board(props: BoardProps) {
     }
   }, [foundWordsExpand]);
 
-  const handleOpenModal = () => {
+  const openStatsModal = () => {
     setShowStatsModal(true);
   };
+  const closeStatsModal = () => {
+    setShowStatsModal(false);
+  };
+
   const handleCloseModal = () => {
     setHasPlayed(true);
+    handleBonusLetterModal();
     setShowStatsModal(false);
   };
 
@@ -215,7 +238,8 @@ function Board(props: BoardProps) {
       userState.points,
       setPoints,
       isDark,
-      setBoard
+      setBoard,
+      bonusLetter
     );
 
     const swapCounter = document.querySelector(".swaps-container");
@@ -259,14 +283,20 @@ function Board(props: BoardProps) {
   };
   const borderStyle = {
     border: isDark
-      ? "2px solid var(--dark-border-full)"
-      : "2px solid var(--light-border-full)",
+      ? "0.15rem solid var(--dark-border-full)"
+      : "0.15rem solid var(--light-border-full)",
+  };
+  const bonusBorderStyle = {
+    border: isDark
+      ? "0.15rem dashed var(--dark-border-full)"
+      : "0.15rem dashed var(--light-border-full)",
   };
   const emptyBorderStyle = {
     border: isDark
-      ? "2px solid var(--dark-border-empty)"
-      : "2px solid var(--light-border-empty)",
+      ? "0.15rem solid var(--dark-border-empty)"
+      : "0.15rem solid var(--light-border-empty)",
   };
+
   return (
     <div className="board-section">
       {showStatsModal && (
@@ -276,12 +306,18 @@ function Board(props: BoardProps) {
           weeklyScores={userState.weeklyScores}
           weeklyPoints={userState.weeklyPoints}
           swapCount={userState.swapCount}
-          onClose={handleCloseModal}
+          onClose={closeStatsModal}
           reset={resetGame}
         />
       )}
       {!userState.hasPlayed && showComponent && (
         <HowToPlayModal onClose={handleCloseModal} />
+      )}
+      {showBonusLetterModal && (
+        <BonusLetterModal
+          onClose={handleBonusLetterModal}
+          bonusLetter={bonusLetter}
+        />
       )}
       <div ref={boardHeight} className="board-container">
         <div className="hud-container">
@@ -303,19 +339,43 @@ function Board(props: BoardProps) {
             <b className="next-letters-title">Next:</b>
             <div
               className="tile medium-tile"
-              style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
+              style={mergeStyles(
+                colorStyle,
+                userState.nextLetters[0] !== " "
+                  ? userState.nextLetters[0] === bonusLetter
+                    ? bonusBorderStyle
+                    : borderStyle
+                  : emptyBorderStyle,
+                backgroundStyle
+              )}
             >
               {userState.nextLetters[0]}
             </div>
             <div
               className="tile small-tile"
-              style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
+              style={mergeStyles(
+                colorStyle,
+                userState.nextLetters[1] !== " "
+                  ? userState.nextLetters[1] === bonusLetter
+                    ? bonusBorderStyle
+                    : borderStyle
+                  : emptyBorderStyle,
+                backgroundStyle
+              )}
             >
               {userState.nextLetters[1]}
             </div>
             <div
               className="tile small-tile"
-              style={mergeStyles(colorStyle, borderStyle, backgroundStyle)}
+              style={mergeStyles(
+                colorStyle,
+                userState.nextLetters[2] !== " "
+                  ? userState.nextLetters[2] === bonusLetter
+                    ? bonusBorderStyle
+                    : borderStyle
+                  : emptyBorderStyle,
+                backgroundStyle
+              )}
             >
               {userState.nextLetters[2]}
             </div>
@@ -330,14 +390,18 @@ function Board(props: BoardProps) {
                   className="tile"
                   style={mergeStyles(
                     colorStyle,
-                    letter === " " ? emptyBorderStyle : borderStyle,
+                    letter !== " "
+                      ? letter === bonusLetter
+                        ? bonusBorderStyle
+                        : borderStyle
+                      : emptyBorderStyle,
                     backgroundStyle
                   )}
                   id={`${rowIndex}-${colIndex}`}
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
                     userState.swapCount <= 0
-                      ? handleOpenModal()
+                      ? openStatsModal()
                       : !animateFlip &&
                         !animateFound &&
                         handleBoard(

@@ -186,3 +186,9 @@
 .copyright-text {
   margin: 1rem 2rem;
 }
+
+.bonus-letter-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
