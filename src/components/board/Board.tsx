@@ -314,7 +314,10 @@ function Board(props: BoardProps) {
         <HowToPlayModal onClose={handleCloseModal} />
       )}
       {showBonusLetterModal && (
-        <BonusLetterModal onClose={handleBonusLetterModal} />
+        <BonusLetterModal
+          onClose={handleBonusLetterModal}
+          bonusLetter={bonusLetter}
+        />
       )}
       <div ref={boardHeight} className="board-container">
         <div className="hud-container">

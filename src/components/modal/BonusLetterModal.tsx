@@ -2,49 +2,35 @@ import React from "react";
 import { useTheme } from "../Theme";
 import "./modal.css";
 
-const bonusLetter = (
+const day = new Date().getDate();
+const month = new Date().getMonth();
+
+const BonusLetter = (bonusLetter: string, isDark: boolean) => (
   <div>
-    <h1 className="modal-title">Today's Bonus Letter</h1>
-    <p className="modal-subtitle">Create as many 5-letter words as possible</p>
-    <ul style={{ paddingInlineStart: "20px" }}>
-      <li className="how-to-play-instructions">
-        Tap on a tile to replace it with the next letter.
-      </li>
-      <li className="how-to-play-instructions">
-        Spelling a <b>unique</b> 5-letter word in <b>any direction</b> clears
-        the row.
-      </li>
-      <li className="how-to-play-instructions">
-        Replacing a tile that <b>does not</b> complete a word uses a <b>swap</b>
-        .
-      </li>
-      <li className="how-to-play-instructions">
-        Tap the points/words box to view your words.
-      </li>
-      <li className="how-to-play-instructions">
-        The game is over when you run out of swaps.
-      </li>
-    </ul>
-    <p className="modal-subtitle-small">Points</p>
-    <ul style={{ paddingInlineStart: "20px" }}>
-      <li>1 point - A, D, E, H, I, L, N, O, R, S, T </li>
-      <li>2 points - B, C, F, G, M, P, U, W, Y </li>
-      <li>3 points - J, K, Q, V, X, Z </li>
-      <li>
-        3 <b>bonus</b> points for finding a word in a diagonal direction
-      </li>
-      <li>
-        5 <b>bonus</b> points for each additional word found in one turn
-      </li>
-    </ul>
+    <h1 className="modal-title">
+      Bonus Letter ({month + 1}/{day})
+    </h1>
+    <p className="modal-subtitle">Bonus Letters are worth 2x points</p>
+    <div className="bonus-letter-container">
+      <div className="bonus-letter-text">Today's bonus letter: </div>
+      <div
+        className="tile small-tile"
+        style={{
+          border: isDark ? "0.15rem dashed #cfcfcf" : "0.15rem dashed #505050",
+        }}
+      >
+        {bonusLetter}
+      </div>
+    </div>
   </div>
 );
 
 interface ModalProps {
   onClose: () => void;
+  bonusLetter: string;
 }
 
-const BonusLetterModal: React.FC<ModalProps> = ({ onClose }) => {
+const BonusLetterModal: React.FC<ModalProps> = ({ onClose, bonusLetter }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -107,7 +93,7 @@ const BonusLetterModal: React.FC<ModalProps> = ({ onClose }) => {
             </g>
           </svg>
         </button>
-        {bonusLetter}
+        {BonusLetter(bonusLetter, isDark)}
       </div>
     </div>
   );
