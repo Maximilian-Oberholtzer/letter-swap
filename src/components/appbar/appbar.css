@@ -1,0 +1,151 @@
+@media screen and (max-width: 1024px) {
+  .title {
+    font-size: 1.2rem;
+  }
+  .title-tile,
+  .title-tile-2 {
+    font-size: 2rem !important;
+    width: 2rem;
+    height: 2rem;
+  }
+  .help-button-svg {
+    height: 2rem;
+    width: 2rem;
+  }
+  .stats-button-svg {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+  .settings-button-svg {
+    height: 2rem;
+    width: 2rem;
+  }
+  .title-container {
+    justify-content: flex-start !important;
+    margin-left: 1rem !important;
+  }
+  .menu-right {
+    gap: 0.3rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .title-tile,
+  .title-tile-2 {
+    font-size: 2.5rem !important;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .help-button-svg {
+    width: 3rem;
+    height: 3rem;
+  }
+  .stats-button-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .settings-button-svg {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+  .menu-right {
+    gap: 0.5rem;
+  }
+}
+
+.appbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid grey;
+  transition: var(--theme-transition);
+}
+
+.title-container {
+  background-color: white;
+  margin-left: 11rem;
+  justify-content: center;
+  display: flex;
+  flex-grow: 1;
+  font-family: var(--font);
+  user-select: none;
+  font-weight: 100;
+  padding: 0.2rem;
+  z-index: 400;
+  transition: var(--theme-transition);
+}
+
+.title {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font);
+  user-select: none;
+  font-weight: 700;
+  transition: var(--theme-transition);
+}
+
+.title-tile,
+.title-tile-2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(61, 61, 61);
+  color: black;
+  margin: 0.2rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  user-select: none;
+  font-weight: 500 !important;
+  transition: var(--theme-transition);
+}
+
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+}
+
+.help-button {
+  all: unset;
+  cursor: pointer !important;
+}
+
+.stats-button {
+  all: unset;
+  cursor: pointer !important;
+  margin-right: 0.2rem;
+}
+
+.theme-button-svg {
+  height: 2rem;
+  width: 2rem;
+}
+
+.settings-button {
+  all: unset;
+  cursor: pointer !important;
+  margin-bottom: 0.1rem;
+}
+
+.animate-delay-short {
+  animation: flip 0.3s ease;
+  animation-delay: 0.3s;
+}
+
+.animate-delay-medium {
+  animation: flip 0.3s ease;
+  animation-delay: 0.5s;
+}
+
+.animate-delay-long {
+  animation: flip 0.3s ease;
+  animation-delay: 0.8s;
+}

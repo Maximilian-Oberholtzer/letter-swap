@@ -9,27 +9,23 @@ import React, {
 import Modal from "../modal/Modal";
 import { useTheme } from "../Theme";
 import {
-  fillEmptyBoard,
   getRandomLetter,
   checkForWords,
   applyAnimation,
-  fillNewNextLetters,
 } from "./BoardFunctions";
 import { UserState } from "../main/Main";
 import "./board.css";
 
-const SWAPCOUNT = 15;
 const DAY = new Date().getDay();
 
 interface BoardProps {
-  showStats: boolean;
-  handleCloseStatsModal: () => void;
   userState: UserState;
   setUserState: Dispatch<SetStateAction<UserState>>;
+  resetGame: () => void;
 }
 
 function Board(props: BoardProps) {
-  const { userState, setUserState } = props;
+  const { userState, setUserState, resetGame } = props;
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -113,7 +109,6 @@ function Board(props: BoardProps) {
   //For pausing the game to allow animations
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
-  const [start, setStart] = useState(false);
   //wait for 1 second before showing modal on load
   const [showComponent, setShowComponent] = useState<any>(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
@@ -136,29 +131,11 @@ function Board(props: BoardProps) {
     }
   }, [startGameSwapCount, userState.hasPlayed]);
 
-  const ResetGame = useCallback(() => {
-    setLastPlayedDate(DAY);
-    setBoard(fillEmptyBoard());
-    setSwapCount(SWAPCOUNT);
-    setStart(false);
-    setPoints(0);
-    setFoundWords([]);
-    setNextLetters(fillNewNextLetters());
-  }, [
-    setLastPlayedDate,
-    setBoard,
-    setSwapCount,
-    setStart,
-    setPoints,
-    setFoundWords,
-    setNextLetters,
-  ]);
-
   //GAME OVER - Check
   useEffect(() => {
     if (userState.lastPlayedDate !== DAY) {
       if (userState.swapCount <= 0) {
-        ResetGame();
+        resetGame();
       }
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
@@ -183,7 +160,6 @@ function Board(props: BoardProps) {
 
       setLastPlayedDate(DAY);
       setSwapCount(-1);
-      setStart(false);
     }
   }, [
     userState.swapCount,
@@ -192,11 +168,11 @@ function Board(props: BoardProps) {
     userState.weeklyScores,
     userState.points,
     userState.weeklyPoints,
-    ResetGame,
     setLastPlayedDate,
     setSwapCount,
     setWeeklyPoints,
     setWeeklyScores,
+    resetGame,
   ]);
 
   //calculate height of board container (for found words drawer dynamic height)
@@ -216,9 +192,6 @@ function Board(props: BoardProps) {
   };
 
   const handleBoard = (rowIndex: number, colIndex: number, letter: string) => {
-    if (!start) {
-      setStart(true);
-    }
     let prevLetter = userState.board[rowIndex][colIndex];
     const newBoard = [...userState.board];
 
@@ -303,19 +276,7 @@ function Board(props: BoardProps) {
           weeklyPoints={userState.weeklyPoints}
           swapCount={userState.swapCount}
           onClose={handleCloseModal}
-          reset={ResetGame}
-        />
-      )}
-      {props.showStats && (
-        <Modal
-          type={"statistics"}
-          score={userState.weeklyScores[DAY] ?? -1}
-          points={userState.weeklyPoints[DAY] ?? -1}
-          weeklyScores={userState.weeklyScores}
-          weeklyPoints={userState.weeklyPoints}
-          swapCount={userState.swapCount}
-          onClose={props.handleCloseStatsModal}
-          reset={ResetGame}
+          reset={resetGame}
         />
       )}
       {!userState.hasPlayed && showComponent && (
