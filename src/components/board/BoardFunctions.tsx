@@ -82,7 +82,6 @@ export const getRandomLetter = (): string => {
 
   const randomIndex: number = weightedRandomIndex(weights);
   const randomLetter: Letter = alphabet[randomIndex];
-
   return randomLetter.toUpperCase();
 };
 
@@ -99,7 +98,8 @@ export const checkForWords = (
   points: number,
   setPoints: (points: number) => void,
   isDark: boolean,
-  setBoard: (newBoard: string[][]) => void
+  setBoard: (newBoard: string[][]) => void,
+  bonusLetter: string
 ): boolean => {
   let foundWord = false;
   let foundSequences = [];
@@ -215,7 +215,11 @@ export const checkForWords = (
       const currentWord = foundSequences[i];
       for (let j = 0; j < currentWord.length; j++) {
         const currentLetter = currentWord[j];
-        currentPoints += pointMap[currentLetter];
+        if (currentLetter === bonusLetter) {
+          currentPoints += pointMap[currentLetter] * 2;
+        } else {
+          currentPoints += pointMap[currentLetter];
+        }
       }
     }
     setAnimatedPoints(currentPoints);
