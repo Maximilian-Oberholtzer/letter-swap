@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useTheme } from "../Theme";
-import Modal from "../modal/Modal";
+import StatisticsModal from "../modal/StatisticsModal";
+import HowToPlayModal from "../modal/HowToPlayModal";
+import SettingsModal from "../modal/SettingsModal";
 import { UserState } from "../main/Main";
 import "./appbar.css";
 
@@ -40,21 +42,9 @@ function Appbar(props: AppbarProps) {
           : "var(--light-background)",
       }}
     >
-      {showInstructions && (
-        <Modal
-          type={"how-to-play"}
-          score={0}
-          points={0}
-          weeklyScores={[]}
-          weeklyPoints={[]}
-          swapCount={0}
-          onClose={handleInstructionsModal}
-          reset={() => {}}
-        />
-      )}
+      {showInstructions && <HowToPlayModal onClose={handleInstructionsModal} />}
       {showStats && (
-        <Modal
-          type={"statistics"}
+        <StatisticsModal
           score={userState.weeklyScores[DAY] ?? -1}
           points={userState.weeklyPoints[DAY] ?? -1}
           weeklyScores={userState.weeklyScores}
@@ -65,16 +55,7 @@ function Appbar(props: AppbarProps) {
         />
       )}
       {showSettings && (
-        <Modal
-          type={"settings"}
-          score={0}
-          points={0}
-          weeklyScores={[]}
-          weeklyPoints={[]}
-          swapCount={0}
-          onClose={handleSettingsModal}
-          reset={() => {}}
-        />
+        <SettingsModal onClose={handleSettingsModal} reset={resetGame} />
       )}
       <div
         className="title-container"

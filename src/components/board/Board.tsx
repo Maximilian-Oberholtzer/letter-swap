@@ -6,7 +6,7 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import Modal from "../modal/Modal";
+
 import { useTheme } from "../Theme";
 import {
   getRandomLetter,
@@ -15,6 +15,8 @@ import {
 } from "./BoardFunctions";
 import { UserState } from "../main/Main";
 import "./board.css";
+import HowToPlayModal from "../modal/HowToPlayModal";
+import StatisticsModal from "../modal/StatisticsModal";
 
 const DAY = new Date().getDay();
 
@@ -109,8 +111,7 @@ function Board(props: BoardProps) {
   //For pausing the game to allow animations
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
-  //wait for 1 second before showing modal on load
-  const [showComponent, setShowComponent] = useState<any>(false);
+  const [showComponent, setShowComponent] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
 
   //for calculating hieght for found words container
@@ -121,13 +122,14 @@ function Board(props: BoardProps) {
   //If user loads into a game with 0 swaps left
   const startGameSwapCount = userState.swapCount;
   useEffect(() => {
+    //wait for 1.5 seconds before showing modal on load
     if (startGameSwapCount <= 0) {
       handleOpenModal();
     }
     if (!userState.hasPlayed) {
       setTimeout(() => {
         setShowComponent(true);
-      }, 1000);
+      }, 1500);
     }
   }, [startGameSwapCount, userState.hasPlayed]);
 
@@ -222,7 +224,7 @@ function Board(props: BoardProps) {
       swapCounter?.classList.add("animate");
       setTimeout(() => {
         swapCounter?.classList.remove("animate");
-      }, 300);
+      }, 250);
     }
 
     // Update next letter
@@ -268,8 +270,7 @@ function Board(props: BoardProps) {
   return (
     <div className="board-section">
       {showStatsModal && (
-        <Modal
-          type={"statistics"}
+        <StatisticsModal
           score={userState.foundWords.length}
           points={userState.points}
           weeklyScores={userState.weeklyScores}
@@ -280,16 +281,7 @@ function Board(props: BoardProps) {
         />
       )}
       {!userState.hasPlayed && showComponent && (
-        <Modal
-          type={"how-to-play"}
-          score={userState.foundWords.length}
-          points={userState.points}
-          weeklyScores={[]}
-          weeklyPoints={[]}
-          swapCount={userState.swapCount}
-          onClose={handleCloseModal}
-          reset={() => {}}
-        />
+        <HowToPlayModal onClose={handleCloseModal} />
       )}
       <div ref={boardHeight} className="board-container">
         <div className="hud-container">
