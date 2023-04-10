@@ -248,6 +248,10 @@
 }
 
 .animate {
+  animation: flip 0.25s ease;
+}
+
+.animate-slow {
   animation: flip 0.3s ease;
 }
 

@@ -103,6 +103,7 @@ export const checkForWords = (
 ): boolean => {
   let foundWord = false;
   let foundSequences = [];
+  let currentPoints = 0;
 
   //check columns
   for (let i = 0; i < BOARDSIZE; i++) {
@@ -164,12 +165,14 @@ export const checkForWords = (
   let reverseSequence = sequence.split("").reverse().join("");
   if (words.includes(sequence.toLowerCase())) {
     if (!foundWords.includes(sequence)) {
+      currentPoints += 3;
       foundWord = true;
       foundSequences.push(sequence);
       replaceRow(board, "diagonalRight", i, setAnimateFound, isDark, setBoard);
     }
   } else if (words.includes(reverseSequence.toLowerCase())) {
     if (!foundWords.includes(reverseSequence)) {
+      currentPoints += 3;
       foundWord = true;
       foundSequences.push(reverseSequence);
       replaceRow(board, "diagonalRight", i, setAnimateFound, isDark, setBoard);
@@ -186,12 +189,14 @@ export const checkForWords = (
   reverseSequence = sequence.split("").reverse().join("");
   if (words.includes(sequence.toLowerCase())) {
     if (!foundWords.includes(sequence)) {
+      currentPoints += 3;
       foundWord = true;
       foundSequences.push(sequence);
       replaceRow(board, "diagonalLeft", i, setAnimateFound, isDark, setBoard);
     }
   } else if (words.includes(reverseSequence.toLowerCase())) {
     if (!foundWords.includes(reverseSequence)) {
+      currentPoints += 3;
       foundWord = true;
       foundSequences.push(reverseSequence);
       replaceRow(board, "diagonalLeft", i, setAnimateFound, isDark, setBoard);
@@ -202,7 +207,6 @@ export const checkForWords = (
     setFoundWords([...foundWords, ...foundSequences]);
     setRecentFoundWords(foundSequences);
     //calculate score based on found words
-    let currentPoints = 0;
     //bonus points for additional words
     if (foundSequences.length > 1) {
       currentPoints += 5 * (foundSequences.length - 1);
@@ -304,7 +308,7 @@ const applyFoundAnimation = (
   const titleTile = document.querySelector(".title-tile");
   const titleTile2 = document.querySelector(".title-tile-2");
   const animatedPoints = document.querySelector(".animated-points");
-  titleTile?.classList.add("animate");
+  titleTile?.classList.add("animate-slow");
   titleTile2?.classList.add("animate-delay-medium");
   animatedPoints?.classList.add("show-animated-points");
   setTimeout(() => {
@@ -337,5 +341,5 @@ export const applyAnimation = (
   setTimeout(() => {
     tile?.classList.remove("animate");
     setAnimateFlip(false);
-  }, 300);
+  }, 250);
 };

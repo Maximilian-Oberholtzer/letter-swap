@@ -2,17 +2,6 @@ import React from "react";
 import { useTheme } from "../Theme";
 import "./modal.css";
 
-interface ModalProps {
-  type: string;
-  score: number;
-  points: number;
-  onClose: () => void;
-  reset: () => void;
-  weeklyScores: (number | null)[];
-  weeklyPoints: (number | null)[];
-  swapCount: number;
-}
-
 const handleShare = async (score: number, points: number, rank: string) => {
   if (navigator.share) {
     try {
@@ -30,106 +19,6 @@ const handleShare = async (score: number, points: number, rank: string) => {
     console.warn("Web Share API not supported on this device.");
   }
 };
-
-const howToPlay = (
-  <div>
-    <h1 className="modal-title">How To Play</h1>
-    <p className="modal-subtitle">Create as many 5-letter words as possible</p>
-    <ul style={{ paddingInlineStart: "20px" }}>
-      <li className="how-to-play-instructions">
-        Tap on a tile to replace it with the next letter.
-      </li>
-      <li className="how-to-play-instructions">
-        Spelling a <b>unique</b> 5-letter word in <b>any direction</b> clears
-        the row.
-      </li>
-      <li className="how-to-play-instructions">
-        Replacing a tile that <b>does not</b> complete a word uses a <b>swap</b>
-        .
-      </li>
-      <li className="how-to-play-instructions">
-        Tap the points/words box to view your words.
-      </li>
-      <li className="how-to-play-instructions">
-        The game is over when you run out of swaps.
-      </li>
-    </ul>
-    <p className="modal-subtitle-small">Points</p>
-    <ul style={{ paddingInlineStart: "20px" }}>
-      <li>1 point - A, D, E, H, I, L, N, O, R, S, T </li>
-      <li>2 points - B, C, F, G, M, P, U, W, Y </li>
-      <li>3 points - J, K, Q, V, X, Z </li>
-      <li>5 points for each additional word found in one turn</li>
-    </ul>
-  </div>
-);
-
-const currentYear = new Date().getFullYear();
-const settings = (toggleTheme: () => void, isDark: boolean) => (
-  <div>
-    <h1 className="modal-title">Options</h1>
-    <div className="theme-container">
-      <div>Light / Dark mode:</div>
-      <button className="theme-button" onClick={toggleTheme}>
-        <svg
-          className="theme-button-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            style={{
-              stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
-              transition: "300ms stroke",
-            }}
-            d="M12 7a5 5 0 0 0-3.573 8.497c.343.351.626.77.722 1.251l.53 2.644A2 2 0 0 0 11.638 21h.722a2 2 0 0 0 1.96-1.608l.53-2.644c.096-.482.379-.9.722-1.25A5 5 0 0 0 12 7z"
-            strokeWidth="2"
-          />
-          <path
-            style={{
-              stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
-              transition: "300ms stroke",
-            }}
-            d="M12 4V3M18 6l1-1M20 12h1M4 12H3M5 5l1 1M10 17h4"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-    </div>
-    <p className="modal-subtitle-small">Ranks</p>
-    <ul style={{ paddingInlineStart: "20px" }}>
-      <li>Beginner: 0 points</li>
-      <li>Rookie: 30 points</li>
-      <li>Veteran: 70 points</li>
-      <li>Expert: 120 points</li>
-      <li>Epic: 180 points</li>
-      <li>Legend: 240 points</li>
-      <li>Unreal: 300 points</li>
-      <li>Grandmaster: 500+ points</li>
-    </ul>
-
-    <div className="modal-bottom-container">
-      <a
-        href="https://www.buymeacoffee.com/maxoberholtzer"
-        rel="noreferrer"
-        target="_blank"
-        style={{
-          border: isDark
-            ? "2px solid var(--dark-text)"
-            : "2px solid var(--light-text)",
-        }}
-        className="donate-link"
-      >
-        <b>Buy me a Beer! 🍺</b>
-      </a>
-    </div>
-    <div className="copyright-text">
-      &copy; {currentYear} Maximilian Oberholtzer
-    </div>
-  </div>
-);
 
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const currentDay = new Date().getDay();
@@ -207,6 +96,7 @@ const statistics = (
         );
       })}
     </div>
+
     {weeklyScores[currentDay] !== null ? (
       <div className="modal-bottom-container">
         <button
@@ -304,8 +194,17 @@ const statistics = (
   </>
 );
 
-const Modal: React.FC<ModalProps> = ({
-  type,
+interface ModalProps {
+  score: number;
+  points: number;
+  onClose: () => void;
+  reset: () => void;
+  weeklyScores: (number | null)[];
+  weeklyPoints: (number | null)[];
+  swapCount: number;
+}
+
+const StatisticsModal: React.FC<ModalProps> = ({
   score,
   points,
   onClose,
@@ -314,8 +213,9 @@ const Modal: React.FC<ModalProps> = ({
   weeklyPoints,
   swapCount,
 }) => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === "dark";
+
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
   };
@@ -328,7 +228,6 @@ const Modal: React.FC<ModalProps> = ({
     }, 300);
   };
 
-  //define ranks and pass into statistics
   let rank = "";
   if (points < 35) {
     rank = "Beginner 🔰";
@@ -381,7 +280,7 @@ const Modal: React.FC<ModalProps> = ({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g id="Menu / Close_MD">
+            <g>
               <path
                 style={{
                   stroke: isDark ? "var(--dark-text)" : "var(--light-text)",
@@ -395,23 +294,20 @@ const Modal: React.FC<ModalProps> = ({
             </g>
           </svg>
         </button>
-        {type === "statistics" &&
-          statistics(
-            score,
-            points,
-            weeklyScores,
-            weeklyPoints,
-            swapCount,
-            rank,
-            isDark,
-            reset,
-            closeModal
-          )}
-        {type === "how-to-play" && howToPlay}
-        {type === "settings" && settings(toggleTheme, isDark)}
+        {statistics(
+          score,
+          points,
+          weeklyScores,
+          weeklyPoints,
+          swapCount,
+          rank,
+          isDark,
+          reset,
+          closeModal
+        )}
       </div>
     </div>
   );
 };
 
-export default Modal;
+export default StatisticsModal;
