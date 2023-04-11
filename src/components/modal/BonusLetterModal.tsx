@@ -30,14 +30,14 @@ const BonusLetter = (bonusLetter: string, isDark: boolean) => (
       <li>
         The bonus letter is worth <b>2x</b> points
       </li>
-      <li>Bonus letters have dashed borders</li>
+      <li>Bonus letters have dotted borders</li>
     </ul>
     <div className="bonus-letter-container">
       <div className="bonus-letter-text">Today's bonus letter: </div>
       <div
         className="tile small-tile"
         style={{
-          border: isDark ? "0.15rem dashed #cfcfcf" : "0.15rem dashed #505050",
+          border: isDark ? "0.15rem dotted #cfcfcf" : "0.15rem dotted #505050",
           color: isDark ? "var(--dark-text)" : "var(--light-text)",
           backgroundColor: isDark
             ? "var(--dark-background)"
