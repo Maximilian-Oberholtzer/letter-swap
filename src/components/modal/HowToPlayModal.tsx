@@ -82,6 +82,9 @@ const HowToPlayModal: React.FC<ModalProps> = ({ onClose }) => {
       >
         <button
           className="close-button"
+          id="close-button"
+          type="button"
+          aria-label="Close"
           onClick={() => {
             closeModal();
           }}
