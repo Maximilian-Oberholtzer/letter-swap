@@ -4,19 +4,44 @@ import "./modal.css";
 
 const day = new Date().getDate();
 const month = new Date().getMonth();
+const year = new Date().getFullYear();
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const BonusLetter = (bonusLetter: string, isDark: boolean) => (
   <div>
-    <h1 className="modal-title">
-      Bonus Letter ({month + 1}/{day})
-    </h1>
-    <p className="modal-subtitle">Bonus Letters are worth 2x points</p>
+    <h1 className="modal-title">Daily Bonus Letter</h1>
+    <p className="modal-subtitle">
+      {months[month]} {day}, {year}
+    </p>
+    <ul style={{ paddingInlineStart: "20px" }}>
+      <li>
+        The bonus letter is worth <b>2x</b> points
+      </li>
+      <li>Bonus letters have dashed borders</li>
+    </ul>
     <div className="bonus-letter-container">
       <div className="bonus-letter-text">Today's bonus letter: </div>
       <div
         className="tile small-tile"
         style={{
           border: isDark ? "0.15rem dashed #cfcfcf" : "0.15rem dashed #505050",
+          color: isDark ? "var(--dark-text)" : "var(--light-text)",
+          backgroundColor: isDark
+            ? "var(--dark-background)"
+            : "var(--light-background)",
         }}
       >
         {bonusLetter}
