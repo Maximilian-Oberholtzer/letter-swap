@@ -54,6 +54,12 @@ function Main() {
     localStorage.setItem("userState", JSON.stringify(userState));
   }, [userState]);
 
+  const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
+
+  const handleBonusLetterModal = useCallback(() => {
+    setShowBonusLetterModal(!showBonusLetterModal);
+  }, [setShowBonusLetterModal, showBonusLetterModal]);
+
   const resetGame = useCallback(() => {
     setUserState((prevState) => ({ ...prevState, board: fillEmptyBoard() }));
     setUserState((prevState) => ({ ...prevState, lastPlayedDate: DAY }));
@@ -64,7 +70,10 @@ function Main() {
       ...prevState,
       nextLetters: fillNewNextLetters(),
     }));
-  }, [setUserState]);
+    setTimeout(() => {
+      handleBonusLetterModal();
+    }, 500);
+  }, [setUserState, handleBonusLetterModal]);
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -94,6 +103,8 @@ function Main() {
         userState={userState}
         setUserState={setUserState}
         resetGame={resetGame}
+        handleBonusLetterModal={handleBonusLetterModal}
+        showBonusLetterModal={showBonusLetterModal}
       />
     </div>
   );

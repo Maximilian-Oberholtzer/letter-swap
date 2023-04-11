@@ -26,10 +26,18 @@ interface BoardProps {
   userState: UserState;
   setUserState: Dispatch<SetStateAction<UserState>>;
   resetGame: () => void;
+  handleBonusLetterModal: () => void;
+  showBonusLetterModal: boolean;
 }
 
 function Board(props: BoardProps) {
-  const { userState, setUserState, resetGame } = props;
+  const {
+    userState,
+    setUserState,
+    resetGame,
+    handleBonusLetterModal,
+    showBonusLetterModal,
+  } = props;
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -117,11 +125,6 @@ function Board(props: BoardProps) {
   const [animateFound, setAnimateFound] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
-  const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
-
-  const handleBonusLetterModal = useCallback(() => {
-    setShowBonusLetterModal(!showBonusLetterModal);
-  }, [setShowBonusLetterModal, showBonusLetterModal]);
 
   //for calculating hieght for found words container
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
@@ -187,11 +190,12 @@ function Board(props: BoardProps) {
 
   //set daily bonus letter based on current day
   useEffect(() => {
-    const today = new Date();
     const startDate = new Date("2023-04-10");
-    const differenceInDays = Math.floor(
-      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const currentDate = new Date();
+    // Set start date to midnight of the local time zone
+    startDate.setHours(0, 0, 0, 0);
+    const differenceInTime = currentDate.getTime() - startDate.getTime();
+    const differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
     setBonusLetter(bonusLetters[differenceInDays]);
   }, []);
 
@@ -212,8 +216,9 @@ function Board(props: BoardProps) {
 
   const handleCloseModal = () => {
     setHasPlayed(true);
-    handleBonusLetterModal();
-    setShowStatsModal(false);
+    setTimeout(() => {
+      handleBonusLetterModal();
+    }, 500);
   };
 
   const handleBoard = (rowIndex: number, colIndex: number, letter: string) => {
