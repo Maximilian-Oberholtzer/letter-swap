@@ -149,7 +149,6 @@ function Board(props: BoardProps) {
   useEffect(() => {
     if (userState.lastPlayedDate !== DAY) {
       setLastPlayedDate(DAY);
-      handleBonusLetterModal();
       resetGame();
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
@@ -293,8 +292,8 @@ function Board(props: BoardProps) {
   };
   const bonusBorderStyle = {
     border: isDark
-      ? "0.15rem dashed var(--dark-border-full)"
-      : "0.15rem dashed var(--light-border-full)",
+      ? "0.15rem dotted var(--dark-border-full)"
+      : "0.15rem dotted var(--light-border-full)",
   };
   const emptyBorderStyle = {
     border: isDark
