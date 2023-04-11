@@ -93,6 +93,9 @@ const BonusLetterModal: React.FC<ModalProps> = ({ onClose, bonusLetter }) => {
       >
         <button
           className="close-button"
+          id="close-button"
+          type="button"
+          aria-label="Close"
           onClick={() => {
             closeModal();
           }}

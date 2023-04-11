@@ -112,7 +112,13 @@ function Appbar(props: AppbarProps) {
         </span>
       </div>
       <div className="menu-right">
-        <button className="stats-button" onClick={() => handleStatsModal()}>
+        <button
+          className="stats-button"
+          id="stats-button"
+          type="button"
+          aria-label="Stats"
+          onClick={() => handleStatsModal()}
+        >
           <svg
             style={{
               fill: isDark ? "var(--dark-text)" : "var(--light-text)",
@@ -127,6 +133,9 @@ function Appbar(props: AppbarProps) {
         </button>
         <button
           className="help-button"
+          id="help-button"
+          type="button"
+          aria-label="Help"
           onClick={() => handleInstructionsModal()}
         >
           <svg
@@ -143,6 +152,9 @@ function Appbar(props: AppbarProps) {
         </button>
         <button
           className="settings-button"
+          id="settings-button"
+          type="button"
+          aria-label="Settings"
           onClick={() => handleSettingsModal()}
         >
           <svg

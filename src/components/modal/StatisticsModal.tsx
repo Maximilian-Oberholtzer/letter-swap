@@ -269,6 +269,9 @@ const StatisticsModal: React.FC<ModalProps> = ({
       >
         <button
           className="close-button"
+          id="close-button"
+          type="button"
+          aria-label="Close"
           onClick={() => {
             closeModal();
           }}
