@@ -207,7 +207,9 @@ function Board(props: BoardProps) {
   }, [foundWordsExpand]);
 
   const openStatsModal = () => {
-    setShowStatsModal(true);
+    setTimeout(() => {
+      setShowStatsModal(true);
+    }, 500);
   };
   const closeStatsModal = () => {
     setShowStatsModal(false);
