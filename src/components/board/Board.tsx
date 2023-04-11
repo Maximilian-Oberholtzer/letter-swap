@@ -136,7 +136,7 @@ function Board(props: BoardProps) {
   useEffect(() => {
     //wait for 1.5 seconds before showing modal on load
     if (startGameSwapCount <= 0) {
-      openStatsModal();
+      openStatsModal(500);
     }
     if (!userState.hasPlayed) {
       setTimeout(() => {
@@ -158,7 +158,7 @@ function Board(props: BoardProps) {
       setWeeklyPoints(weeklyPointsArr);
     }
     if (userState.swapCount === 0) {
-      openStatsModal();
+      openStatsModal(0);
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
       //only overwrite score if it beats current daily score
@@ -206,10 +206,10 @@ function Board(props: BoardProps) {
     }
   }, [foundWordsExpand]);
 
-  const openStatsModal = () => {
+  const openStatsModal = (delay: number) => {
     setTimeout(() => {
       setShowStatsModal(true);
-    }, 500);
+    }, delay);
   };
   const closeStatsModal = () => {
     setShowStatsModal(false);
@@ -407,7 +407,7 @@ function Board(props: BoardProps) {
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
                     userState.swapCount <= 0
-                      ? openStatsModal()
+                      ? openStatsModal(0)
                       : !animateFlip &&
                         !animateFound &&
                         handleBoard(
