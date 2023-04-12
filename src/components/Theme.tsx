@@ -11,6 +11,18 @@ interface ThemeContextData {
   toggleTheme: () => void;
 }
 
+//default to user's preferred browser theme
+const getBrowserTheme = (): string => {
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    return "dark";
+  } else {
+    return "light";
+  }
+};
+
 const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
 
 export const useTheme = () => useContext(ThemeContext);
@@ -21,7 +33,8 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<"light" | "dark">(
-    () => (localStorage.getItem("theme") as "light" | "dark") || "light"
+    () =>
+      (localStorage.getItem("theme") as "light" | "dark") || getBrowserTheme()
   );
 
   const toggleTheme = () => {

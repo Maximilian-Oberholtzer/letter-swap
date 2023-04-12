@@ -241,10 +241,12 @@ const StatisticsModal: React.FC<ModalProps> = ({
     rank = "Epic ⭐⭐⭐⭐";
   } else if (points >= 240 && points < 300) {
     rank = "Legend ⭐⭐⭐⭐⭐";
-  } else if (points >= 300 && points < 500) {
+  } else if (points >= 300 && points < 400) {
     rank = "Unreal 🌟🌟🌟🌟🌟";
+  } else if (points >= 400 && points < 500) {
+    rank = "Master ✨✨✨✨✨";
   } else if (points >= 500) {
-    rank = "Grandmaster 🧙🏼‍♂️";
+    rank = "Grandmaster 💫💫💫💫💫";
   }
 
   return (
