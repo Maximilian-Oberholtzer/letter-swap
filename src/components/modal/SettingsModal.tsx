@@ -45,6 +45,7 @@ const settings = (toggleTheme: () => void, isDark: boolean) => (
       <li>Epic: 180 points</li>
       <li>Legend: 240 points</li>
       <li>Unreal: 300 points</li>
+      <li>Master: 400 points</li>
       <li>Grandmaster: 500+ points</li>
     </ul>
 

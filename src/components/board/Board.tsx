@@ -198,7 +198,6 @@ function Board(props: BoardProps) {
     startDate.setHours(0, 0, 0, 0);
     const differenceInTime = currentDate.getTime() - startDate.getTime();
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
-    console.log(differenceInDays);
     setBonusLetter(bonusLetters[differenceInDays]);
   }, []);
 
