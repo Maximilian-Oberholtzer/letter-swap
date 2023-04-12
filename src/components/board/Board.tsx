@@ -6,7 +6,7 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-
+import Confetti from "react-confetti";
 import { useTheme } from "../Theme";
 import {
   getRandomLetter,
@@ -116,6 +116,8 @@ function Board(props: BoardProps) {
     [setUserState]
   );
 
+  //Easter egg effects
+  const [effect, setEffect] = useState<string>("");
   //Daily bonus letter
   const [bonusLetter, setBonusLetter] = useState("");
   //Animated current points effect
@@ -130,6 +132,13 @@ function Board(props: BoardProps) {
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
   const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
   const boardHeight = useRef<HTMLDivElement>(null);
+
+  //Remove easter egg effects after 6 seconds
+  useEffect(() => {
+    setTimeout(() => {
+      setEffect("");
+    }, 6000);
+  }, [effect]);
 
   //If user loads into a game with 0 swaps left
   const startGameSwapCount = userState.swapCount;
@@ -248,7 +257,8 @@ function Board(props: BoardProps) {
       setPoints,
       isDark,
       setBoard,
-      bonusLetter
+      bonusLetter,
+      setEffect
     );
 
     const swapCounter = document.querySelector(".swaps-container");
@@ -308,6 +318,18 @@ function Board(props: BoardProps) {
 
   return (
     <div className="board-section">
+      {effect === "confetti" && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={400}
+          tweenDuration={12000}
+          recycle={false}
+          onConfettiComplete={() => {
+            setEffect("");
+          }}
+        />
+      )}
       {showStatsModal && (
         <StatisticsModal
           score={userState.foundWords.length}

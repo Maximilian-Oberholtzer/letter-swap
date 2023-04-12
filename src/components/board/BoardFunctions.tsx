@@ -99,7 +99,8 @@ export const checkForWords = (
   setPoints: (points: number) => void,
   isDark: boolean,
   setBoard: (newBoard: string[][]) => void,
-  bonusLetter: string
+  bonusLetter: string,
+  setEffect: Dispatch<SetStateAction<string>>
 ): boolean => {
   let foundWord = false;
   let foundSequences = [];
@@ -204,6 +205,10 @@ export const checkForWords = (
   }
 
   if (foundWord) {
+    //effect for easter egg
+    if (foundSequences.includes("PARTY")) {
+      setEffect("confetti");
+    }
     setFoundWords([...foundWords, ...foundSequences]);
     setRecentFoundWords(foundSequences);
     //calculate score based on found words
