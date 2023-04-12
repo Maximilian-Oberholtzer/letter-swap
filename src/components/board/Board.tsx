@@ -135,15 +135,18 @@ function Board(props: BoardProps) {
   const startGameSwapCount = userState.swapCount;
   useEffect(() => {
     //wait for 1.5 seconds before showing modal on load
-    if (startGameSwapCount <= 0) {
-      openStatsModal(500);
+    if (userState.lastPlayedDate === DAY) {
+      if (startGameSwapCount <= 0) {
+        openStatsModal(500);
+      }
     }
+
     if (!userState.hasPlayed) {
       setTimeout(() => {
         setShowComponent(true);
       }, 1500);
     }
-  }, [startGameSwapCount, userState.hasPlayed]);
+  }, [startGameSwapCount, userState.hasPlayed, userState.lastPlayedDate]);
 
   //GAME OVER - Check
   useEffect(() => {
@@ -189,12 +192,13 @@ function Board(props: BoardProps) {
 
   //set daily bonus letter based on current day
   useEffect(() => {
-    const startDate = new Date("2023-04-10");
+    const startDate = new Date("2023-04-09");
     const currentDate = new Date();
     // Set start date to midnight of the local time zone
     startDate.setHours(0, 0, 0, 0);
     const differenceInTime = currentDate.getTime() - startDate.getTime();
-    const differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
+    const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    console.log(differenceInDays);
     setBonusLetter(bonusLetters[differenceInDays]);
   }, []);
 
