@@ -320,6 +320,7 @@ function Board(props: BoardProps) {
     <div className="board-section">
       {effect === "confetti" && (
         <Confetti
+          style={{ zIndex: "2000" }}
           width={window.innerWidth}
           height={window.innerHeight}
           numberOfPieces={400}
