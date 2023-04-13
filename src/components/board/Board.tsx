@@ -291,7 +291,6 @@ function Board(props: BoardProps) {
       : "0.15rem solid var(--light-border-empty)",
   };
 
-  console.log(canOpenStats);
   return (
     <div className="board-section">
       {effect === "confetti" && (
