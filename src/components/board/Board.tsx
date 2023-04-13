@@ -315,6 +315,11 @@ function Board(props: BoardProps) {
       ? "0.15rem solid var(--dark-border-empty)"
       : "0.15rem solid var(--light-border-empty)",
   };
+  const boxShadowStlyles = {
+    boxShadow: isDark
+      ? "rgba(205, 205, 170, 0.25) 0px 2px 4px -6px, rgba(255, 255, 255, 0.3) 0px 2px 10px -3px"
+      : "rgba(50, 50, 93, 0.25) 0px 2px 4px -2px, rgba(0, 0, 0, 0.3) 0px 2px 10px -3px",
+  };
 
   return (
     <div className="board-section">
@@ -356,7 +361,7 @@ function Board(props: BoardProps) {
           <div className="hud-text">
             <div
               className="swaps-container"
-              style={mergeStyles(colorStyle, borderStyle)}
+              style={mergeStyles(colorStyle, borderStyle, boxShadowStlyles)}
             >
               <b>Swaps: </b>
               <div>{userState.swapCount >= 0 ? userState.swapCount : 0}</div>
@@ -372,6 +377,7 @@ function Board(props: BoardProps) {
             <div
               className="tile medium-tile"
               style={mergeStyles(
+                boxShadowStlyles,
                 colorStyle,
                 userState.nextLetters[0] !== " "
                   ? userState.nextLetters[0] === bonusLetter
@@ -386,6 +392,7 @@ function Board(props: BoardProps) {
             <div
               className="tile small-tile"
               style={mergeStyles(
+                boxShadowStlyles,
                 colorStyle,
                 userState.nextLetters[1] !== " "
                   ? userState.nextLetters[1] === bonusLetter
@@ -400,6 +407,7 @@ function Board(props: BoardProps) {
             <div
               className="tile small-tile"
               style={mergeStyles(
+                boxShadowStlyles,
                 colorStyle,
                 userState.nextLetters[2] !== " "
                   ? userState.nextLetters[2] === bonusLetter
@@ -422,6 +430,7 @@ function Board(props: BoardProps) {
                   className="tile"
                   style={mergeStyles(
                     colorStyle,
+                    boxShadowStlyles,
                     letter !== " "
                       ? letter === bonusLetter
                         ? bonusBorderStyle
@@ -455,12 +464,18 @@ function Board(props: BoardProps) {
           </div>
           <div
             className="found-words-box"
-            style={mergeStyles(colorStyle, borderStyle, backgroundStyle, {
-              height: foundWordsExpand ? `${foundWordsExpandHeight}px` : "",
-              overflow: foundWordsExpand ? "auto" : "hidden",
-              transition:
-                "height 0.5s ease-out, width 0.5s, 300ms background-color, 300ms color, 300ms border",
-            })}
+            style={mergeStyles(
+              colorStyle,
+              borderStyle,
+              backgroundStyle,
+              boxShadowStlyles,
+              {
+                height: foundWordsExpand ? `${foundWordsExpandHeight}px` : "",
+                overflow: foundWordsExpand ? "auto" : "hidden",
+                transition:
+                  "height 0.5s ease-out, width 0.5s, 300ms background-color, 300ms color, 300ms border",
+              }
+            )}
             onClick={() => {
               toggleFoundWordsBox();
             }}
