@@ -74,6 +74,9 @@ function Board(props: BoardProps) {
   const [showComponent, setShowComponent] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
 
+  //Allow animation to run when game is over
+  const [canOpenStats, setCanOpenStats] = useState(true);
+
   //for calculating hieght for found words container
   const [foundWordsExpand, setFoundWordsExpand] = useState(false);
   const [foundWordsExpandHeight, setWordsExpandHeight] = useState(0);
@@ -90,7 +93,7 @@ function Board(props: BoardProps) {
   const endGameAnimation = (delay: number) => {
     const row = 5;
     const col = 5;
-
+    setCanOpenStats(false);
     setTimeout(() => {
       for (let i = 0; i < row; i++) {
         for (let j = 0; j < col; j++) {
@@ -105,6 +108,9 @@ function Board(props: BoardProps) {
         }
       }
     }, delay);
+    setTimeout(() => {
+      setCanOpenStats(true);
+    }, 1000);
   };
 
   //If user loads into a game with 0 swaps left
@@ -285,6 +291,7 @@ function Board(props: BoardProps) {
       : "0.15rem solid var(--light-border-empty)",
   };
 
+  console.log(canOpenStats);
   return (
     <div className="board-section">
       {effect === "confetti" && (
@@ -402,7 +409,7 @@ function Board(props: BoardProps) {
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() =>
                     userState.swapCount <= 0
-                      ? openStatsModal(0)
+                      ? canOpenStats && openStatsModal(0)
                       : !animateFlip &&
                         !animateFound &&
                         handleBoard(
