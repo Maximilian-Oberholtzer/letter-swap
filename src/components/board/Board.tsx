@@ -43,78 +43,24 @@ function Board(props: BoardProps) {
   const isDark = theme === "dark";
 
   //update global user state functions
-  const setBoard = useCallback(
-    (newBoard: string[][]) => {
-      setUserState((prevState) => ({ ...prevState, board: newBoard }));
-    },
-    [setUserState]
-  );
-  const setNextLetters = useCallback(
-    (nextLetters: string) => {
-      setUserState((prevState) => ({ ...prevState, nextLetters: nextLetters }));
-    },
-    [setUserState]
-  );
-  const setSwapCount = useCallback(
-    (swapCount: number) => {
-      setUserState((prevState) => ({ ...prevState, swapCount: swapCount }));
-    },
-    [setUserState]
-  );
-  const setFoundWords = useCallback(
-    (foundWords: string[]) => {
-      setUserState((prevState) => ({ ...prevState, foundWords: foundWords }));
-    },
-    [setUserState]
-  );
-  const setRecentFoundWords = useCallback(
-    (recentFoundWords: string[]) => {
-      setUserState((prevState) => ({
-        ...prevState,
-        recentFoundWords: recentFoundWords,
-      }));
-    },
-    [setUserState]
-  );
-  const setPoints = useCallback(
-    (points: number) => {
-      setUserState((prevState) => ({ ...prevState, points: points }));
-    },
-    [setUserState]
-  );
-  const setHasPlayed = useCallback(
-    (hasPlayed: boolean) => {
-      setUserState((prevState) => ({ ...prevState, hasPlayed: hasPlayed }));
-    },
-    [setUserState]
-  );
-  const setLastPlayedDate = useCallback(
-    (lastPlayedDate: number) => {
-      setUserState((prevState) => ({
-        ...prevState,
-        lastPlayedDate: lastPlayedDate,
-      }));
-    },
-    [setUserState]
-  );
-  const setWeeklyScores = useCallback(
-    (weeklyScores: (number | null)[]) => {
-      setUserState((prevState) => ({
-        ...prevState,
-        weeklyScores: weeklyScores,
-      }));
-    },
-    [setUserState]
-  );
-  const setWeeklyPoints = useCallback(
-    (weeklyPoints: (number | null)[]) => {
-      setUserState((prevState) => ({
-        ...prevState,
-        weeklyPoints: weeklyPoints,
-      }));
-    },
-    [setUserState]
-  );
+  const useSetUserState = (key: string) => {
+    return useCallback(
+      (value: any) => {
+        setUserState((prevState) => ({ ...prevState, [key]: value }));
+      },
+      [key]
+    );
+  };
+  const setBoard = useSetUserState("board");
+  const setNextLetters = useSetUserState("nextLetters");
+  const setSwapCount = useSetUserState("swapCount");
+  const setFoundWords = useSetUserState("foundWords");
+  const setRecentFoundWords = useSetUserState("recentFoundWords");
+  const setPoints = useSetUserState("points");
+  const setHasPlayed = useSetUserState("hasPlayed");
+  const setLastPlayedDate = useSetUserState("lastPlayedDate");
+  const setWeeklyScores = useSetUserState("weeklyScores");
+  const setWeeklyPoints = useSetUserState("weeklyPoints");
 
   //Easter egg effects
   const [effect, setEffect] = useState<string>("");
@@ -166,10 +112,9 @@ function Board(props: BoardProps) {
   useEffect(() => {
     //wait for 1.5 seconds before showing modal on load
     if (userState.lastPlayedDate === DAY) {
-      if (startGameSwapCount <= 0) {
-        //fun animation effect and then open stats modal
+      if (startGameSwapCount < 0) {
         endGameAnimation(300);
-        openStatsModal(1400);
+        openStatsModal(1300);
       }
     }
 
@@ -193,7 +138,8 @@ function Board(props: BoardProps) {
       setWeeklyPoints(weeklyPointsArr);
     }
     if (userState.swapCount === 0) {
-      openStatsModal(0);
+      endGameAnimation(250);
+      openStatsModal(1250);
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
       //only overwrite score if it beats current daily score
