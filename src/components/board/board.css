@@ -154,7 +154,41 @@
   font-family: var(--font);
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 300px) {
+  .tile {
+    font-size: 1.8rem !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .small-tile {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 1.4rem !important;
+  }
+  .medium-tile {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+    font-size: 1.8rem !important;
+  }
+  .next-letters-container {
+    font-size: 0.9rem !important;
+  }
+  .found-words-box {
+    width: 15rem !important;
+  }
+  .swaps-container {
+    width: 3rem !important;
+    font-size: 0.9rem !important;
+  }
+  .animated-points {
+    font-size: 2.2rem !important;
+  }
+  .hud-container {
+    gap: 0.1rem !important;
+  }
+}
+
+@media screen and (max-width: 726px) {
   .tile {
     font-size: 2.2rem;
     width: 50px;
@@ -185,7 +219,7 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 726px) {
   .tile {
     font-size: 3rem;
     width: 70px;

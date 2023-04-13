@@ -21,6 +21,46 @@
   padding-top: 60px;
 }
 
+@media screen and (max-width: 320px) {
+  .modal-title {
+    font-size: 1.5rem !important;
+  }
+  .modal-subtitle {
+    font-size: 0.9rem !important;
+  }
+  .modal-subtitle-small {
+    font-size: 0.9rem !important;
+  }
+  .modal-rank {
+    font-size: 0.9rem !important;
+    margin-top: 1.8rem !important;
+  }
+  .modal-sub-text {
+    font-size: 0.9rem !important;
+    line-height: 1 !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .modal-sub-text-small {
+    font-size: 0.9rem !important;
+  }
+  .share-button {
+    padding: 0.15rem 0.7rem !important;
+  }
+
+  .share-button-container {
+    gap: 0 !important;
+  }
+
+  .play-again-button {
+    padding: 0.4rem 0.5rem !important;
+  }
+  .copyright-text {
+    margin: 1rem 0rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
 @media screen and (max-width: 500px) {
   .modal-container {
     align-items: flex-end;
@@ -39,7 +79,7 @@
   position: relative;
   background-color: white;
   padding: 1.5rem 2rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   z-index: 201;
   animation: fadeIn 400ms;
@@ -85,7 +125,7 @@
 /* How to play modal styles */
 
 .modal-title {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   font-size: 2rem;
   line-height: 0;
   font-weight: 600;
