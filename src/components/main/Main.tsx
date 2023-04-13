@@ -72,7 +72,7 @@ function Main() {
     }));
     setTimeout(() => {
       handleBonusLetterModal();
-    }, 500);
+    }, 250);
   }, [setUserState, handleBonusLetterModal]);
 
   const { theme } = useTheme();
