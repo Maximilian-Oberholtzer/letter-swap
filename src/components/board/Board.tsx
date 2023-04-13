@@ -140,13 +140,36 @@ function Board(props: BoardProps) {
     }, 6000);
   }, [effect]);
 
+  //Completed game animation when user loads back in to app
+  const endGameAnimation = (delay: number) => {
+    const row = 5;
+    const col = 5;
+
+    setTimeout(() => {
+      for (let i = 0; i < row; i++) {
+        for (let j = 0; j < col; j++) {
+          setTimeout(() => {
+            const tile = document.getElementById(`${i}-${j}`);
+            tile?.classList.add("animate");
+            setTimeout(() => {
+              tile?.classList.remove("animate");
+              setAnimateFlip(false);
+            }, 250);
+          }, i * 150);
+        }
+      }
+    }, delay);
+  };
+
   //If user loads into a game with 0 swaps left
   const startGameSwapCount = userState.swapCount;
   useEffect(() => {
     //wait for 1.5 seconds before showing modal on load
     if (userState.lastPlayedDate === DAY) {
       if (startGameSwapCount <= 0) {
-        openStatsModal(500);
+        //fun animation effect and then open stats modal
+        endGameAnimation(300);
+        openStatsModal(1400);
       }
     }
 
@@ -318,7 +341,7 @@ function Board(props: BoardProps) {
   const boxShadowStlyles = {
     boxShadow: isDark
       ? "rgba(205, 205, 170, 0.25) 0px 2px 4px -6px, rgba(255, 255, 255, 0.3) 0px 2px 10px -3px"
-      : "rgba(50, 50, 93, 0.25) 0px 2px 4px -2px, rgba(0, 0, 0, 0.3) 0px 2px 10px -3px",
+      : "rgba(50, 50, 93, 0.25) 0px 2px 4px -6px, rgba(0, 0, 0, 0.3) 0px 2px 10px -3px",
   };
 
   return (
