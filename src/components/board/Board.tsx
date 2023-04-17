@@ -375,7 +375,7 @@ function Board(props: BoardProps) {
           </div>
         </div>
 
-        <div className="board" aria-label="Board">
+        <div className="board">
           {userState.board.map((row, rowIndex) => (
             <div key={rowIndex}>
               {row.map((letter, colIndex) => (
