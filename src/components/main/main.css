@@ -6,6 +6,8 @@
   --dark-background: #333333;
   --dark-text: #f1f1f1;
   --theme-transition: 300ms background-color, 300ms color, 300ms border;
+  --focus-dark-background: #4b4b4b;
+  --focus-light-background: #dadada;
 }
 
 /* Define the scrollbar styles */
@@ -36,4 +38,23 @@
   top: 0;
   left: 0;
   transition: var(--theme-transition);
+}
+
+/* Accessibility styling */
+.outline-light:focus-visible {
+  outline: 0.15rem solid var(--light-text);
+  outline-offset: 0.15rem;
+}
+
+.outline-dark:focus-visible {
+  outline: 0.15rem solid var(--dark-text);
+  outline-offset: 0.15rem;
+}
+
+.button-focus-light:focus-visible {
+  background-color: var(--focus-light-background);
+}
+
+.button-focus-dark:focus-visible {
+  background-color: var(--focus-dark-background);
 }

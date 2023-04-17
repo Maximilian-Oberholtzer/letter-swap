@@ -8,7 +8,10 @@ const settings = (toggleTheme: () => void, isDark: boolean) => (
     <h1 className="modal-title">Settings</h1>
     <div className="theme-container">
       <div>Light / Dark mode:</div>
-      <button className="theme-button" onClick={toggleTheme}>
+      <button
+        className={`theme-button ${isDark ? "outline-dark" : "outline-light"}`}
+        onClick={toggleTheme}
+      >
         <svg
           className="theme-button-svg"
           viewBox="0 0 24 24"
@@ -59,7 +62,9 @@ const settings = (toggleTheme: () => void, isDark: boolean) => (
             ? "2px solid var(--dark-text)"
             : "2px solid var(--light-text)",
         }}
-        className="donate-link"
+        className={`donate-link ${
+          isDark ? "button-focus-dark" : "button-focus-light"
+        }`}
       >
         <b>Buy me a Beer! 🍺</b>
       </a>
@@ -111,7 +116,9 @@ const SettingsModal: React.FC<ModalProps> = ({ onClose, reset }) => {
         }}
       >
         <button
-          className="close-button"
+          className={`close-button ${
+            isDark ? "outline-dark" : "outline-light"
+          }`}
           id="close-button"
           type="button"
           aria-label="Close"
