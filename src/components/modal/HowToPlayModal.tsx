@@ -81,7 +81,9 @@ const HowToPlayModal: React.FC<ModalProps> = ({ onClose }) => {
         }}
       >
         <button
-          className="close-button"
+          className={`close-button ${
+            isDark ? "outline-dark" : "outline-light"
+          }`}
           id="close-button"
           type="button"
           aria-label="Close"

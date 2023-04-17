@@ -1,3 +1,9 @@
+:root {
+  --light-text: #000000;
+  --dark-text: #f1f1f1;
+  --theme-transition: 300ms background-color, 300ms color, 300ms border;
+}
+
 @media screen and (max-width: 320px) {
   .title {
     font-size: 1rem !important;
@@ -139,7 +145,7 @@
 .menu-right {
   display: flex;
   justify-content: flex-end;
-  margin-right: 1rem;
+  padding: 0rem 1rem;
   margin-top: 0.5rem;
 }
 

@@ -92,7 +92,9 @@ const BonusLetterModal: React.FC<ModalProps> = ({ onClose, bonusLetter }) => {
         }}
       >
         <button
-          className="close-button"
+          className={`close-button ${
+            isDark ? "outline-dark" : "outline-light"
+          }`}
           id="close-button"
           type="button"
           aria-label="Close"

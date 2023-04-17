@@ -108,7 +108,9 @@ const statistics = (
           onClick={() => {
             handleShare(score, points, rank);
           }}
-          className="share-button"
+          className={`share-button ${
+            isDark ? "button-focus-dark" : "button-focus-light"
+          }`}
         >
           <div className="share-button-container">
             <b>Share</b>{" "}
@@ -143,7 +145,9 @@ const statistics = (
                   reset();
                 }, 300);
               }}
-              className="play-again-button"
+              className={`play-again-button ${
+                isDark ? "button-focus-dark" : "button-focus-light"
+              }`}
             >
               <b>Play Again</b>
             </button>
@@ -162,7 +166,9 @@ const statistics = (
                   reset();
                 }, 300);
               }}
-              className="play-again-button"
+              className={`play-again-button ${
+                isDark ? "button-focus-dark" : "button-focus-light"
+              }`}
             >
               <b>Reset Game</b>
             </button>
@@ -184,7 +190,9 @@ const statistics = (
                 reset();
               }, 300);
             }}
-            className="play-again-button"
+            className={`play-again-button ${
+              isDark ? "button-focus-dark" : "button-focus-light"
+            }`}
           >
             <b>Reset Game</b>
           </button>
@@ -270,7 +278,9 @@ const StatisticsModal: React.FC<ModalProps> = ({
         }}
       >
         <button
-          className="close-button"
+          className={`close-button ${
+            isDark ? "outline-dark" : "outline-light"
+          }`}
           id="close-button"
           type="button"
           aria-label="Close"

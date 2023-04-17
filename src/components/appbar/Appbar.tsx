@@ -113,7 +113,9 @@ function Appbar(props: AppbarProps) {
       </div>
       <div className="menu-right">
         <button
-          className="stats-button"
+          className={`stats-button ${
+            isDark ? "outline-dark" : "outline-light"
+          }`}
           id="stats-button"
           type="button"
           aria-label="Stats"
@@ -132,7 +134,7 @@ function Appbar(props: AppbarProps) {
           </svg>
         </button>
         <button
-          className="help-button"
+          className={`help-button ${isDark ? "outline-dark" : "outline-light"}`}
           id="help-button"
           type="button"
           aria-label="Help"
@@ -151,7 +153,9 @@ function Appbar(props: AppbarProps) {
           </svg>
         </button>
         <button
-          className="settings-button"
+          className={`settings-button ${
+            isDark ? "outline-dark" : "outline-light"
+          }`}
           id="settings-button"
           type="button"
           aria-label="Settings"
