@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useTheme } from "../Theme";
 import "./modal.css";
 
@@ -224,6 +224,14 @@ const StatisticsModal: React.FC<ModalProps> = ({
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
+  // Accessibility focus for modal close button
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, []);
+
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
   };
@@ -281,6 +289,7 @@ const StatisticsModal: React.FC<ModalProps> = ({
           className={`close-button ${
             isDark ? "outline-dark" : "outline-light"
           }`}
+          ref={closeButtonRef}
           id="close-button"
           type="button"
           aria-label="Close"

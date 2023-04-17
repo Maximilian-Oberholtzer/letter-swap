@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "../Theme";
 import StatisticsModal from "../modal/StatisticsModal";
 import HowToPlayModal from "../modal/HowToPlayModal";
@@ -22,6 +22,16 @@ function Appbar(props: AppbarProps) {
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  // Allow focus for buttons only if modal is not active
+  const [focusable, setFocusable] = useState(true);
+  useEffect(() => {
+    if (showInstructions || showSettings || showStats) {
+      setFocusable(false);
+    } else {
+      setFocusable(true);
+    }
+  }, [showInstructions, showSettings, showStats]);
 
   const handleInstructionsModal = () => {
     setShowInstructions(!showInstructions);
@@ -116,6 +126,7 @@ function Appbar(props: AppbarProps) {
           className={`stats-button ${
             isDark ? "outline-dark" : "outline-light"
           }`}
+          tabIndex={focusable ? 0 : -1}
           id="stats-button"
           type="button"
           aria-label="Stats"
@@ -135,6 +146,7 @@ function Appbar(props: AppbarProps) {
         </button>
         <button
           className={`help-button ${isDark ? "outline-dark" : "outline-light"}`}
+          tabIndex={focusable ? 0 : -1}
           id="help-button"
           type="button"
           aria-label="Help"
@@ -156,6 +168,7 @@ function Appbar(props: AppbarProps) {
           className={`settings-button ${
             isDark ? "outline-dark" : "outline-light"
           }`}
+          tabIndex={focusable ? 0 : -1}
           id="settings-button"
           type="button"
           aria-label="Settings"
