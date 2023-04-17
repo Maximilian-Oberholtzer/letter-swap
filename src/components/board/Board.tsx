@@ -5,6 +5,7 @@ import React, {
   SetStateAction,
   useRef,
   useCallback,
+  KeyboardEvent,
 } from "react";
 import Confetti from "react-confetti";
 import { useTheme } from "../Theme";
@@ -258,6 +259,13 @@ function Board(props: BoardProps) {
     setFoundWordsExpand(!foundWordsExpand);
   };
 
+  //Handle Accessibility events
+  const handleKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.code === "Space" || event.code === "Enter") {
+      toggleFoundWordsBox();
+    }
+  };
+
   //for using multiple styles at once
   const mergeStyles = (
     ...styles: React.CSSProperties[]
@@ -332,6 +340,7 @@ function Board(props: BoardProps) {
             <div
               className="swaps-container"
               style={mergeStyles(colorStyle, borderStyle)}
+              aria-label="Swap Count"
             >
               <b>Swaps: </b>
               <div>{userState.swapCount >= 0 ? userState.swapCount : 0}</div>
@@ -342,6 +351,7 @@ function Board(props: BoardProps) {
             style={{
               color: isDark ? "var(--dark-text)" : "var(--light-text)",
             }}
+            aria-label="Next Letters"
           >
             <b className="next-letters-title">Next:</b>
             <div
@@ -389,7 +399,7 @@ function Board(props: BoardProps) {
           </div>
         </div>
 
-        <div className="board">
+        <div className="board" aria-label="Board">
           {userState.board.map((row, rowIndex) => (
             <div key={rowIndex}>
               {row.map((letter, colIndex) => (
@@ -424,7 +434,7 @@ function Board(props: BoardProps) {
             </div>
           ))}
         </div>
-        <div className="found-words-container">
+        <div className="found-words-container" aria-label="Found Words">
           <div className="animated-points" style={colorStyle}>
             +{animatedPoints}
           </div>
@@ -436,6 +446,8 @@ function Board(props: BoardProps) {
               transition:
                 "height 0.5s ease-out, width 0.5s, 300ms background-color, 300ms color, 300ms border",
             })}
+            tabIndex={0}
+            onKeyDown={handleKeyPress}
             onClick={() => {
               toggleFoundWordsBox();
             }}
