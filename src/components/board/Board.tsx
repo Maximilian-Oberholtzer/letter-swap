@@ -63,6 +63,9 @@ function Board(props: BoardProps) {
   const setWeeklyScores = useSetUserState("weeklyScores");
   const setWeeklyPoints = useSetUserState("weeklyPoints");
 
+  //set nextLetters as an array for easier jsx mapping
+  let nextLetters = userState.nextLetters.split("");
+
   //Easter egg effects
   const [effect, setEffect] = useState<string>("");
   //Daily bonus letter
@@ -354,48 +357,21 @@ function Board(props: BoardProps) {
             aria-label="Next Letters"
           >
             <b className="next-letters-title">Next:</b>
-            <div
-              className="tile medium-tile"
-              style={mergeStyles(
-                colorStyle,
-                userState.nextLetters[0] !== " "
-                  ? userState.nextLetters[0] === bonusLetter
+            {nextLetters.map((letter, index) => (
+              <div
+                key={index}
+                className={index === 0 ? "tile medium-tile" : "tile small-tile"}
+                style={mergeStyles(
+                  colorStyle,
+                  backgroundStyle,
+                  nextLetters[index] === bonusLetter
                     ? bonusBorderStyle
                     : borderStyle
-                  : emptyBorderStyle,
-                backgroundStyle
-              )}
-            >
-              {userState.nextLetters[0]}
-            </div>
-            <div
-              className="tile small-tile"
-              style={mergeStyles(
-                colorStyle,
-                userState.nextLetters[1] !== " "
-                  ? userState.nextLetters[1] === bonusLetter
-                    ? bonusBorderStyle
-                    : borderStyle
-                  : emptyBorderStyle,
-                backgroundStyle
-              )}
-            >
-              {userState.nextLetters[1]}
-            </div>
-            <div
-              className="tile small-tile"
-              style={mergeStyles(
-                colorStyle,
-                userState.nextLetters[2] !== " "
-                  ? userState.nextLetters[2] === bonusLetter
-                    ? bonusBorderStyle
-                    : borderStyle
-                  : emptyBorderStyle,
-                backgroundStyle
-              )}
-            >
-              {userState.nextLetters[2]}
-            </div>
+                )}
+              >
+                {letter}
+              </div>
+            ))}
           </div>
         </div>
 
