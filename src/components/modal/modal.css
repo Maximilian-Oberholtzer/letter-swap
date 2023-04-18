@@ -26,23 +26,23 @@
     font-size: 1.5rem !important;
   }
   .modal-subtitle {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
   }
   .modal-subtitle-small {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
   }
   .modal-rank {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
     margin-top: 1.8rem !important;
   }
   .modal-sub-text {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
     line-height: 1 !important;
     margin-top: 1rem !important;
     margin-bottom: 0.5rem !important;
   }
   .modal-sub-text-small {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
   }
   .share-button {
     padding: 0.15rem 0.7rem !important;
@@ -85,6 +85,7 @@
   animation: fadeIn 400ms;
   font-family: var(--font);
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: 92%;
 }
 
@@ -140,9 +141,10 @@
   line-height: 0.25;
 }
 .modal-rank {
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 0.3;
   margin-top: 2rem;
+  white-space: nowrap;
 }
 .modal-sub-text {
   font-size: 1rem;
