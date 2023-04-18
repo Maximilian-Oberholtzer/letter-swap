@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useTheme } from "../Theme";
 import "./modal.css";
 
@@ -87,14 +87,6 @@ const SettingsModal: React.FC<ModalProps> = ({ onClose, reset }) => {
     closeModal();
   };
 
-  // Accessibility focus for modal close button
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (closeButtonRef.current) {
-      closeButtonRef.current.focus();
-    }
-  }, []);
-
   const closeModal = () => {
     const modal = document.querySelector(".modal-content");
     modal?.classList.add("closed");
@@ -127,7 +119,7 @@ const SettingsModal: React.FC<ModalProps> = ({ onClose, reset }) => {
           className={`close-button ${
             isDark ? "outline-dark" : "outline-light"
           }`}
-          ref={closeButtonRef}
+          tabIndex={0}
           id="close-button"
           type="button"
           aria-label="Close"
