@@ -323,7 +323,7 @@ const applyFoundAnimation = (
   setTimeout(() => {
     tile?.classList.remove("found-word-light");
     tile?.classList.remove("found-word-dark");
-    titleTile?.classList.remove("animate");
+    titleTile?.classList.remove("animate-slow");
     titleTile2?.classList.remove("animate-delay-medium");
     tile?.classList.add("animate");
     board[row][col] = " ";
