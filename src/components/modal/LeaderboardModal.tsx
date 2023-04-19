@@ -3,17 +3,17 @@ import { useTheme } from "../Theme";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 import "./modal.css";
 
-const leaderBoard = (
-  isDark: boolean,
-  leaderboardData: LeaderboardEntry[] | null
-) => (
+const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
   <div>
     <h1 className="modal-title">Hall of Fame</h1>
     <p className="modal-subtitle">Top 25 scores of all time </p>
     {leaderboardData ? (
       <div className="leaderboard-list">
+        {leaderboardData.length === 0 && (
+          <div>No results posted to leaderboard.</div>
+        )}
         {leaderboardData?.map((entry, index) => (
-          <div key={entry.id}>
+          <div className="leaderboard-entry" key={entry.id}>
             {index === 0 &&
               `🥇 ${entry.name} - ${entry.score} words for ${entry.points} points.`}
             {index === 1 &&
@@ -117,7 +117,7 @@ const LeaderboardModal: React.FC<ModalProps> = ({
             </g>
           </svg>
         </button>
-        {leaderBoard(isDark, leaderboardData)}
+        {leaderBoard(leaderboardData)}
       </div>
     </div>
   );

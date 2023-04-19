@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useTheme } from "../Theme";
 import "./modal.css";
+import { addLeaderboardEntry } from "../leaderboard/leaderboardFunctions";
+import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 
 //Function to share score at end of the game
 const handleShare = async (score: number, points: number, rank: string) => {
@@ -211,6 +213,10 @@ interface ModalProps {
   weeklyScores: (number | null)[];
   weeklyPoints: (number | null)[];
   swapCount: number;
+  userName: string;
+  gameId: number;
+  leaderboardData: LeaderboardEntry[] | null;
+  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 const StatisticsModal: React.FC<ModalProps> = ({
@@ -221,9 +227,47 @@ const StatisticsModal: React.FC<ModalProps> = ({
   weeklyScores,
   weeklyPoints,
   swapCount,
+  userName,
+  gameId,
+  leaderboardData,
+  setAddedToLeaderboard,
 }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  //Attempt to write score to database if it is among top 25 scores
+  useEffect(() => {
+    let entry = {
+      id: gameId,
+      name: userName,
+      score: score,
+      points: points,
+    };
+    let idExists = false;
+    if (leaderboardData) {
+      if (leaderboardData.length === 0) {
+        setAddedToLeaderboard(true);
+        addLeaderboardEntry(entry);
+      } else {
+        //check to see if game id exists and points is high enough to add another row
+        for (let row of leaderboardData) {
+          if (gameId === row.id) {
+            idExists = true;
+          }
+        }
+        if (
+          leaderboardData[leaderboardData.length - 1].points < points &&
+          !idExists
+        ) {
+          setAddedToLeaderboard(true);
+          addLeaderboardEntry(entry);
+        } else if (leaderboardData.length < 25 && !idExists) {
+          setAddedToLeaderboard(true);
+          addLeaderboardEntry(entry);
+        }
+      }
+    }
+  }, [points, score, userName, gameId, leaderboardData, setAddedToLeaderboard]);
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();

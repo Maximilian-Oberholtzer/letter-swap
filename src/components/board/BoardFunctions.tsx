@@ -352,3 +352,10 @@ export const applyAnimation = (
     setAnimateFlip(false);
   }, 250);
 };
+
+//Persists through each game to keep leaderboard entries unique
+export function generateGameId(): number {
+  const min = 10000000;
+  const max = 99999999;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

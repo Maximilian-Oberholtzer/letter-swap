@@ -13,6 +13,7 @@ import {
   getRandomLetter,
   checkForWords,
   applyAnimation,
+  generateGameId,
 } from "./BoardFunctions";
 import { UserState } from "../main/Main";
 import "./board.css";
@@ -20,6 +21,7 @@ import { bonusLetters } from "../../bonusLetters";
 import HowToPlayModal from "../modal/HowToPlayModal";
 import StatisticsModal from "../modal/StatisticsModal";
 import BonusLetterModal from "../modal/BonusLetterModal";
+import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 
 const DAY = new Date().getDay();
 
@@ -29,6 +31,8 @@ interface BoardProps {
   resetGame: () => void;
   handleBonusLetterModal: () => void;
   showBonusLetterModal: boolean;
+  leaderboardData: LeaderboardEntry[] | null;
+  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 function Board(props: BoardProps) {
@@ -38,6 +42,8 @@ function Board(props: BoardProps) {
     resetGame,
     handleBonusLetterModal,
     showBonusLetterModal,
+    leaderboardData,
+    setAddedToLeaderboard,
   } = props;
 
   const { theme } = useTheme();
@@ -62,6 +68,7 @@ function Board(props: BoardProps) {
   const setLastPlayedDate = useSetUserState("lastPlayedDate");
   const setWeeklyScores = useSetUserState("weeklyScores");
   const setWeeklyPoints = useSetUserState("weeklyPoints");
+  const setGameId = useSetUserState("gameId");
 
   //set nextLetters as an array for easier jsx mapping
   let nextLetters = userState.nextLetters.split("");
@@ -152,14 +159,16 @@ function Board(props: BoardProps) {
       openStatsModal(1250);
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
-      //only overwrite score if it beats current daily score
-      if (userState.foundWords.length >= (weeklyScoreArr[DAY] ?? 0)) {
+      //only overwrite score if it beats current daily score and give new gameId to be savable to leaderboard
+      if (userState.foundWords.length > (weeklyScoreArr[DAY] ?? 0)) {
         weeklyScoreArr[DAY] = userState.foundWords.length;
         setWeeklyScores(weeklyScoreArr);
       }
-      if (userState.points >= (weeklyPointsArr[DAY] ?? 0)) {
+      if (userState.points > (weeklyPointsArr[DAY] ?? 0)) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
+        setGameId(generateGameId());
+        setAddedToLeaderboard(false);
       }
       setSwapCount(-1);
     }
@@ -174,6 +183,8 @@ function Board(props: BoardProps) {
     setSwapCount,
     setWeeklyPoints,
     setWeeklyScores,
+    setGameId,
+    setAddedToLeaderboard,
     resetGame,
     handleBonusLetterModal,
   ]);
@@ -326,6 +337,10 @@ function Board(props: BoardProps) {
           swapCount={userState.swapCount}
           onClose={closeStatsModal}
           reset={resetGame}
+          userName={userState.userName}
+          gameId={userState.gameId}
+          leaderboardData={leaderboardData}
+          setAddedToLeaderboard={setAddedToLeaderboard}
         />
       )}
       {!userState.hasPlayed && showComponent && (

@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTheme } from "../Theme";
 import Board from "../board/Board";
-import { fillEmptyBoard, fillNewNextLetters } from "../board/BoardFunctions";
+import {
+  fillEmptyBoard,
+  fillNewNextLetters,
+  generateGameId,
+} from "../board/BoardFunctions";
 import { trackPageView } from "../../analytics";
 import { useLocation } from "react-router-dom";
 import "./main.css";
+import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
+import { fetchLeaderboardData } from "../leaderboard/leaderboardFunctions";
 import Appbar from "../appbar/Appbar";
 
 const DAY = new Date().getDay();
@@ -21,6 +27,8 @@ export interface UserState {
   lastPlayedDate: number;
   weeklyScores: (number | null)[];
   weeklyPoints: (number | null)[];
+  userName: string;
+  gameId: number;
 }
 
 function Main() {
@@ -46,6 +54,8 @@ function Main() {
           lastPlayedDate: DAY,
           weeklyScores: Array.from({ length: 7 }, () => null),
           weeklyPoints: Array.from({ length: 7 }, () => null),
+          userName: "User",
+          gameId: generateGameId(),
         };
   });
 
@@ -55,6 +65,20 @@ function Main() {
   }, [userState]);
 
   const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
+
+  //Initialize leaderboard data and send to leaderboard modal
+  const [addedToLeaderboard, setAddedToLeaderboard] = useState(false);
+  const [leaderboardData, setLeaderboardData] = useState<
+    LeaderboardEntry[] | null
+  >(null);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchLeaderboardData();
+      setLeaderboardData(data);
+      console.log("Fetched leaderboard data in main", data);
+    }
+    fetchData();
+  }, [userState.gameId, addedToLeaderboard]);
 
   const handleBonusLetterModal = useCallback(() => {
     setShowBonusLetterModal(!showBonusLetterModal);
@@ -66,6 +90,7 @@ function Main() {
     setUserState((prevState) => ({ ...prevState, swapCount: SWAPCOUNT }));
     setUserState((prevState) => ({ ...prevState, points: 0 }));
     setUserState((prevState) => ({ ...prevState, foundWords: [] }));
+    setUserState((prevState) => ({ ...prevState, recentFoundWords: [] }));
     setUserState((prevState) => ({
       ...prevState,
       nextLetters: fillNewNextLetters(),
@@ -98,13 +123,20 @@ function Main() {
           : "var(--light-background)",
       }}
     >
-      <Appbar userState={userState} resetGame={resetGame} />
+      <Appbar
+        userState={userState}
+        resetGame={resetGame}
+        leaderboardData={leaderboardData}
+        setAddedToLeaderboard={setAddedToLeaderboard}
+      />
       <Board
         userState={userState}
         setUserState={setUserState}
         resetGame={resetGame}
         handleBonusLetterModal={handleBonusLetterModal}
         showBonusLetterModal={showBonusLetterModal}
+        leaderboardData={leaderboardData}
+        setAddedToLeaderboard={setAddedToLeaderboard}
       />
     </div>
   );

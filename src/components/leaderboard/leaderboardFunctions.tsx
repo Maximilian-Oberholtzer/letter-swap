@@ -27,3 +27,21 @@ export async function fetchLeaderboardData(): Promise<
     return null;
   }
 }
+
+//Add database entry
+export async function addLeaderboardEntry(entry: {
+  id: number;
+  name: string;
+  score: number;
+  points: number;
+}) {
+  try {
+    const { error } = await supabase.from("leaderboard").insert([entry]);
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    console.error("Error adding new entry:", error);
+  }
+}

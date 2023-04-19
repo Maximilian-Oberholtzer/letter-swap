@@ -188,7 +188,7 @@
   }
 }
 
-@media screen and (max-width: 726px) {
+@media screen and (max-width: 768px) {
   .tile {
     font-size: 2.2rem;
     width: 50px;
@@ -219,7 +219,7 @@
   }
 }
 
-@media screen and (min-width: 726px) {
+@media screen and (min-width: 768px) {
   .tile {
     font-size: 3rem;
     width: 70px;

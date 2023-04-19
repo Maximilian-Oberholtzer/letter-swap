@@ -236,3 +236,7 @@
 }
 
 /* Leaderboard modal */
+
+.leaderboard-entry {
+  line-height: 1.5;
+}

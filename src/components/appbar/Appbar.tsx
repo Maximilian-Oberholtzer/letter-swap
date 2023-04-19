@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useTheme } from "../Theme";
 import StatisticsModal from "../modal/StatisticsModal";
 import HowToPlayModal from "../modal/HowToPlayModal";
@@ -7,34 +7,24 @@ import { UserState } from "../main/Main";
 import "./appbar.css";
 import LeaderboardModal from "../modal/LeaderboardModal";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
-import { fetchLeaderboardData } from "../leaderboard/leaderboardFunctions";
 
 const DAY = new Date().getDay();
 
 interface AppbarProps {
   userState: UserState;
   resetGame: () => void;
+  leaderboardData: LeaderboardEntry[] | null;
+  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 function Appbar(props: AppbarProps) {
-  const { userState, resetGame } = props;
+  const { userState, resetGame, leaderboardData, setAddedToLeaderboard } =
+    props;
 
   const [showInstructions, setShowInstructions] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-
-  //Initialize leaderboard data and send to leaderboard modal
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardEntry[] | null
-  >(null);
-  useEffect(() => {
-    async function fetchData() {
-      const data = await fetchLeaderboardData();
-      setLeaderboardData(data);
-    }
-    fetchData();
-  }, [showLeaderboard]);
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -81,6 +71,10 @@ function Appbar(props: AppbarProps) {
           swapCount={userState.swapCount}
           onClose={handleStatsModal}
           reset={resetGame}
+          userName={userState.userName}
+          gameId={userState.gameId}
+          leaderboardData={leaderboardData}
+          setAddedToLeaderboard={setAddedToLeaderboard}
         />
       )}
       {showSettings && (
