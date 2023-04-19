@@ -2,6 +2,7 @@ import React from "react";
 import { useTheme } from "../Theme";
 import "./modal.css";
 
+//Function to share score at end of the game
 const handleShare = async (score: number, points: number, rank: string) => {
   if (navigator.share) {
     try {

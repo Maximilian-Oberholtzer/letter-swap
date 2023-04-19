@@ -6,25 +6,25 @@
 
 @media screen and (max-width: 320px) {
   .title {
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
   }
   .title-tile,
   .title-tile-2 {
-    font-size: 1.5rem !important;
-    width: 1.75rem !important;
-    height: 1.75rem !important;
+    font-size: 1.2rem !important;
+    width: 1.3rem !important;
+    height: 1.3rem !important;
   }
   .help-button-svg {
-    height: 1.6rem !important;
-    width: 1.6rem !important;
-  }
-  .stats-button-svg {
-    height: 1.45rem !important;
-    width: 1.45rem !important;
-  }
-  .settings-button-svg {
     height: 1.5rem !important;
     width: 1.5rem !important;
+  }
+  .stats-button-svg {
+    height: 1.4rem !important;
+    width: 1.4rem !important;
+  }
+  .settings-button-svg {
+    height: 1.4rem !important;
+    width: 1.4rem !important;
   }
   .menu-right {
     gap: 0.1rem !important;
@@ -33,35 +33,42 @@
 
 @media screen and (max-width: 768px) {
   .title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   .title-tile,
   .title-tile-2 {
-    font-size: 2rem;
-    width: 2rem;
-    height: 2rem;
+    font-size: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 0.4rem !important;
   }
   .help-button-svg {
-    height: 2rem;
-    width: 2rem;
-  }
-  .stats-button-svg {
     height: 1.75rem;
     width: 1.75rem;
   }
+  .stats-button-svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  .trophy-button-svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
   .settings-button-svg {
-    height: 2rem;
-    width: 2rem;
+    height: 1.75rem;
+    width: 1.75rem;
+    margin-top: 0.1rem;
   }
   .menu-right {
     gap: 0.2rem;
+    padding: 0;
   }
 }
 
 @media screen and (max-width: 900px) {
   .title-container {
     justify-content: flex-start !important;
-    margin-left: 1rem !important;
+    margin-left: 0.5rem !important;
   }
 }
 
@@ -80,6 +87,10 @@
     height: 3rem;
   }
   .stats-button-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .trophy-button-svg {
     width: 2.5rem;
     height: 2.5rem;
   }
@@ -104,7 +115,7 @@
 
 .title-container {
   background-color: white;
-  margin-left: 11rem;
+  margin-left: 8rem;
   justify-content: center;
   display: flex;
   flex-grow: 1;
@@ -140,6 +151,18 @@
   user-select: none;
   font-weight: 500 !important;
   transition: var(--theme-transition);
+}
+
+.menu-left {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+
+.trophy-button {
+  all: unset;
+  cursor: pointer !important;
 }
 
 .menu-right {
