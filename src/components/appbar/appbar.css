@@ -33,30 +33,30 @@
 
 @media screen and (max-width: 768px) {
   .title {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
   }
   .title-tile,
   .title-tile-2 {
-    font-size: 1.5rem;
-    width: 1.6rem;
-    height: 1.6rem;
+    font-size: 1.6rem;
+    width: 1.8rem;
+    height: 1.8rem;
     border-radius: 0.4rem !important;
   }
   .help-button-svg {
-    height: 1.75rem;
-    width: 1.75rem;
+    height: 1.85rem;
+    width: 1.85rem;
   }
   .stats-button-svg {
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 1.6rem;
+    width: 1.6rem;
   }
   .trophy-button-svg {
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 1.6rem;
+    width: 1.6rem;
   }
   .settings-button-svg {
-    height: 1.75rem;
-    width: 1.75rem;
+    height: 1.8rem;
+    width: 1.8rem;
     margin-top: 0.1rem;
   }
   .menu-right {
