@@ -9,7 +9,10 @@ import {
 import { trackPageView } from "../../analytics";
 import { useLocation } from "react-router-dom";
 import "./main.css";
-import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
+import {
+  LeaderboardEntry,
+  addLeaderboardEntry,
+} from "../leaderboard/leaderboardFunctions";
 import { fetchLeaderboardData } from "../leaderboard/leaderboardFunctions";
 import Appbar from "../appbar/Appbar";
 
@@ -61,7 +64,7 @@ function Main() {
 
   //save user's game
   useEffect(() => {
-    localStorage.setItem("userState", JSON.stringify(userState));
+    localStorage.setItem("userData", JSON.stringify(userState));
   }, [userState]);
 
   const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
@@ -75,9 +78,64 @@ function Main() {
     async function fetchData() {
       const data = await fetchLeaderboardData();
       setLeaderboardData(data);
+      setAddedToLeaderboard(false);
+      console.log("Fetched Data", data);
     }
     fetchData();
   }, [userState.gameId, addedToLeaderboard]);
+
+  //Add to leaderboard
+  useEffect(() => {
+    //Potential entry into the database
+    let entry = {
+      id: userState.gameId,
+      name: userState.userName,
+      score: userState.weeklyScores[DAY] ?? 0,
+      points: userState.weeklyPoints[DAY] ?? 0,
+    };
+
+    //Check if entry should be added
+    let idExists = false;
+    if (leaderboardData) {
+      for (let row of leaderboardData) {
+        if (row.id === userState.gameId) {
+          idExists = true;
+        }
+      }
+      //Add first entry in the DB
+      if (leaderboardData.length === 0) {
+        if (entry.points > 0) {
+          setAddedToLeaderboard(true);
+          addLeaderboardEntry(entry);
+          console.log("Added first entry", entry);
+        }
+      }
+      //Add entry because leaderboard is < 25 rows
+      else if (leaderboardData.length < 25 && !idExists && entry.points > 0) {
+        setAddedToLeaderboard(true);
+        addLeaderboardEntry(entry);
+        console.log("Added entry (under 25 entries)", entry);
+      }
+      //Add entry because it is within the top 25 entries
+      else if (
+        leaderboardData[leaderboardData.length - 1].points < entry.points &&
+        !idExists
+      ) {
+        setAddedToLeaderboard(true);
+        addLeaderboardEntry(entry);
+        console.log("Added entry (in the top 25 - bumped one off)", entry);
+      } else {
+        console.log("Id exists or score does not qualify");
+      }
+    }
+  }, [
+    userState.userName,
+    userState.gameId,
+    leaderboardData,
+    userState.weeklyPoints,
+    userState.weeklyScores,
+    addedToLeaderboard,
+  ]);
 
   const handleBonusLetterModal = useCallback(() => {
     setShowBonusLetterModal(!showBonusLetterModal);
@@ -126,7 +184,6 @@ function Main() {
         userState={userState}
         resetGame={resetGame}
         leaderboardData={leaderboardData}
-        setAddedToLeaderboard={setAddedToLeaderboard}
       />
       <Board
         userState={userState}
@@ -134,8 +191,6 @@ function Main() {
         resetGame={resetGame}
         handleBonusLetterModal={handleBonusLetterModal}
         showBonusLetterModal={showBonusLetterModal}
-        leaderboardData={leaderboardData}
-        setAddedToLeaderboard={setAddedToLeaderboard}
       />
     </div>
   );

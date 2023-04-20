@@ -27,7 +27,9 @@ const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
                     index + 1
                   }.`}</span>
                 }
-                {` ${entry.name} - ${entry.score} words for 
+                {` ${entry.name} - ${entry.score} ${
+                  entry.score > 1 ? " words" : " word"
+                } for 
               ${entry.points} points.`}
               </span>
             )}

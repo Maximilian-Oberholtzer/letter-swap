@@ -21,7 +21,6 @@ import { bonusLetters } from "../../bonusLetters";
 import HowToPlayModal from "../modal/HowToPlayModal";
 import StatisticsModal from "../modal/StatisticsModal";
 import BonusLetterModal from "../modal/BonusLetterModal";
-import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 
 const DAY = new Date().getDay();
 
@@ -31,8 +30,6 @@ interface BoardProps {
   resetGame: () => void;
   handleBonusLetterModal: () => void;
   showBonusLetterModal: boolean;
-  leaderboardData: LeaderboardEntry[] | null;
-  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 function Board(props: BoardProps) {
@@ -42,8 +39,6 @@ function Board(props: BoardProps) {
     resetGame,
     handleBonusLetterModal,
     showBonusLetterModal,
-    leaderboardData,
-    setAddedToLeaderboard,
   } = props;
 
   const { theme } = useTheme();
@@ -168,7 +163,6 @@ function Board(props: BoardProps) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
         setGameId(generateGameId());
-        setAddedToLeaderboard(false);
       }
       setSwapCount(-1);
     }
@@ -184,7 +178,6 @@ function Board(props: BoardProps) {
     setWeeklyPoints,
     setWeeklyScores,
     setGameId,
-    setAddedToLeaderboard,
     resetGame,
     handleBonusLetterModal,
   ]);
@@ -337,10 +330,6 @@ function Board(props: BoardProps) {
           swapCount={userState.swapCount}
           onClose={closeStatsModal}
           reset={resetGame}
-          userName={userState.userName}
-          gameId={userState.gameId}
-          leaderboardData={leaderboardData}
-          setAddedToLeaderboard={setAddedToLeaderboard}
         />
       )}
       {!userState.hasPlayed && showComponent && (

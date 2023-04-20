@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "../Theme";
 import StatisticsModal from "../modal/StatisticsModal";
 import HowToPlayModal from "../modal/HowToPlayModal";
@@ -14,12 +14,10 @@ interface AppbarProps {
   userState: UserState;
   resetGame: () => void;
   leaderboardData: LeaderboardEntry[] | null;
-  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 function Appbar(props: AppbarProps) {
-  const { userState, resetGame, leaderboardData, setAddedToLeaderboard } =
-    props;
+  const { userState, resetGame, leaderboardData } = props;
 
   const [showInstructions, setShowInstructions] = useState(false);
   const [showStats, setShowStats] = useState(false);
@@ -71,10 +69,6 @@ function Appbar(props: AppbarProps) {
           swapCount={userState.swapCount}
           onClose={handleStatsModal}
           reset={resetGame}
-          userName={userState.userName}
-          gameId={userState.gameId}
-          leaderboardData={leaderboardData}
-          setAddedToLeaderboard={setAddedToLeaderboard}
         />
       )}
       {showSettings && (
