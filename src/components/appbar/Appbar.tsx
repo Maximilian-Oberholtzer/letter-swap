@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import { useTheme } from "../Theme";
 import StatisticsModal from "../modal/StatisticsModal";
 import HowToPlayModal from "../modal/HowToPlayModal";
@@ -14,10 +20,11 @@ interface AppbarProps {
   userState: UserState;
   resetGame: () => void;
   leaderboardData: LeaderboardEntry[] | null;
+  setUserState: Dispatch<SetStateAction<UserState>>;
 }
 
 function Appbar(props: AppbarProps) {
-  const { userState, resetGame, leaderboardData } = props;
+  const { userState, resetGame, leaderboardData, setUserState } = props;
 
   const [showInstructions, setShowInstructions] = useState(false);
   const [showStats, setShowStats] = useState(false);
@@ -26,6 +33,14 @@ function Appbar(props: AppbarProps) {
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  // For updating user name in settings modal
+  const setUserName = useCallback(
+    (userName: any) => {
+      setUserState((prevState) => ({ ...prevState, userName: userName }));
+    },
+    [setUserState]
+  );
 
   // Allow focus for buttons only if modal is not active
   const [focusable, setFocusable] = useState(true);
@@ -72,7 +87,12 @@ function Appbar(props: AppbarProps) {
         />
       )}
       {showSettings && (
-        <SettingsModal onClose={handleSettingsModal} reset={resetGame} />
+        <SettingsModal
+          onClose={handleSettingsModal}
+          reset={resetGame}
+          userName={userState.userName}
+          setUserName={setUserName}
+        />
       )}
       {showLeaderboard && (
         <LeaderboardModal

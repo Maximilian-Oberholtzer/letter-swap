@@ -152,9 +152,7 @@ function Main() {
       ...prevState,
       nextLetters: fillNewNextLetters(),
     }));
-    setTimeout(() => {
-      handleBonusLetterModal();
-    }, 250);
+    handleBonusLetterModal();
   }, [setUserState, handleBonusLetterModal]);
 
   const { theme } = useTheme();
@@ -184,6 +182,7 @@ function Main() {
         userState={userState}
         resetGame={resetGame}
         leaderboardData={leaderboardData}
+        setUserState={setUserState}
       />
       <Board
         userState={userState}
