@@ -1,10 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTheme } from "../Theme";
 import Board from "../board/Board";
-import { fillEmptyBoard, fillNewNextLetters } from "../board/BoardFunctions";
+import {
+  fillEmptyBoard,
+  fillNewNextLetters,
+  generateGameId,
+} from "../board/BoardFunctions";
 import { trackPageView } from "../../analytics";
 import { useLocation } from "react-router-dom";
 import "./main.css";
+import {
+  LeaderboardEntry,
+  addLeaderboardEntry,
+} from "../leaderboard/leaderboardFunctions";
+import { fetchLeaderboardData } from "../leaderboard/leaderboardFunctions";
 import Appbar from "../appbar/Appbar";
 
 const DAY = new Date().getDay();
@@ -21,6 +30,8 @@ export interface UserState {
   lastPlayedDate: number;
   weeklyScores: (number | null)[];
   weeklyPoints: (number | null)[];
+  userName: string;
+  gameId: number;
 }
 
 function Main() {
@@ -32,7 +43,7 @@ function Main() {
 
   //global user state
   const [userState, setUserState] = useState<UserState>(() => {
-    const storedState = localStorage.getItem("userState");
+    const storedState = localStorage.getItem("userData");
     return storedState
       ? JSON.parse(storedState)
       : {
@@ -46,15 +57,90 @@ function Main() {
           lastPlayedDate: DAY,
           weeklyScores: Array.from({ length: 7 }, () => null),
           weeklyPoints: Array.from({ length: 7 }, () => null),
+          userName: "User",
+          gameId: generateGameId(),
         };
   });
 
   //save user's game
   useEffect(() => {
-    localStorage.setItem("userState", JSON.stringify(userState));
+    localStorage.setItem("userData", JSON.stringify(userState));
   }, [userState]);
 
   const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
+
+  //Initialize leaderboard data and send to leaderboard modal
+  const [addedToLeaderboard, setAddedToLeaderboard] = useState(false);
+  const [leaderboardData, setLeaderboardData] = useState<
+    LeaderboardEntry[] | null
+  >(null);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchLeaderboardData();
+      setLeaderboardData(data);
+      console.log("Fetched Data", data);
+    }
+    fetchData();
+  }, [userState.gameId, addedToLeaderboard]);
+
+  //Add to leaderboard
+  useEffect(() => {
+    //Potential entry into the database
+    let entry = {
+      id: userState.gameId,
+      name: userState.userName,
+      score: userState.weeklyScores[DAY] ?? 0,
+      points: userState.weeklyPoints[DAY] ?? 0,
+    };
+
+    //Check if entry should be added
+    let idExists = false;
+    if (leaderboardData) {
+      for (let row of leaderboardData) {
+        if (row.id === userState.gameId) {
+          idExists = true;
+        }
+      }
+      //Add first entry in the DB
+      if (leaderboardData.length === 0) {
+        if (entry.points > 0 && !addedToLeaderboard) {
+          setAddedToLeaderboard(true);
+          addLeaderboardEntry(entry);
+          console.log("Added first entry", entry);
+        }
+      }
+      //Add entry because leaderboard is < 25 rows
+      else if (
+        leaderboardData.length < 15 &&
+        !idExists &&
+        entry.points > 0 &&
+        !addedToLeaderboard
+      ) {
+        setAddedToLeaderboard(true);
+        addLeaderboardEntry(entry);
+        console.log("Added entry (under 15 entries)", entry);
+      }
+      //Add entry because it is within the top 25 entries
+      else if (
+        leaderboardData[leaderboardData.length - 1].points < entry.points &&
+        !idExists &&
+        !addedToLeaderboard
+      ) {
+        setAddedToLeaderboard(true);
+        addLeaderboardEntry(entry);
+        console.log("Added entry (in the top 15 - bumped one off)", entry);
+      } else {
+        console.log("Id exists or score does not qualify");
+      }
+    }
+  }, [
+    userState.userName,
+    userState.gameId,
+    leaderboardData,
+    userState.weeklyPoints,
+    userState.weeklyScores,
+    addedToLeaderboard,
+  ]);
 
   const handleBonusLetterModal = useCallback(() => {
     setShowBonusLetterModal(!showBonusLetterModal);
@@ -66,13 +152,12 @@ function Main() {
     setUserState((prevState) => ({ ...prevState, swapCount: SWAPCOUNT }));
     setUserState((prevState) => ({ ...prevState, points: 0 }));
     setUserState((prevState) => ({ ...prevState, foundWords: [] }));
+    setUserState((prevState) => ({ ...prevState, recentFoundWords: [] }));
     setUserState((prevState) => ({
       ...prevState,
       nextLetters: fillNewNextLetters(),
     }));
-    setTimeout(() => {
-      handleBonusLetterModal();
-    }, 250);
+    handleBonusLetterModal();
   }, [setUserState, handleBonusLetterModal]);
 
   const { theme } = useTheme();
@@ -98,13 +183,19 @@ function Main() {
           : "var(--light-background)",
       }}
     >
-      <Appbar userState={userState} resetGame={resetGame} />
+      <Appbar
+        userState={userState}
+        resetGame={resetGame}
+        leaderboardData={leaderboardData}
+        setUserState={setUserState}
+      />
       <Board
         userState={userState}
         setUserState={setUserState}
         resetGame={resetGame}
         handleBonusLetterModal={handleBonusLetterModal}
         showBonusLetterModal={showBonusLetterModal}
+        setAddedToLeaderboard={setAddedToLeaderboard}
       />
     </div>
   );

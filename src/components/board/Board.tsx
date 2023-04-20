@@ -13,6 +13,7 @@ import {
   getRandomLetter,
   checkForWords,
   applyAnimation,
+  generateGameId,
 } from "./BoardFunctions";
 import { UserState } from "../main/Main";
 import "./board.css";
@@ -20,6 +21,7 @@ import { bonusLetters } from "../../bonusLetters";
 import HowToPlayModal from "../modal/HowToPlayModal";
 import StatisticsModal from "../modal/StatisticsModal";
 import BonusLetterModal from "../modal/BonusLetterModal";
+import UserNameModal from "../modal/UserNameModal";
 
 const DAY = new Date().getDay();
 
@@ -29,6 +31,7 @@ interface BoardProps {
   resetGame: () => void;
   handleBonusLetterModal: () => void;
   showBonusLetterModal: boolean;
+  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 function Board(props: BoardProps) {
@@ -38,6 +41,7 @@ function Board(props: BoardProps) {
     resetGame,
     handleBonusLetterModal,
     showBonusLetterModal,
+    setAddedToLeaderboard,
   } = props;
 
   const { theme } = useTheme();
@@ -62,6 +66,8 @@ function Board(props: BoardProps) {
   const setLastPlayedDate = useSetUserState("lastPlayedDate");
   const setWeeklyScores = useSetUserState("weeklyScores");
   const setWeeklyPoints = useSetUserState("weeklyPoints");
+  const setUserName = useSetUserState("userName");
+  const setGameId = useSetUserState("gameId");
 
   //set nextLetters as an array for easier jsx mapping
   let nextLetters = userState.nextLetters.split("");
@@ -75,8 +81,9 @@ function Board(props: BoardProps) {
   //For pausing the game to allow animations
   const [animateFlip, setAnimateFlip] = useState(false);
   const [animateFound, setAnimateFound] = useState(false);
-  const [showComponent, setShowComponent] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showUserNameModal, setShowUserNameModal] = useState(false);
 
   //Allow animation to run when game is over
   const [canOpenStats, setCanOpenStats] = useState(true);
@@ -128,10 +135,11 @@ function Board(props: BoardProps) {
       }
     }
 
+    //Flow of modals for user's first time playing
     if (!userState.hasPlayed) {
       setTimeout(() => {
-        setShowComponent(true);
-      }, 1500);
+        setShowUserNameModal(true);
+      }, 750);
     }
   }, [startGameSwapCount, userState.hasPlayed, userState.lastPlayedDate]);
 
@@ -152,14 +160,16 @@ function Board(props: BoardProps) {
       openStatsModal(1250);
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
-      //only overwrite score if it beats current daily score
-      if (userState.foundWords.length >= (weeklyScoreArr[DAY] ?? 0)) {
+      //only overwrite score if it beats current daily score and give new gameId to be savable to leaderboard
+      if (userState.foundWords.length > (weeklyScoreArr[DAY] ?? -1)) {
         weeklyScoreArr[DAY] = userState.foundWords.length;
         setWeeklyScores(weeklyScoreArr);
       }
-      if (userState.points >= (weeklyPointsArr[DAY] ?? 0)) {
+      if (userState.points > (weeklyPointsArr[DAY] ?? -1)) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
+        setAddedToLeaderboard(false);
+        setGameId(generateGameId());
       }
       setSwapCount(-1);
     }
@@ -174,6 +184,8 @@ function Board(props: BoardProps) {
     setSwapCount,
     setWeeklyPoints,
     setWeeklyScores,
+    setGameId,
+    setAddedToLeaderboard,
     resetGame,
     handleBonusLetterModal,
   ]);
@@ -197,6 +209,7 @@ function Board(props: BoardProps) {
     }
   }, [foundWordsExpand]);
 
+  //Modal handling
   const openStatsModal = (delay: number) => {
     setTimeout(() => {
       setShowStatsModal(true);
@@ -205,12 +218,14 @@ function Board(props: BoardProps) {
   const closeStatsModal = () => {
     setShowStatsModal(false);
   };
-
-  const handleCloseModal = () => {
+  const handleCloseUserNameModal = () => {
     setHasPlayed(true);
-    setTimeout(() => {
-      handleBonusLetterModal();
-    }, 500);
+    setShowUserNameModal(false);
+    setShowInstructions(true);
+  };
+  const handleCloseInstructionsModal = () => {
+    setShowInstructions(false);
+    handleBonusLetterModal();
   };
 
   const handleBoard = (rowIndex: number, colIndex: number, letter: string) => {
@@ -240,6 +255,7 @@ function Board(props: BoardProps) {
       setEffect
     );
 
+    //Animate swap counter if used swap
     const swapCounter = document.querySelector(".swaps-container");
     if (prevLetter !== " " && !foundWord) {
       setSwapCount(userState.swapCount - 1);
@@ -328,8 +344,15 @@ function Board(props: BoardProps) {
           reset={resetGame}
         />
       )}
-      {!userState.hasPlayed && showComponent && (
-        <HowToPlayModal onClose={handleCloseModal} />
+      {showUserNameModal && (
+        <UserNameModal
+          onClose={handleCloseUserNameModal}
+          userName={userState.userName}
+          setUserName={setUserName}
+        />
+      )}
+      {showInstructions && (
+        <HowToPlayModal onClose={handleCloseInstructionsModal} />
       )}
       {showBonusLetterModal && (
         <BonusLetterModal
