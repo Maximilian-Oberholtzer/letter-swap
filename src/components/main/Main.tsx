@@ -40,7 +40,7 @@ function Main() {
 
   //global user state
   const [userState, setUserState] = useState<UserState>(() => {
-    const storedState = localStorage.getItem("userState");
+    const storedState = localStorage.getItem("userData");
     return storedState
       ? JSON.parse(storedState)
       : {
@@ -75,7 +75,6 @@ function Main() {
     async function fetchData() {
       const data = await fetchLeaderboardData();
       setLeaderboardData(data);
-      console.log("Fetched leaderboard data in main", data);
     }
     fetchData();
   }, [userState.gameId, addedToLeaderboard]);

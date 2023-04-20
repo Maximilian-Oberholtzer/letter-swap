@@ -244,7 +244,7 @@ const StatisticsModal: React.FC<ModalProps> = ({
       points: points,
     };
     let idExists = false;
-    if (leaderboardData) {
+    if (leaderboardData && weeklyPoints[new Date().getDay()]) {
       if (leaderboardData.length === 0) {
         setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
@@ -267,7 +267,15 @@ const StatisticsModal: React.FC<ModalProps> = ({
         }
       }
     }
-  }, [points, score, userName, gameId, leaderboardData, setAddedToLeaderboard]);
+  }, [
+    points,
+    score,
+    userName,
+    gameId,
+    weeklyPoints,
+    leaderboardData,
+    setAddedToLeaderboard,
+  ]);
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();

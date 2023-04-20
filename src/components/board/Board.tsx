@@ -160,11 +160,11 @@ function Board(props: BoardProps) {
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
       //only overwrite score if it beats current daily score and give new gameId to be savable to leaderboard
-      if (userState.foundWords.length > (weeklyScoreArr[DAY] ?? 0)) {
+      if (userState.foundWords.length > (weeklyScoreArr[DAY] ?? -1)) {
         weeklyScoreArr[DAY] = userState.foundWords.length;
         setWeeklyScores(weeklyScoreArr);
       }
-      if (userState.points > (weeklyPointsArr[DAY] ?? 0)) {
+      if (userState.points > (weeklyPointsArr[DAY] ?? -1)) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
         setGameId(generateGameId());
