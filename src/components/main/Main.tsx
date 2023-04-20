@@ -104,8 +104,10 @@ function Main() {
       //Add first entry in the DB
       if (leaderboardData.length === 0) {
         if (entry.points > 0 && !addedToLeaderboard) {
-          setAddedToLeaderboard(true);
           addLeaderboardEntry(entry);
+          setTimeout(() => {
+            setAddedToLeaderboard(true);
+          }, 1000);
           // console.log("Added first entry", entry);
         }
       }
@@ -116,8 +118,10 @@ function Main() {
         entry.points > 0 &&
         !addedToLeaderboard
       ) {
-        setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
+        setTimeout(() => {
+          setAddedToLeaderboard(true);
+        }, 1000);
         // console.log("Added entry (under 15 entries)", entry);
       }
       //Add entry because it is within the top 25 entries
@@ -126,8 +130,10 @@ function Main() {
         !idExists &&
         !addedToLeaderboard
       ) {
-        setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
+        setTimeout(() => {
+          setAddedToLeaderboard(true);
+        }, 1000);
         // console.log("Added entry (in the top 15 - bumped one off)", entry);
       } else {
         // console.log("Id exists or score does not qualify");
