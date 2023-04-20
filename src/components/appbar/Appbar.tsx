@@ -159,7 +159,7 @@ function Appbar(props: AppbarProps) {
           className="title"
           style={{
             color: isDark ? "var(--dark-text)" : "var(--light-text)",
-            marginTop: "0.65rem",
+            marginTop: "1rem",
           }}
         >
           <div

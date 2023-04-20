@@ -78,7 +78,7 @@ function Main() {
     async function fetchData() {
       const data = await fetchLeaderboardData();
       setLeaderboardData(data);
-      console.log("Fetched Data", data);
+      // console.log("Fetched Data", data);
     }
     fetchData();
   }, [userState.gameId, addedToLeaderboard]);
@@ -106,7 +106,7 @@ function Main() {
         if (entry.points > 0 && !addedToLeaderboard) {
           setAddedToLeaderboard(true);
           addLeaderboardEntry(entry);
-          console.log("Added first entry", entry);
+          // console.log("Added first entry", entry);
         }
       }
       //Add entry because leaderboard is < 25 rows
@@ -118,7 +118,7 @@ function Main() {
       ) {
         setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
-        console.log("Added entry (under 15 entries)", entry);
+        // console.log("Added entry (under 15 entries)", entry);
       }
       //Add entry because it is within the top 25 entries
       else if (
@@ -128,9 +128,9 @@ function Main() {
       ) {
         setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
-        console.log("Added entry (in the top 15 - bumped one off)", entry);
+        // console.log("Added entry (in the top 15 - bumped one off)", entry);
       } else {
-        console.log("Id exists or score does not qualify");
+        // console.log("Id exists or score does not qualify");
       }
     }
   }, [
