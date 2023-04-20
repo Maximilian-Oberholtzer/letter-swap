@@ -78,7 +78,6 @@ function Main() {
     async function fetchData() {
       const data = await fetchLeaderboardData();
       setLeaderboardData(data);
-      setAddedToLeaderboard(false);
       console.log("Fetched Data", data);
     }
     fetchData();
@@ -104,26 +103,32 @@ function Main() {
       }
       //Add first entry in the DB
       if (leaderboardData.length === 0) {
-        if (entry.points > 0) {
+        if (entry.points > 0 && !addedToLeaderboard) {
           setAddedToLeaderboard(true);
           addLeaderboardEntry(entry);
           console.log("Added first entry", entry);
         }
       }
       //Add entry because leaderboard is < 25 rows
-      else if (leaderboardData.length < 25 && !idExists && entry.points > 0) {
+      else if (
+        leaderboardData.length < 15 &&
+        !idExists &&
+        entry.points > 0 &&
+        !addedToLeaderboard
+      ) {
         setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
-        console.log("Added entry (under 25 entries)", entry);
+        console.log("Added entry (under 15 entries)", entry);
       }
       //Add entry because it is within the top 25 entries
       else if (
         leaderboardData[leaderboardData.length - 1].points < entry.points &&
-        !idExists
+        !idExists &&
+        !addedToLeaderboard
       ) {
         setAddedToLeaderboard(true);
         addLeaderboardEntry(entry);
-        console.log("Added entry (in the top 25 - bumped one off)", entry);
+        console.log("Added entry (in the top 15 - bumped one off)", entry);
       } else {
         console.log("Id exists or score does not qualify");
       }
@@ -190,6 +195,7 @@ function Main() {
         resetGame={resetGame}
         handleBonusLetterModal={handleBonusLetterModal}
         showBonusLetterModal={showBonusLetterModal}
+        setAddedToLeaderboard={setAddedToLeaderboard}
       />
     </div>
   );

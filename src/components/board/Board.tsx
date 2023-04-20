@@ -31,6 +31,7 @@ interface BoardProps {
   resetGame: () => void;
   handleBonusLetterModal: () => void;
   showBonusLetterModal: boolean;
+  setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
 function Board(props: BoardProps) {
@@ -40,6 +41,7 @@ function Board(props: BoardProps) {
     resetGame,
     handleBonusLetterModal,
     showBonusLetterModal,
+    setAddedToLeaderboard,
   } = props;
 
   const { theme } = useTheme();
@@ -166,6 +168,7 @@ function Board(props: BoardProps) {
       if (userState.points > (weeklyPointsArr[DAY] ?? -1)) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
+        setAddedToLeaderboard(false);
         setGameId(generateGameId());
       }
       setSwapCount(-1);
@@ -182,6 +185,7 @@ function Board(props: BoardProps) {
     setWeeklyPoints,
     setWeeklyScores,
     setGameId,
+    setAddedToLeaderboard,
     resetGame,
     handleBonusLetterModal,
   ]);

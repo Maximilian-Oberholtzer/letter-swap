@@ -16,7 +16,8 @@ export async function fetchLeaderboardData(): Promise<
     const { data, error } = await supabase
       .from("leaderboard")
       .select("*")
-      .order("points", { ascending: false });
+      .order("points", { ascending: false })
+      .limit(15);
 
     if (error) {
       throw error;
