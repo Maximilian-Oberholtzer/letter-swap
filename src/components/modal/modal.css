@@ -164,6 +164,11 @@
 
 .how-to-play-instructions {
   line-height: 1.5;
+  font-size: 0.94rem;
+}
+
+.how-to-play-point-description-list > li {
+  font-size: 0.94rem;
 }
 
 .weekly-score-container {
