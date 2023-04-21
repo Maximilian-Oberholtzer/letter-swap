@@ -1,4 +1,4 @@
-import { supabase } from "../../supabaseClient";
+import { Dispatch, SetStateAction } from "react";
 
 export type LeaderboardEntry = {
   id: number;
@@ -8,41 +8,51 @@ export type LeaderboardEntry = {
   points: number;
 };
 
-//Read database entries
-export async function fetchLeaderboardData(): Promise<
-  LeaderboardEntry[] | null
-> {
-  try {
-    const { data, error } = await supabase
-      .from("leaderboard")
-      .select("*")
-      .order("points", { ascending: false })
-      .limit(15);
+export async function fetchLeaderboardData(
+  setLeaderboardData: Dispatch<SetStateAction<LeaderboardEntry[] | null>>
+) {
+  const response = await fetch("/.netlify/functions/leaderboardActions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ action: "readLeaderboard" }),
+  });
 
-    if (error) {
-      throw error;
-    }
-    return (data as LeaderboardEntry[]) || null;
-  } catch (error) {
-    console.error("Error fetching leaderboard data:", error);
-    return null;
+  if (response.ok) {
+    const data = await response.json();
+    // console.log("Leaderboard data:", data);
+    setLeaderboardData(data);
+  } else {
+    console.error("An error occurred while fetching leaderboard data");
   }
 }
 
-//Add database entry
-export async function addLeaderboardEntry(entry: {
+export async function writeToLeaderboard(entry: {
   id: number;
   name: string;
   score: number;
   points: number;
 }) {
   try {
-    const { error } = await supabase.from("leaderboard").insert([entry]);
+    const response = await fetch("/.netlify/functions/leaderboardActions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "writeToLeaderboard",
+        payload: entry,
+      }),
+    });
 
-    if (error) {
-      throw error;
+    if (!response.ok) {
+      throw new Error(`Error writing to leaderboard: ${response.status}`);
     }
+
+    // const data = await response.json();
+    // console.log("Leaderboard entry added:", data);
   } catch (error) {
-    console.error("Error adding new entry:", error);
+    console.error("Error writing to leaderboard:", error);
   }
 }

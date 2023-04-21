@@ -12,6 +12,7 @@ import SettingsModal from "../modal/SettingsModal";
 import { UserState } from "../main/Main";
 import "./appbar.css";
 import LeaderboardModal from "../modal/LeaderboardModal";
+// import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 
 const DAY = new Date().getDay();
