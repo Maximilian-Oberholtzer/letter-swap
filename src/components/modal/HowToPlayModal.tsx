@@ -40,6 +40,21 @@ const howToPlay = (
         5 <b>bonus</b> points for each additional word found in one turn
       </li>
     </ul>
+    <p className="modal-subtitle-small">Ranks</p>
+    <ul
+      className="how-to-play-point-description-list"
+      style={{ paddingInlineStart: "20px" }}
+    >
+      <li>Beginner: 0 points</li>
+      <li>Rookie: 30 points</li>
+      <li>Veteran: 70 points</li>
+      <li>Expert: 120 points</li>
+      <li>Epic: 180 points</li>
+      <li>Legend: 240 points</li>
+      <li>Unreal: 300 points</li>
+      <li>Master: 400 points</li>
+      <li>Grandmaster: 500+ points</li>
+    </ul>
   </div>
 );
 
