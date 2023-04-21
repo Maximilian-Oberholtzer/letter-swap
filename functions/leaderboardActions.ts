@@ -18,7 +18,7 @@ const readLeaderboard = async () => {
     .from("leaderboard")
     .select("*")
     .order("points", { ascending: false })
-    .limit(15);
+    .limit(20);
 
   if (error) {
     console.error("Error fetching leaderboard data:", error);

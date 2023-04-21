@@ -6,7 +6,7 @@ import "./modal.css";
 const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
   <div>
     <h1 className="modal-title">Hall of Fame</h1>
-    <p className="modal-subtitle">Top 15 scores of all time </p>
+    <p className="modal-subtitle">Top 20 scores of all time </p>
     {leaderboardData ? (
       <div className="leaderboard-list">
         {leaderboardData.length === 0 && (
