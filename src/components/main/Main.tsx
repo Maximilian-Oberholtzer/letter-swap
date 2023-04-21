@@ -106,9 +106,9 @@ function Main() {
           // console.log("Added first entry", entry);
         }
       }
-      //Add entry because leaderboard is < 25 rows
+      //Add entry because leaderboard is < 20 rows
       else if (
-        leaderboardData.length < 15 &&
+        leaderboardData.length < 20 &&
         !idExists &&
         entry.points > 0 &&
         !addedToLeaderboard
@@ -117,9 +117,9 @@ function Main() {
         setTimeout(() => {
           setAddedToLeaderboard(true);
         }, 1000);
-        // console.log("Added entry (under 15 entries)", entry);
+        // console.log("Added entry (under 20 entries)", entry);
       }
-      //Add entry because it is within the top 25 entries
+      //Add entry because it is within the top 20 entries
       else if (
         leaderboardData[leaderboardData.length - 1].points < entry.points &&
         !idExists &&
@@ -129,7 +129,7 @@ function Main() {
         setTimeout(() => {
           setAddedToLeaderboard(true);
         }, 1000);
-        // console.log("Added entry (in the top 15 - bumped one off)", entry);
+        // console.log("Added entry (in the top 20 - bumped one off)", entry);
       } else {
         // console.log("Id exists or score does not qualify");
       }
