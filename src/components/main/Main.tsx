@@ -9,12 +9,12 @@ import {
 import { trackPageView } from "../../analytics";
 import { useLocation } from "react-router-dom";
 import "./main.css";
-import {
-  LeaderboardEntry,
-  addLeaderboardEntry,
-} from "../leaderboard/leaderboardFunctions";
-import { fetchLeaderboardData } from "../leaderboard/leaderboardFunctions";
 import Appbar from "../appbar/Appbar";
+import {
+  fetchLeaderboardData,
+  writeToLeaderboard,
+} from "../leaderboard/leaderboardFunctions";
+import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 
 const DAY = new Date().getDay();
 const SWAPCOUNT = 15;
@@ -75,15 +75,10 @@ function Main() {
     LeaderboardEntry[] | null
   >(null);
   useEffect(() => {
-    async function fetchData() {
-      const data = await fetchLeaderboardData();
-      setLeaderboardData(data);
-      // console.log("Fetched Data", data);
-    }
-    fetchData();
+    fetchLeaderboardData(setLeaderboardData);
   }, [userState.gameId, addedToLeaderboard]);
 
-  //Add to leaderboard
+  // Add to leaderboard
   useEffect(() => {
     //Potential entry into the database
     let entry = {
@@ -104,7 +99,7 @@ function Main() {
       //Add first entry in the DB
       if (leaderboardData.length === 0) {
         if (entry.points > 0 && !addedToLeaderboard) {
-          addLeaderboardEntry(entry);
+          writeToLeaderboard(entry);
           setTimeout(() => {
             setAddedToLeaderboard(true);
           }, 1000);
@@ -118,7 +113,7 @@ function Main() {
         entry.points > 0 &&
         !addedToLeaderboard
       ) {
-        addLeaderboardEntry(entry);
+        writeToLeaderboard(entry);
         setTimeout(() => {
           setAddedToLeaderboard(true);
         }, 1000);
@@ -130,7 +125,7 @@ function Main() {
         !idExists &&
         !addedToLeaderboard
       ) {
-        addLeaderboardEntry(entry);
+        writeToLeaderboard(entry);
         setTimeout(() => {
           setAddedToLeaderboard(true);
         }, 1000);
