@@ -14,12 +14,15 @@ const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
         )}
         {leaderboardData?.map((entry, index) => (
           <div className="leaderboard-entry" key={entry.id}>
-            {index === 0 &&
-              `🥇 ${entry.name} - ${entry.score} words for ${entry.points} points.`}
-            {index === 1 &&
-              `🥈 ${entry.name} - ${entry.score} words for ${entry.points} points.`}
-            {index === 2 &&
-              `🥉 ${entry.name} - ${entry.score} words for ${entry.points} points.`}
+            {index === 0 && (
+              <span className="leaderboard-entry-medal">{`🥇 ${entry.name} - ${entry.score} words for ${entry.points} points.`}</span>
+            )}
+            {index === 1 && (
+              <span className="leaderboard-entry-medal">{`🥈 ${entry.name} - ${entry.score} words for ${entry.points} points.`}</span>
+            )}
+            {index === 2 && (
+              <span className="leaderboard-entry-medal">{`🥉 ${entry.name} - ${entry.score} words for ${entry.points} points.`}</span>
+            )}
             {index > 2 && (
               <span style={{ marginLeft: "0.3rem" }}>
                 {
