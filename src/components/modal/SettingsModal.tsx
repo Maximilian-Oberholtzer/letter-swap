@@ -96,19 +96,6 @@ const settings = (
         </svg>
       </button>
     </div>
-    <p className="modal-subtitle-small">Ranks</p>
-    <ul style={{ paddingInlineStart: "20px" }}>
-      <li>Beginner: 0 points</li>
-      <li>Rookie: 30 points</li>
-      <li>Veteran: 70 points</li>
-      <li>Expert: 120 points</li>
-      <li>Epic: 180 points</li>
-      <li>Legend: 240 points</li>
-      <li>Unreal: 300 points</li>
-      <li>Master: 400 points</li>
-      <li>Grandmaster: 500+ points</li>
-    </ul>
-
     <div className="modal-bottom-container">
       <a
         href="https://www.buymeacoffee.com/maxoberholtzer"
