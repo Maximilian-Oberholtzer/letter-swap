@@ -68,6 +68,8 @@ function Main() {
   }, [userState]);
 
   const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
+  //Daily bonus letter
+  const [bonusLetter, setBonusLetter] = useState("");
 
   //Initialize leaderboard data and send to leaderboard modal
   const [addedToLeaderboard, setAddedToLeaderboard] = useState(false);
@@ -86,6 +88,9 @@ function Main() {
       name: userState.userName,
       score: userState.weeklyScores[DAY] ?? 0,
       points: userState.weeklyPoints[DAY] ?? 0,
+      foundWords: userState.foundWords,
+      recentFoundWords: userState.recentFoundWords,
+      bonusLetter: bonusLetter,
     };
 
     //Check if entry should be added
@@ -141,6 +146,9 @@ function Main() {
     userState.weeklyPoints,
     userState.weeklyScores,
     addedToLeaderboard,
+    userState.foundWords,
+    userState.recentFoundWords,
+    bonusLetter,
   ]);
 
   const handleBonusLetterModal = useCallback(() => {
@@ -196,6 +204,8 @@ function Main() {
         resetGame={resetGame}
         handleBonusLetterModal={handleBonusLetterModal}
         showBonusLetterModal={showBonusLetterModal}
+        bonusLetter={bonusLetter}
+        setBonusLetter={setBonusLetter}
         setAddedToLeaderboard={setAddedToLeaderboard}
       />
     </div>

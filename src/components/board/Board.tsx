@@ -31,6 +31,8 @@ interface BoardProps {
   resetGame: () => void;
   handleBonusLetterModal: () => void;
   showBonusLetterModal: boolean;
+  bonusLetter: string;
+  setBonusLetter: Dispatch<SetStateAction<string>>;
   setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -41,6 +43,8 @@ function Board(props: BoardProps) {
     resetGame,
     handleBonusLetterModal,
     showBonusLetterModal,
+    bonusLetter,
+    setBonusLetter,
     setAddedToLeaderboard,
   } = props;
 
@@ -74,8 +78,6 @@ function Board(props: BoardProps) {
 
   //Easter egg effects
   const [effect, setEffect] = useState<string>("");
-  //Daily bonus letter
-  const [bonusLetter, setBonusLetter] = useState("");
   //Animated current points effect
   const [animatedPoints, setAnimatedPoints] = useState(0);
   //For pausing the game to allow animations
