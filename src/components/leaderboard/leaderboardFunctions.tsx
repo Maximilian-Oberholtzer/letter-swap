@@ -33,6 +33,8 @@ export async function writeToLeaderboard(entry: {
   name: string;
   score: number;
   points: number;
+  foundWords: string[];
+  recentFoundWords: string[];
 }) {
   try {
     const response = await fetch("/.netlify/functions/leaderboardActions", {

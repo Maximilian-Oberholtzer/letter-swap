@@ -5,12 +5,44 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
-interface LeaderboardEntry {
+const pointMap: { [key: string]: number } = {
+  A: 1,
+  B: 2,
+  C: 2,
+  D: 1,
+  E: 1,
+  F: 2,
+  G: 2,
+  H: 1,
+  I: 1,
+  J: 3,
+  K: 3,
+  L: 1,
+  M: 2,
+  N: 1,
+  O: 1,
+  P: 2,
+  Q: 3,
+  R: 1,
+  S: 1,
+  T: 1,
+  U: 2,
+  V: 3,
+  W: 2,
+  X: 3,
+  Y: 2,
+  Z: 3,
+};
+
+interface GameData {
   id: number;
   timestamp: string;
   name: string;
   score: number;
   points: number;
+  foundWords: string[];
+  recentFoundWords: string[];
+  bonusLetter: string;
 }
 
 const readLeaderboard = async () => {
@@ -37,24 +69,71 @@ const readLeaderboard = async () => {
   };
 };
 
-const writeToLeaderboard = async (entry: LeaderboardEntry) => {
-  const { data, error } = await supabase.from("leaderboard").insert([entry]);
+const writeToLeaderboard = async (entry: GameData) => {
+  const leaderboardEntry = {
+    id: entry.id,
+    name: entry.name,
+    score: entry.score,
+    points: entry.points,
+  };
 
-  if (error) {
-    console.error("Error writing to leaderboard:", error);
+  let isValidScore = validateScore(entry);
+
+  if (isValidScore) {
+    const { data, error } = await supabase
+      .from("leaderboard")
+      .insert([leaderboardEntry]);
+
+    if (error) {
+      console.error("Error writing to leaderboard:", error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: "An error occurred while writing to the leaderboard",
+          error,
+        }),
+      };
+    }
+
     return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "An error occurred while writing to the leaderboard",
-        error,
-      }),
+      statusCode: 200,
+      body: JSON.stringify(data),
+    };
+  } else {
+    return {
+      statusCode: 400,
+      body: "Fraudulent entry detected.",
     };
   }
+};
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(data),
-  };
+const validateScore = (entry: GameData): boolean => {
+  let validScore = true;
+  let countedWords = [""];
+
+  let expectedPoints = 0;
+  for (let word of entry.foundWords) {
+    if (word.length !== 5) {
+      validScore = false;
+    }
+    if (countedWords.includes(word)) {
+      validScore = false;
+    }
+    countedWords.push(word);
+    for (let letter of word) {
+      if (letter === entry.bonusLetter) {
+        expectedPoints += pointMap[letter] * 2;
+      } else {
+        expectedPoints += pointMap[letter];
+      }
+    }
+  }
+
+  if (expectedPoints !== entry.points) {
+    validScore = false;
+  }
+
+  return validScore;
 };
 
 exports.handler = async (event: any) => {
