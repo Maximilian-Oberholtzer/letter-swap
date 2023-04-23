@@ -133,6 +133,10 @@ const validateScore = (entry: GameData): boolean => {
     validScore = false;
   }
 
+  if (entry.recentFoundWords.length === 0) {
+    validScore = false;
+  }
+
   return validScore;
 };
 
