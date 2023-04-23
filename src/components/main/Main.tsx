@@ -90,7 +90,6 @@ function Main() {
       points: userState.weeklyPoints[DAY] ?? 0,
       foundWords: userState.foundWords,
       recentFoundWords: userState.recentFoundWords,
-      bonusLetter: bonusLetter,
     };
 
     //Check if entry should be added

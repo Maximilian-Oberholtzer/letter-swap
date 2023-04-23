@@ -5,35 +5,6 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
-const pointMap: { [key: string]: number } = {
-  A: 1,
-  B: 2,
-  C: 2,
-  D: 1,
-  E: 1,
-  F: 2,
-  G: 2,
-  H: 1,
-  I: 1,
-  J: 3,
-  K: 3,
-  L: 1,
-  M: 2,
-  N: 1,
-  O: 1,
-  P: 2,
-  Q: 3,
-  R: 1,
-  S: 1,
-  T: 1,
-  U: 2,
-  V: 3,
-  W: 2,
-  X: 3,
-  Y: 2,
-  Z: 3,
-};
-
 interface GameData {
   id: number;
   timestamp: string;
@@ -42,7 +13,6 @@ interface GameData {
   points: number;
   foundWords: string[];
   recentFoundWords: string[];
-  bonusLetter: string;
 }
 
 const readLeaderboard = async () => {
@@ -111,7 +81,6 @@ const validateScore = (entry: GameData): boolean => {
   let validScore = true;
   let countedWords = [""];
 
-  let expectedPoints = 0;
   for (let word of entry.foundWords) {
     if (word.length !== 5) {
       validScore = false;
@@ -120,22 +89,7 @@ const validateScore = (entry: GameData): boolean => {
       validScore = false;
     }
     countedWords.push(word);
-    for (let letter of word) {
-      if (letter === entry.bonusLetter) {
-        expectedPoints += pointMap[letter] * 2;
-      } else {
-        expectedPoints += pointMap[letter];
-      }
-    }
   }
-
-  if (expectedPoints !== entry.points) {
-    validScore = false;
-  }
-
-  // if (entry.recentFoundWords.length === 0) {
-  //   validScore = false;
-  // }
 
   return validScore;
 };
