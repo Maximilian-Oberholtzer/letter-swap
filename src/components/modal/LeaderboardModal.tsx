@@ -26,7 +26,7 @@ const leaderBoard = (
             : "2px solid var(--light-text)",
         }}
       >
-        Daily
+        Today
       </button>
       <button
         className="alltime-leaderboard-button"
@@ -77,7 +77,11 @@ const leaderBoard = (
           Array(20 - leaderboardData.length)
             .fill(null)
             .map((_, index) => (
-              <div key={index} style={{ marginLeft: "0.3rem" }}>
+              <div
+                className="leaderboard-entry"
+                key={index}
+                style={{ marginLeft: "0.3rem" }}
+              >
                 <span>{index + 1 + leaderboardData.length}</span>.{" "}
                 <span style={{ marginLeft: "0.3rem" }}>-----</span>
               </div>
