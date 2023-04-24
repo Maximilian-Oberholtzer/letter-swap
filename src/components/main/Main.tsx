@@ -117,10 +117,10 @@ function Main() {
           setTimeout(() => {
             setAddedToLeaderboard(true);
           }, 1000);
-          console.log("Entry added to db");
+          // console.log("Entry added to db");
         }
       } else {
-        console.log("Entry not added - duplicate id");
+        // console.log("Entry not added - duplicate id");
       }
     }
   }, [
