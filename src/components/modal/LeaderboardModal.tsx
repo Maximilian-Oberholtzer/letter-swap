@@ -28,7 +28,7 @@ const leaderBoard = (
   <div>
     <h1 className="modal-title">Hall of Fame</h1>
     <p className="modal-subtitle">
-      Top 20 scores
+      Top 15 scores
       {leaderboardType === "daily" && <> today</>}
       {leaderboardType === "monthly" && <> of {months[month]}</>}
       {leaderboardType === "alltime" && <> of all time</>}
@@ -102,8 +102,8 @@ const leaderBoard = (
             )}
           </div>
         ))}
-        {leaderboardData.length < 20 &&
-          Array(20 - leaderboardData.length)
+        {leaderboardData.length < 15 &&
+          Array(15 - leaderboardData.length)
             .fill(null)
             .map((_, index) => (
               <div
