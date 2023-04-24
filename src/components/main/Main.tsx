@@ -13,6 +13,7 @@ import Appbar from "../appbar/Appbar";
 import {
   fetchDailyLeaderboardData,
   fetchLeaderboardData,
+  fetchMonthlyLeaderboardData,
   writeToLeaderboard,
 } from "../leaderboard/leaderboardFunctions";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
@@ -80,9 +81,13 @@ function Main() {
   const [leaderboardDailyData, setLeaderboardDailyData] = useState<
     LeaderboardEntry[] | null
   >(null);
+  const [leaderboardMonthlyData, setLeaderboardMonthlyData] = useState<
+    LeaderboardEntry[] | null
+  >(null);
   useEffect(() => {
     fetchLeaderboardData(setLeaderboardData);
     fetchDailyLeaderboardData(setLeaderboardDailyData);
+    fetchMonthlyLeaderboardData(setLeaderboardMonthlyData);
   }, [userState.gameId, addedToLeaderboard]);
 
   // Add to leaderboard
@@ -175,6 +180,7 @@ function Main() {
         resetGame={resetGame}
         leaderboardData={leaderboardData}
         leaderboardDailyData={leaderboardDailyData}
+        leaderboardMonthlyData={leaderboardMonthlyData}
         setUserState={setUserState}
       />
       <Board

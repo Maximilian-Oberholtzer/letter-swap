@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
 import format from "date-fns/format";
+import { startOfMonth, endOfMonth } from "date-fns";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
@@ -89,6 +90,53 @@ const readDailyLeaderboard = async () => {
   };
 };
 
+const readMonthlyLeaderboard = async () => {
+  const currentDate = new Date();
+  const timeZone = "America/New_York"; // Eastern Time (ET)
+
+  // Calculate the start and end of the month in ET
+  const startOfMonthET = utcToZonedTime(startOfMonth(currentDate), timeZone);
+  const endOfMonthET = utcToZonedTime(endOfMonth(currentDate), timeZone);
+
+  // Convert start and end times back to UTC
+  const startOfMonthUTC = zonedTimeToUtc(startOfMonthET, timeZone);
+  const endOfMonthUTC = zonedTimeToUtc(endOfMonthET, timeZone);
+
+  // Format the UTC dates to ISO strings
+  const startOfMonthISOString = format(
+    startOfMonthUTC,
+    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+  );
+  const endOfMonthISOString = format(
+    endOfMonthUTC,
+    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+  );
+
+  const { data, error } = await supabase
+    .from("leaderboard")
+    .select("*")
+    .order("points", { ascending: false })
+    .filter("created_at", "gte", startOfMonthISOString)
+    .filter("created_at", "lte", endOfMonthISOString)
+    .limit(20);
+
+  if (error) {
+    console.error("Error fetching monthly leaderboard data:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred while reading from the monthly leaderboard",
+        error,
+      }),
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data),
+  };
+};
+
 const writeToLeaderboard = async (entry: GameData) => {
   const leaderboardEntry = {
     id: entry.id,
@@ -152,6 +200,8 @@ exports.handler = async (event: any) => {
       return await readLeaderboard();
     case "readDailyLeaderboard":
       return await readDailyLeaderboard();
+    case "readMonthlyLeaderboard":
+      return await readMonthlyLeaderboard();
     case "writeToLeaderboard":
       return await writeToLeaderboard(payload);
     default:
