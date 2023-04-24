@@ -160,7 +160,6 @@ function Board(props: BoardProps) {
     if (userState.swapCount === 0) {
       endGameAnimation(250);
       openStatsModal(1250);
-      setGameId(generateGameId());
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
       //only overwrite score if it beats current daily score
@@ -171,6 +170,7 @@ function Board(props: BoardProps) {
       if (userState.points > (weeklyPointsArr[DAY] ?? -1)) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
+        setGameId(generateGameId());
         setAddedToLeaderboard(false);
       }
       setSwapCount(-1);
