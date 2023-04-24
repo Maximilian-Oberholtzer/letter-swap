@@ -68,6 +68,9 @@
   .leaderboard-entry {
     font-size: 0.74rem !important;
   }
+  .leaderboard-content {
+    min-width: 215px !important;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -180,7 +183,7 @@
 .how-to-play-bottom-container {
   display: flex;
   gap: 0.5rem;
-  margin: 1rem -0.5rem;
+  margin: 1.5rem -0.5rem;
   justify-content: center;
 }
 
@@ -263,6 +266,10 @@
 }
 
 /* Leaderboard modal */
+.leaderboard-content {
+  min-width: 290px;
+}
+
 .leaderboard-type-container {
   display: flex;
   justify-content: center;
