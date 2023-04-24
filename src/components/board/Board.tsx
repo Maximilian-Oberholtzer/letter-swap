@@ -160,9 +160,10 @@ function Board(props: BoardProps) {
     if (userState.swapCount === 0) {
       endGameAnimation(250);
       openStatsModal(1250);
+      setGameId(generateGameId());
       const weeklyScoreArr = [...userState.weeklyScores];
       const weeklyPointsArr = [...userState.weeklyPoints];
-      //only overwrite score if it beats current daily score and give new gameId to be savable to leaderboard
+      //only overwrite score if it beats current daily score
       if (userState.foundWords.length > (weeklyScoreArr[DAY] ?? -1)) {
         weeklyScoreArr[DAY] = userState.foundWords.length;
         setWeeklyScores(weeklyScoreArr);
@@ -171,7 +172,6 @@ function Board(props: BoardProps) {
         weeklyPointsArr[DAY] = userState.points;
         setWeeklyPoints(weeklyPointsArr);
         setAddedToLeaderboard(false);
-        setGameId(generateGameId());
       }
       setSwapCount(-1);
     }
@@ -201,7 +201,7 @@ function Board(props: BoardProps) {
     const differenceInTime = currentDate.getTime() - startDate.getTime();
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     setBonusLetter(bonusLetters[differenceInDays]);
-  }, []);
+  }, [setBonusLetter]);
 
   //calculate height of board container (for found words drawer dynamic height)
   useEffect(() => {

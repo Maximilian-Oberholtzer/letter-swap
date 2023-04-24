@@ -244,6 +244,21 @@
 }
 
 /* Leaderboard modal */
+.leaderboard-type-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.5rem 0rem 1rem 0rem;
+}
+
+.daily-leaderboard-button,
+.alltime-leaderboard-button {
+  all: unset;
+  padding: 0.5rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid black;
+  cursor: pointer;
+}
 
 .leaderboard-entry {
   line-height: 1.25;
