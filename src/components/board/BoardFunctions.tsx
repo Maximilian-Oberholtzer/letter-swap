@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { words } from "../../words";
+import { Howl } from "howler";
 
 const BOARDSIZE = 5;
 
@@ -31,6 +32,10 @@ const pointMap: { [key: string]: number } = {
   Y: 2,
   Z: 3,
 };
+
+const foundSound = new Howl({
+  src: ["/found.wav"],
+});
 
 export const fillEmptyBoard = (): string[][] => {
   const newBoard = Array(BOARDSIZE)
@@ -100,7 +105,8 @@ export const checkForWords = (
   isDark: boolean,
   setBoard: (newBoard: string[][]) => void,
   bonusLetter: string,
-  setEffect: Dispatch<SetStateAction<string>>
+  setEffect: Dispatch<SetStateAction<string>>,
+  soundEnabled: boolean
 ): boolean => {
   let foundWord = false;
   let foundSequences = [];
@@ -205,6 +211,10 @@ export const checkForWords = (
   }
 
   if (foundWord) {
+    //play sound effect
+    if (soundEnabled) {
+      foundSound.play();
+    }
     //effect for easter egg
     if (foundSequences.includes("PARTY")) {
       setEffect("confetti");

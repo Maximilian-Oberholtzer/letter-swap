@@ -64,10 +64,17 @@ function Main() {
         };
   });
 
+  //sound controller
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const soundEnabled = localStorage.getItem("soundEnabled");
+    return soundEnabled ? JSON.parse(soundEnabled) : true;
+  });
+
   //save user's game
   useEffect(() => {
     localStorage.setItem("userData", JSON.stringify(userState));
-  }, [userState]);
+    localStorage.setItem("soundEnabled", JSON.stringify(soundEnabled));
+  }, [userState, soundEnabled]);
 
   const [showBonusLetterModal, setShowBonusLetterModal] = useState(false);
   //Daily bonus letter
@@ -181,6 +188,8 @@ function Main() {
         leaderboardData={leaderboardData}
         leaderboardDailyData={leaderboardDailyData}
         leaderboardMonthlyData={leaderboardMonthlyData}
+        setSoundEnabled={setSoundEnabled}
+        soundEnabled={soundEnabled}
         setUserState={setUserState}
       />
       <Board
@@ -192,6 +201,7 @@ function Main() {
         bonusLetter={bonusLetter}
         setBonusLetter={setBonusLetter}
         setAddedToLeaderboard={setAddedToLeaderboard}
+        soundEnabled={soundEnabled}
       />
     </div>
   );

@@ -180,11 +180,6 @@
   margin-right: 0.15rem;
 }
 
-.theme-button-svg {
-  height: 2rem;
-  width: 2rem;
-}
-
 .settings-button {
   all: unset;
   cursor: pointer !important;

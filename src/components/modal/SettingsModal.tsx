@@ -16,7 +16,9 @@ const settings = (
   isDark: boolean,
   userName: string,
   setUserName: Dispatch<SetStateAction<string>>,
-  closeModal: () => void
+  closeModal: () => void,
+  setSoundEnabled: Dispatch<SetStateAction<boolean>>,
+  soundEnabled: boolean
 ) => (
   <div>
     <h1 className="modal-title">Settings</h1>
@@ -58,6 +60,7 @@ const settings = (
           <g
             style={{
               fill: isDark ? "var(--dark-text)" : "var(--light-text)",
+              transition: "300ms fill",
             }}
             transform="translate(-419.000000, -640.000000)"
           >
@@ -101,6 +104,49 @@ const settings = (
         </svg>
       </button>
     </div>
+    <div className="sound-container">
+      <div>Toggle sound: </div>
+      <button
+        className={`sound-button ${isDark ? "outline-dark" : "outline-light"}`}
+        onClick={() => {
+          setSoundEnabled(!soundEnabled);
+        }}
+      >
+        {soundEnabled ? (
+          <svg
+            className="sound-button-svg"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              style={{
+                fill: isDark ? "var(--dark-text)" : "var(--light-text)",
+                transition: "300ms fill",
+              }}
+              transform="translate(42.666667, 85.333333)"
+            >
+              <path d="M361.299413,341.610667 L328.014293,314.98176 C402.206933,233.906133 402.206933,109.96608 328.013013,28.8906667 L361.298133,2.26304 C447.910187,98.97536 447.908907,244.898347 361.299413,341.610667 Z M276.912853,69.77216 L243.588693,96.4309333 C283.38432,138.998613 283.38304,204.87488 243.589973,247.44256 L276.914133,274.101333 C329.118507,215.880107 329.118507,127.992107 276.912853,69.77216 Z M191.749973,1.42108547e-14 L80.8957867,87.2292267 L7.10542736e-15,87.2292267 L7.10542736e-15,257.895893 L81.0208,257.895893 L191.749973,343.35424 L191.749973,1.42108547e-14 L191.749973,1.42108547e-14 Z M42.6666667,129.895893 L95.6874667,129.895893 L149.083307,87.8749867 L149.083307,256.520747 L95.5624533,215.229227 L42.6666667,215.229227 L42.6666667,129.895893 Z"></path>
+            </g>
+          </svg>
+        ) : (
+          <svg
+            className="sound-button-svg"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              style={{
+                fill: isDark ? "var(--dark-text)" : "var(--light-text)",
+                transition: "300ms fill",
+              }}
+              transform="translate(42.666667, 85.333333)"
+            >
+              <path d="M47.0849493,-1.42108547e-14 L409.751616,362.666662 L379.581717,392.836561 L191.749,205.003 L191.749973,369.105851 L81.0208,283.647505 L7.10542736e-15,283.647505 L7.10542736e-15,112.980838 L80.8957867,112.980838 L91.433,104.688 L16.9150553,30.169894 L47.0849493,-1.42108547e-14 Z M361.298133,28.0146513 C429.03793,103.653926 443.79725,209.394854 405.578543,298.152074 L372.628731,265.200172 C396.498116,194.196781 381.626371,113.22828 328.013013,54.642278 L361.298133,28.0146513 Z M121.824,135.078 L95.6874667,155.647505 L42.6666667,155.647505 L42.6666667,240.980838 L95.5624533,240.980838 L149.083307,282.272358 L149.083,162.337 L121.824,135.078 Z M276.912853,95.5237713 C305.539112,127.447886 318.468552,168.292377 315.701384,208.274722 L266.463468,159.037386 C261.494642,145.732631 253.869746,133.179747 243.588693,122.182545 L243.588693,122.182545 Z M191.749973,25.7516113 L191.749,84.325 L158.969,51.545 L191.749973,25.7516113 Z"></path>
+            </g>
+          </svg>
+        )}
+      </button>
+    </div>
     <div className="modal-bottom-container">
       <a
         href="https://www.buymeacoffee.com/maxoberholtzer"
@@ -129,6 +175,8 @@ interface ModalProps {
   reset: () => void;
   userName: string;
   setUserName: Dispatch<SetStateAction<string>>;
+  setSoundEnabled: Dispatch<SetStateAction<boolean>>;
+  soundEnabled: boolean;
 }
 
 const SettingsModal: React.FC<ModalProps> = ({
@@ -136,6 +184,8 @@ const SettingsModal: React.FC<ModalProps> = ({
   reset,
   userName,
   setUserName,
+  setSoundEnabled,
+  soundEnabled,
 }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
@@ -210,7 +260,15 @@ const SettingsModal: React.FC<ModalProps> = ({
             </g>
           </svg>
         </button>
-        {settings(toggleTheme, isDark, userName, setUserName, closeModal)}
+        {settings(
+          toggleTheme,
+          isDark,
+          userName,
+          setUserName,
+          closeModal,
+          setSoundEnabled,
+          soundEnabled
+        )}
       </div>
     </div>
   );
