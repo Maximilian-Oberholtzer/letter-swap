@@ -67,8 +67,10 @@ const leaderBoard = (
             .fill(null)
             .map((_, index) => (
               <div className="leaderboard-entry" key={index}>
-                {" "}
-                {index + 1 + leaderboardData.length}. -----
+                <span style={{ marginLeft: "0.3rem" }}>
+                  {index + 1 + leaderboardData.length}
+                </span>
+                . <span style={{ marginLeft: "0.3rem" }}>-----</span>
               </div>
             ))}
       </div>
