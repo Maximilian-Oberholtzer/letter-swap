@@ -258,6 +258,7 @@
   border-radius: 1rem;
   border: 2px solid black;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .leaderboard-entry {
