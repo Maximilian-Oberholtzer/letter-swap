@@ -107,11 +107,13 @@ function Main() {
       }
 
       if (!idExists && !addedToLeaderboard) {
-        writeToLeaderboard(entry);
-        setTimeout(() => {
-          setAddedToLeaderboard(true);
-        }, 1000);
-        console.log("Entry added to db");
+        if (entry.points > 0) {
+          writeToLeaderboard(entry);
+          setTimeout(() => {
+            setAddedToLeaderboard(true);
+          }, 1000);
+          console.log("Entry added to db");
+        }
       } else {
         console.log("Entry not added - duplicate id");
       }
