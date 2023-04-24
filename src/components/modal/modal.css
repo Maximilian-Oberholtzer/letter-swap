@@ -176,13 +176,12 @@
   font-size: 0.94rem;
 }
 
-.how-to-play-point-description-list > li {
+.how-to-play-point-description-list > div {
   font-size: 0.88rem;
 }
 
 .how-to-play-bottom-container {
   display: flex;
-  gap: 0.5rem;
   margin: 1.5rem -0.5rem;
   justify-content: center;
 }

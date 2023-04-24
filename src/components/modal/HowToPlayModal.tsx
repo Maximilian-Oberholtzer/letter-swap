@@ -32,15 +32,15 @@ const howToPlay = (
           className="how-to-play-point-description-list"
           style={{ paddingInlineStart: "20px" }}
         >
-          <li>1 point - A, D, E, H, I, L, N, O, R, S, T </li>
-          <li>2 points - B, C, F, G, M, P, U, W, Y </li>
-          <li>3 points - J, K, Q, V, X, Z </li>
-          <li>
+          <div>1 point - A, D, E, H, I, L, N, O, R, S, T </div>
+          <div>2 points - B, C, F, G, M, P, U, W, Y </div>
+          <div>3 points - J, K, Q, V, X, Z </div>
+          <div>
             3 <b>bonus</b> points for finding a word in a diagonal direction.
-          </li>
-          <li>
+          </div>
+          <div>
             5 <b>bonus</b> points for each additional word found in one turn.
-          </li>
+          </div>
         </ul>
       </div>
 
@@ -50,15 +50,15 @@ const howToPlay = (
           className="how-to-play-point-description-list"
           style={{ paddingInlineStart: "20px" }}
         >
-          <li>Beginner: 0 points</li>
-          <li>Rookie: 30 points</li>
-          <li>Veteran: 70 points</li>
-          <li>Expert: 120 points</li>
-          <li>Epic: 180 points</li>
-          <li>Legend: 240 points</li>
-          <li>Unreal: 300 points</li>
-          <li>Master: 400 points</li>
-          <li>Grandmaster: 500+ points</li>
+          <div>Beginner: 0 points</div>
+          <div>Rookie: 30 points</div>
+          <div>Veteran: 70 points</div>
+          <div>Expert: 120 points</div>
+          <div>Epic: 180 points</div>
+          <div>Legend: 240 points</div>
+          <div>Unreal: 300 points</div>
+          <div>Master: 400 points</div>
+          <div>Grandmaster: 500+ points</div>
         </ul>
       </div>
     </div>
