@@ -1,7 +1,23 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTheme } from "../Theme";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 import "./modal.css";
+
+const month = new Date().getMonth();
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const leaderBoard = (
   leaderboardData: LeaderboardEntry[] | null,
@@ -12,7 +28,10 @@ const leaderBoard = (
   <div>
     <h1 className="modal-title">Hall of Fame</h1>
     <p className="modal-subtitle">
-      Top 20 scores {`${leaderboardType === "daily" ? "today" : "of all time"}`}
+      Top 20 scores
+      {leaderboardType === "daily" && <> today</>}
+      {leaderboardType === "monthly" && <> of {months[month]}</>}
+      {leaderboardType === "alltime" && <> of all time</>}
     </p>
     <div className="leaderboard-type-container">
       <button
@@ -27,6 +46,19 @@ const leaderBoard = (
         }}
       >
         Today
+      </button>
+      <button
+        className="monthly-leaderboard-button"
+        onClick={() => {
+          setLeaderboardType("monthly");
+        }}
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
+        }}
+      >
+        Monthly
       </button>
       <button
         className="alltime-leaderboard-button"
@@ -94,17 +126,20 @@ interface ModalProps {
   onClose: () => void;
   leaderboardData: LeaderboardEntry[] | null;
   leaderboardDailyData: LeaderboardEntry[] | null;
+  leaderboardMonthlyData: LeaderboardEntry[] | null;
 }
 
 const LeaderboardModal: React.FC<ModalProps> = ({
   onClose,
   leaderboardData,
   leaderboardDailyData,
+  leaderboardMonthlyData,
 }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
   const [leaderboardType, setLeaderboardType] = useState("daily");
+  const [data, setData] = useState(leaderboardDailyData);
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
@@ -117,6 +152,21 @@ const LeaderboardModal: React.FC<ModalProps> = ({
       onClose();
     }, 300);
   };
+
+  useEffect(() => {
+    if (leaderboardType === "daily") {
+      setData(leaderboardDailyData);
+    } else if (leaderboardType === "monthly") {
+      setData(leaderboardMonthlyData);
+    } else if (leaderboardType === "alltime") {
+      setData(leaderboardData);
+    }
+  }, [
+    leaderboardType,
+    leaderboardDailyData,
+    leaderboardData,
+    leaderboardMonthlyData,
+  ]);
 
   return (
     <div className="modal-container">
@@ -171,12 +221,7 @@ const LeaderboardModal: React.FC<ModalProps> = ({
             </g>
           </svg>
         </button>
-        {leaderBoard(
-          leaderboardType === "daily" ? leaderboardDailyData : leaderboardData,
-          setLeaderboardType,
-          leaderboardType,
-          isDark
-        )}
+        {leaderBoard(data, setLeaderboardType, leaderboardType, isDark)}
       </div>
     </div>
   );
