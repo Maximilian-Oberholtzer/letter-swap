@@ -23,7 +23,7 @@ const readLeaderboard = async () => {
     .from("leaderboard")
     .select("*")
     .order("points", { ascending: false })
-    .limit(20);
+    .limit(15);
 
   if (error) {
     console.error("Error fetching leaderboard data:", error);
@@ -71,7 +71,7 @@ const readDailyLeaderboard = async () => {
     .order("points", { ascending: false })
     .filter("created_at", "gte", startOfDayISOString)
     .filter("created_at", "lte", endOfDayISOString)
-    .limit(20);
+    .limit(15);
 
   if (error) {
     console.error("Error fetching daily leaderboard data:", error);
@@ -118,7 +118,7 @@ const readMonthlyLeaderboard = async () => {
     .order("points", { ascending: false })
     .filter("created_at", "gte", startOfMonthISOString)
     .filter("created_at", "lte", endOfMonthISOString)
-    .limit(20);
+    .limit(15);
 
   if (error) {
     console.error("Error fetching monthly leaderboard data:", error);
