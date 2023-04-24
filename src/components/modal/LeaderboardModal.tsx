@@ -14,6 +14,34 @@ const leaderBoard = (
     <p className="modal-subtitle">
       Top 20 scores {`${leaderboardType === "daily" ? "today" : "of all time"}`}
     </p>
+    <div className="leaderboard-type-container">
+      <button
+        className="daily-leaderboard-button"
+        onClick={() => {
+          setLeaderboardType("daily");
+        }}
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
+        }}
+      >
+        Today
+      </button>
+      <button
+        className="alltime-leaderboard-button"
+        onClick={() => {
+          setLeaderboardType("alltime");
+        }}
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
+        }}
+      >
+        All time
+      </button>
+    </div>
     {leaderboardData ? (
       <div className="leaderboard-list">
         {leaderboardData.length === 0 && (
@@ -58,34 +86,6 @@ const leaderBoard = (
                 <span style={{ marginLeft: "0.3rem" }}>-----</span>
               </div>
             ))}
-        <div className="leaderboard-type-container">
-          <button
-            className="daily-leaderboard-button"
-            onClick={() => {
-              setLeaderboardType("daily");
-            }}
-            style={{
-              border: isDark
-                ? "2px solid var(--dark-text)"
-                : "2px solid var(--light-text)",
-            }}
-          >
-            Today
-          </button>
-          <button
-            className="alltime-leaderboard-button"
-            onClick={() => {
-              setLeaderboardType("alltime");
-            }}
-            style={{
-              border: isDark
-                ? "2px solid var(--dark-text)"
-                : "2px solid var(--light-text)",
-            }}
-          >
-            All time
-          </button>
-        </div>
       </div>
     ) : (
       <div>Error fetching leaderboard data.</div>
