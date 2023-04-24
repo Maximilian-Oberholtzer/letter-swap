@@ -41,7 +41,7 @@ export async function fetchDailyLeaderboardData(
 
   if (response.ok) {
     const data = await response.json();
-    console.log("Leaderboard data:", data);
+    // console.log("Leaderboard data:", data);
     setLeaderboardData(data);
   } else {
     console.error("An error occurred while fetching leaderboard data");
@@ -61,7 +61,7 @@ export async function fetchMonthlyLeaderboardData(
 
   if (response.ok) {
     const data = await response.json();
-    console.log("Leaderboard data:", data);
+    // console.log("Leaderboard data:", data);
     setLeaderboardData(data);
   } else {
     console.error("An error occurred while fetching leaderboard data");

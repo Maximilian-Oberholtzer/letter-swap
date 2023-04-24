@@ -23,6 +23,8 @@ interface AppbarProps {
   leaderboardData: LeaderboardEntry[] | null;
   leaderboardDailyData: LeaderboardEntry[] | null;
   leaderboardMonthlyData: LeaderboardEntry[] | null;
+  setSoundEnabled: Dispatch<SetStateAction<boolean>>;
+  soundEnabled: boolean;
   setUserState: Dispatch<SetStateAction<UserState>>;
 }
 
@@ -33,6 +35,8 @@ function Appbar(props: AppbarProps) {
     leaderboardData,
     leaderboardDailyData,
     leaderboardMonthlyData,
+    setSoundEnabled,
+    soundEnabled,
     setUserState,
   } = props;
 
@@ -102,6 +106,8 @@ function Appbar(props: AppbarProps) {
           reset={resetGame}
           userName={userState.userName}
           setUserName={setUserName}
+          setSoundEnabled={setSoundEnabled}
+          soundEnabled={soundEnabled}
         />
       )}
       {showLeaderboard && (

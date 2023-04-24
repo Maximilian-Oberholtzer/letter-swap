@@ -34,6 +34,7 @@ interface BoardProps {
   bonusLetter: string;
   setBonusLetter: Dispatch<SetStateAction<string>>;
   setAddedToLeaderboard: Dispatch<SetStateAction<boolean>>;
+  soundEnabled: boolean;
 }
 
 function Board(props: BoardProps) {
@@ -46,6 +47,7 @@ function Board(props: BoardProps) {
     bonusLetter,
     setBonusLetter,
     setAddedToLeaderboard,
+    soundEnabled,
   } = props;
 
   const { theme } = useTheme();
@@ -254,7 +256,8 @@ function Board(props: BoardProps) {
       isDark,
       setBoard,
       bonusLetter,
-      setEffect
+      setEffect,
+      soundEnabled
     );
 
     //Animate swap counter if used swap

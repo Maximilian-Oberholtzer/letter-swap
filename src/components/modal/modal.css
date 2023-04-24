@@ -241,17 +241,36 @@
   cursor: pointer;
 }
 
-.theme-container {
+.theme-container,
+.sound-container {
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 1.5rem;
   justify-content: flex-start;
 }
 
-.theme-button {
+.theme-container {
+  gap: 1.5rem;
+}
+
+.sound-container {
+  gap: 3.5rem;
+}
+
+.theme-button,
+.sound-button {
   all: unset;
   cursor: pointer !important;
+}
+
+.theme-button-svg {
+  height: 2rem;
+  width: 2rem;
+}
+
+.sound-button-svg {
+  height: 2rem;
+  width: 2rem;
 }
 
 .copyright-text {
