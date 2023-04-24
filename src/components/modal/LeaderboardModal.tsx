@@ -44,9 +44,6 @@ const leaderBoard = (
     </div>
     {leaderboardData ? (
       <div className="leaderboard-list">
-        {leaderboardData.length === 0 && (
-          <div>No results posted to leaderboard.</div>
-        )}
         {leaderboardData?.map((entry, index) => (
           <div className="leaderboard-entry" key={entry.id}>
             {index === 0 && (
@@ -133,7 +130,7 @@ const LeaderboardModal: React.FC<ModalProps> = ({
         onClick={handleOverlayClick}
       ></div>
       <div
-        className="modal-content"
+        className="modal-content leaderboard-content"
         style={{
           backgroundColor: isDark
             ? "var(--dark-background)"
