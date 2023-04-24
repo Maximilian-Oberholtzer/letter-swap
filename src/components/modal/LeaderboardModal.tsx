@@ -6,7 +6,8 @@ import "./modal.css";
 const leaderBoard = (
   leaderboardData: LeaderboardEntry[] | null,
   setLeaderboardType: Dispatch<SetStateAction<string>>,
-  leaderboardType: string
+  leaderboardType: string,
+  isDark: boolean
 ) => (
   <div>
     <h1 className="modal-title">Hall of Fame</h1>
@@ -19,6 +20,11 @@ const leaderBoard = (
         onClick={() => {
           setLeaderboardType("daily");
         }}
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
+        }}
       >
         Daily
       </button>
@@ -26,6 +32,11 @@ const leaderBoard = (
         className="alltime-leaderboard-button"
         onClick={() => {
           setLeaderboardType("alltime");
+        }}
+        style={{
+          border: isDark
+            ? "2px solid var(--dark-text)"
+            : "2px solid var(--light-text)",
         }}
       >
         All time
@@ -66,11 +77,9 @@ const leaderBoard = (
           Array(20 - leaderboardData.length)
             .fill(null)
             .map((_, index) => (
-              <div className="leaderboard-entry" key={index}>
-                <span style={{ marginLeft: "0.3rem" }}>
-                  {index + 1 + leaderboardData.length}
-                </span>
-                . <span style={{ marginLeft: "0.3rem" }}>-----</span>
+              <div key={index} style={{ marginLeft: "0.3rem" }}>
+                <span>{index + 1 + leaderboardData.length}</span>.{" "}
+                <span style={{ marginLeft: "0.3rem" }}>-----</span>
               </div>
             ))}
       </div>
@@ -164,7 +173,8 @@ const LeaderboardModal: React.FC<ModalProps> = ({
         {leaderBoard(
           leaderboardType === "daily" ? leaderboardDailyData : leaderboardData,
           setLeaderboardType,
-          leaderboardType
+          leaderboardType,
+          isDark
         )}
       </div>
     </div>
