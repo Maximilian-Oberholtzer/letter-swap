@@ -33,47 +33,49 @@ const leaderBoard = (
       {leaderboardType === "monthly" && <> of {months[month]}</>}
       {leaderboardType === "alltime" && <> of all time</>}
     </p>
-    <div className="leaderboard-type-container">
-      <button
-        className="daily-leaderboard-button"
-        onClick={() => {
-          setLeaderboardType("daily");
-        }}
-        style={{
-          border: isDark
-            ? "2px solid var(--dark-text)"
-            : "2px solid var(--light-text)",
-        }}
-      >
-        Today
-      </button>
-      <button
-        className="monthly-leaderboard-button"
-        onClick={() => {
-          setLeaderboardType("monthly");
-        }}
-        style={{
-          border: isDark
-            ? "2px solid var(--dark-text)"
-            : "2px solid var(--light-text)",
-        }}
-      >
-        Monthly
-      </button>
-      <button
-        className="alltime-leaderboard-button"
-        onClick={() => {
-          setLeaderboardType("alltime");
-        }}
-        style={{
-          border: isDark
-            ? "2px solid var(--dark-text)"
-            : "2px solid var(--light-text)",
-        }}
-      >
-        All time
-      </button>
-    </div>
+    {leaderboardData && (
+      <div className="leaderboard-type-container">
+        <button
+          className="daily-leaderboard-button"
+          onClick={() => {
+            setLeaderboardType("daily");
+          }}
+          style={{
+            border: isDark
+              ? "2px solid var(--dark-text)"
+              : "2px solid var(--light-text)",
+          }}
+        >
+          Today
+        </button>
+        <button
+          className="monthly-leaderboard-button"
+          onClick={() => {
+            setLeaderboardType("monthly");
+          }}
+          style={{
+            border: isDark
+              ? "2px solid var(--dark-text)"
+              : "2px solid var(--light-text)",
+          }}
+        >
+          Monthly
+        </button>
+        <button
+          className="alltime-leaderboard-button"
+          onClick={() => {
+            setLeaderboardType("alltime");
+          }}
+          style={{
+            border: isDark
+              ? "2px solid var(--dark-text)"
+              : "2px solid var(--light-text)",
+          }}
+        >
+          All time
+        </button>
+      </div>
+    )}
     {leaderboardData ? (
       <div className="leaderboard-list">
         {leaderboardData?.map((entry, index) => (
