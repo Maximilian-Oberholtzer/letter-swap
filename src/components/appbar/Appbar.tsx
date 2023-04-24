@@ -215,6 +215,10 @@ function Appbar(props: AppbarProps) {
           className={`trophy-button ${
             isDark ? "outline-dark" : "outline-light"
           }`}
+          tabIndex={focusable ? 0 : -1}
+          id="leaderboard-button"
+          type="button"
+          aria-label="Leaderboard"
           onClick={() => handleLeaderboardModal()}
         >
           <svg

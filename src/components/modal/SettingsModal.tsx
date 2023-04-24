@@ -38,6 +38,11 @@ const settings = (
         type="text"
         value={userName}
         onChange={(event) => handleInputChange(event, setUserName)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            closeModal();
+          }
+        }}
       ></input>
       <button
         className="username-save-button"
