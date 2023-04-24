@@ -21,11 +21,18 @@ interface AppbarProps {
   userState: UserState;
   resetGame: () => void;
   leaderboardData: LeaderboardEntry[] | null;
+  leaderboardDailyData: LeaderboardEntry[] | null;
   setUserState: Dispatch<SetStateAction<UserState>>;
 }
 
 function Appbar(props: AppbarProps) {
-  const { userState, resetGame, leaderboardData, setUserState } = props;
+  const {
+    userState,
+    resetGame,
+    leaderboardData,
+    leaderboardDailyData,
+    setUserState,
+  } = props;
 
   const [showInstructions, setShowInstructions] = useState(false);
   const [showStats, setShowStats] = useState(false);
@@ -99,6 +106,7 @@ function Appbar(props: AppbarProps) {
         <LeaderboardModal
           onClose={handleLeaderboardModal}
           leaderboardData={leaderboardData}
+          leaderboardDailyData={leaderboardDailyData}
         />
       )}
       <div className="menu-left">

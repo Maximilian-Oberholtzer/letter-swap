@@ -1,4 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
+import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
+import format from "date-fns/format";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
@@ -28,6 +30,54 @@ const readLeaderboard = async () => {
       statusCode: 500,
       body: JSON.stringify({
         message: "An error occurred while reading from the leaderboard",
+        error,
+      }),
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data),
+  };
+};
+
+const readDailyLeaderboard = async () => {
+  const currentDate = new Date();
+  const timeZone = "America/New_York"; // Eastern Time (ET)
+
+  // Convert current date to the beginning of the day in ET
+  const startOfDayET = utcToZonedTime(currentDate, timeZone);
+  startOfDayET.setHours(0, 0, 0, 0);
+
+  // Convert current date to the end of the day in ET
+  const endOfDayET = new Date(startOfDayET);
+  endOfDayET.setHours(23, 59, 59, 999);
+
+  // Convert start and end times back to UTC
+  const startOfDayUTC = zonedTimeToUtc(startOfDayET, timeZone);
+  const endOfDayUTC = zonedTimeToUtc(endOfDayET, timeZone);
+
+  // Format the UTC dates to ISO strings
+  const startOfDayISOString = format(
+    startOfDayUTC,
+    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+  );
+  const endOfDayISOString = format(endOfDayUTC, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+  const { data, error } = await supabase
+    .from("leaderboard")
+    .select("*")
+    .order("points", { ascending: false })
+    .filter("created_at", "gte", startOfDayISOString)
+    .filter("created_at", "lte", endOfDayISOString)
+    .limit(20);
+
+  if (error) {
+    console.error("Error fetching daily leaderboard data:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred while reading from the daily leaderboard",
         error,
       }),
     };
@@ -100,6 +150,8 @@ exports.handler = async (event: any) => {
   switch (action) {
     case "readLeaderboard":
       return await readLeaderboard();
+    case "readDailyLeaderboard":
+      return await readDailyLeaderboard();
     case "writeToLeaderboard":
       return await writeToLeaderboard(payload);
     default:

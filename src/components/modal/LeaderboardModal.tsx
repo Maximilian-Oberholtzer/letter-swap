@@ -1,12 +1,36 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useTheme } from "../Theme";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 import "./modal.css";
 
-const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
+const leaderBoard = (
+  leaderboardData: LeaderboardEntry[] | null,
+  setLeaderboardType: Dispatch<SetStateAction<string>>,
+  leaderboardType: string
+) => (
   <div>
     <h1 className="modal-title">Hall of Fame</h1>
-    <p className="modal-subtitle">Top 20 scores of all time </p>
+    <p className="modal-subtitle">
+      Top 20 scores {`${leaderboardType === "daily" ? "today" : "of all time"}`}
+    </p>
+    <div className="leaderboard-type-container">
+      <button
+        className="daily-leaderboard-button"
+        onClick={() => {
+          setLeaderboardType("daily");
+        }}
+      >
+        Daily
+      </button>
+      <button
+        className="alltime-leaderboard-button"
+        onClick={() => {
+          setLeaderboardType("alltime");
+        }}
+      >
+        All time
+      </button>
+    </div>
     {leaderboardData ? (
       <div className="leaderboard-list">
         {leaderboardData.length === 0 && (
@@ -38,6 +62,15 @@ const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
             )}
           </div>
         ))}
+        {leaderboardData.length < 20 &&
+          Array(20 - leaderboardData.length)
+            .fill(null)
+            .map((_, index) => (
+              <div className="leaderboard-entry" key={index}>
+                {" "}
+                {index + 1 + leaderboardData.length}. -----
+              </div>
+            ))}
       </div>
     ) : (
       <div>Error fetching leaderboard data.</div>
@@ -48,14 +81,18 @@ const leaderBoard = (leaderboardData: LeaderboardEntry[] | null) => (
 interface ModalProps {
   onClose: () => void;
   leaderboardData: LeaderboardEntry[] | null;
+  leaderboardDailyData: LeaderboardEntry[] | null;
 }
 
 const LeaderboardModal: React.FC<ModalProps> = ({
   onClose,
   leaderboardData,
+  leaderboardDailyData,
 }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  const [leaderboardType, setLeaderboardType] = useState("daily");
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     closeModal();
@@ -122,7 +159,11 @@ const LeaderboardModal: React.FC<ModalProps> = ({
             </g>
           </svg>
         </button>
-        {leaderBoard(leaderboardData)}
+        {leaderBoard(
+          leaderboardType === "daily" ? leaderboardDailyData : leaderboardData,
+          setLeaderboardType,
+          leaderboardType
+        )}
       </div>
     </div>
   );

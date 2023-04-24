@@ -28,6 +28,26 @@ export async function fetchLeaderboardData(
   }
 }
 
+export async function fetchDailyLeaderboardData(
+  setLeaderboardData: Dispatch<SetStateAction<LeaderboardEntry[] | null>>
+) {
+  const response = await fetch("/.netlify/functions/leaderboardActions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ action: "readDailyLeaderboard" }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log("Leaderboard data:", data);
+    setLeaderboardData(data);
+  } else {
+    console.error("An error occurred while fetching leaderboard data");
+  }
+}
+
 export async function writeToLeaderboard(entry: {
   id: number;
   name: string;
