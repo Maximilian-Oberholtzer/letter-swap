@@ -42,14 +42,14 @@ const statistics = (
       score === 1 ? (
         <>
           <div className="modal-rank">Today's Rank: {rank}</div>
-          <div className="modal-sub-text">
+          <div className="modal-sub-text" style={{ marginBottom: "-0.5rem" }}>
             You found {score} word for a total of {points} points.
           </div>
         </>
       ) : (
         <>
           <div className="modal-rank">Today's Rank: {rank}</div>
-          <div className="modal-sub-text">
+          <div className="modal-sub-text" style={{ marginBottom: "-0.5rem" }}>
             You found {score} words for a total of {points} points.
           </div>
         </>
