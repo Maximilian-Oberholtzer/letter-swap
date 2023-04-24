@@ -103,7 +103,7 @@ const HowToPlayModal: React.FC<ModalProps> = ({ onClose }) => {
             ? "var(--dark-background)"
             : "var(--light-background)",
           color: isDark ? "var(--dark-text)" : "var(--light-text)",
-          maxWidth: "400px",
+          maxWidth: "340px",
         }}
       >
         <button
