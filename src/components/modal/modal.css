@@ -34,7 +34,7 @@
   .how-to-play-instructions {
     font-size: 0.8rem !important;
   }
-  .how-to-play-point-description-list > li {
+  .how-to-play-point-description-list > div {
     font-size: 0.75rem !important;
   }
   .modal-rank {
@@ -70,6 +70,12 @@
   }
   .leaderboard-content {
     min-width: 215px !important;
+  }
+  .daily-leaderboard-button,
+  .monthly-leaderboard-button,
+  .alltime-leaderboard-button {
+    padding: 0.3rem 0.25rem !important;
+    border-radius: 0.8rem !important;
   }
 }
 
