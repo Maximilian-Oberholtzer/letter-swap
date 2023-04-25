@@ -36,7 +36,9 @@ const leaderBoard = (
     {leaderboardData && (
       <div className="leaderboard-type-container">
         <button
-          className="daily-leaderboard-button"
+          className={`daily-leaderboard-button ${
+            isDark ? "button-focus-dark" : "button-focus-light"
+          }`}
           onClick={() => {
             setLeaderboardType("daily");
           }}
@@ -49,7 +51,9 @@ const leaderBoard = (
           Today
         </button>
         <button
-          className="monthly-leaderboard-button"
+          className={`monthly-leaderboard-button ${
+            isDark ? "button-focus-dark" : "button-focus-light"
+          }`}
           onClick={() => {
             setLeaderboardType("monthly");
           }}
@@ -62,7 +66,9 @@ const leaderBoard = (
           Monthly
         </button>
         <button
-          className="alltime-leaderboard-button"
+          className={`alltime-leaderboard-button ${
+            isDark ? "button-focus-dark" : "button-focus-light"
+          }`}
           onClick={() => {
             setLeaderboardType("alltime");
           }}

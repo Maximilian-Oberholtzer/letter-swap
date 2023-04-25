@@ -47,7 +47,9 @@ const settings = (
         }}
       ></input>
       <button
-        className="username-save-button"
+        className={`username-save-button ${
+          isDark ? "outline-dark" : "outline-light"
+        }`}
         onClick={() => {
           userName.length > 0 && closeModal();
         }}

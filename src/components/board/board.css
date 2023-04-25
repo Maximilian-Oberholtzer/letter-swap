@@ -210,6 +210,10 @@
   .found-words-box {
     width: 18rem;
   }
+  .found-word-text {
+    padding: 0.15rem;
+    font-size: 1.25rem;
+  }
   .swaps-container {
     width: 4rem;
     font-size: 1rem;
