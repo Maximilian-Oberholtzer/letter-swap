@@ -189,6 +189,14 @@ const validateScore = (entry: GameData): boolean => {
     countedWords.push(word);
   }
 
+  if (countedWords.length - 1 !== entry.score) {
+    validScore = false;
+  }
+
+  if (entry.id.toString().length !== 8) {
+    validScore = false;
+  }
+
   return validScore;
 };
 
