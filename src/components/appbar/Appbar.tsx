@@ -12,7 +12,6 @@ import SettingsModal from "../modal/SettingsModal";
 import { UserState } from "../main/Main";
 import "./appbar.css";
 import LeaderboardModal from "../modal/LeaderboardModal";
-// import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 import { LeaderboardEntry } from "../leaderboard/leaderboardFunctions";
 
 const DAY = new Date().getDay();
@@ -47,6 +46,19 @@ function Appbar(props: AppbarProps) {
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  //If user's game is complete, disable top buttons to allow stats modal to show properly
+  const [enableModal, setEnableModal] = useState(false);
+  useEffect(() => {
+    setEnableModal(false);
+    if (userState.swapCount === -1) {
+      setTimeout(() => {
+        setEnableModal(true);
+      }, 1700);
+    } else {
+      setEnableModal(true);
+    }
+  }, [userState.swapCount]);
 
   // For updating user name in settings modal
   const setUserName = useCallback(
@@ -88,8 +100,10 @@ function Appbar(props: AppbarProps) {
           : "var(--light-background)",
       }}
     >
-      {showInstructions && <HowToPlayModal onClose={handleInstructionsModal} />}
-      {showStats && (
+      {showInstructions && enableModal && (
+        <HowToPlayModal onClose={handleInstructionsModal} />
+      )}
+      {showStats && enableModal && (
         <StatisticsModal
           score={userState.weeklyScores[DAY] ?? -1}
           points={userState.weeklyPoints[DAY] ?? -1}
@@ -100,7 +114,7 @@ function Appbar(props: AppbarProps) {
           reset={resetGame}
         />
       )}
-      {showSettings && (
+      {showSettings && enableModal && (
         <SettingsModal
           onClose={handleSettingsModal}
           reset={resetGame}
@@ -110,7 +124,7 @@ function Appbar(props: AppbarProps) {
           soundEnabled={soundEnabled}
         />
       )}
-      {showLeaderboard && (
+      {showLeaderboard && enableModal && (
         <LeaderboardModal
           onClose={handleLeaderboardModal}
           leaderboardData={leaderboardData}
