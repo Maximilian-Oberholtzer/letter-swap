@@ -34,7 +34,7 @@
   .how-to-play-instructions {
     font-size: 0.8rem !important;
   }
-  .how-to-play-point-description-list > div {
+  .how-to-play-point-description-list > li {
     font-size: 0.75rem !important;
   }
   .modal-rank {
@@ -182,24 +182,8 @@
   font-size: 0.94rem;
 }
 
-.how-to-play-point-description-list > div {
+.how-to-play-point-description-list > li {
   font-size: 0.88rem;
-}
-
-.how-to-play-bottom-container {
-  display: flex;
-  margin: 1.5rem -0.5rem;
-  justify-content: center;
-}
-
-.how-to-play-points-container,
-.how-to-play-ranks-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.how-to-play-points-container {
-  width: 55%;
 }
 
 .how .weekly-score-container {
