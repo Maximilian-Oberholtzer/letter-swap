@@ -79,16 +79,24 @@ function Appbar(props: AppbarProps) {
   }, [showInstructions, showSettings, showStats, showLeaderboard]);
 
   const handleInstructionsModal = () => {
-    setShowInstructions(!showInstructions);
+    if (enableModal) {
+      setShowInstructions(!showInstructions);
+    }
   };
   const handleStatsModal = () => {
-    setShowStats(!showStats);
+    if (enableModal) {
+      setShowStats(!showStats);
+    }
   };
   const handleSettingsModal = () => {
-    setShowSettings(!showSettings);
+    if (enableModal) {
+      setShowSettings(!showSettings);
+    }
   };
   const handleLeaderboardModal = () => {
-    setShowLeaderboard(!showLeaderboard);
+    if (enableModal) {
+      setShowLeaderboard(!showLeaderboard);
+    }
   };
 
   return (
